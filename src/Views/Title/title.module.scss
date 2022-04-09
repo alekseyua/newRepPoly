@@ -19,22 +19,23 @@
     margin-top: 20px;
   }
 }
+//.cooperation-title{}
 .cooperation {
-  &-title {
-    text-align: center;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 38px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--gx-color-primary);
-    margin-bottom: 20px;
-    margin-top: 0px;
-    padding-top: 120px;
-    @include tablet-md {
-      font-size: calc(12px + 5vw);
-    }
-  }
+  // &-title {
+  //   text-align: center;
+  //   font-style: normal;
+  //   font-weight: bold;
+  //   font-size: 38px;
+  //   letter-spacing: 0.08em;
+  //   text-transform: uppercase;
+  //   color: var(--gx-color-primary);
+  //   margin-bottom: 20px;
+  //   margin-top: 0px;
+  //   padding-top: 120px;
+  //   @include tablet-md {
+  //     font-size: calc(12px + 5vw);
+  //   }
+  // }
 }
 .news {
   &-title {

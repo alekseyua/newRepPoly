@@ -31,12 +31,13 @@
     right: 0;
     bottom: 0;
     width: 100%;
-    background: rgb(255, 209, 209);
+    // background: rgb(255, 209, 209);
     // height: 100%;
     height: 100vh;
     display: flex;
-    justify-content: end;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
+    // background-color: rgba(0,0,0,.4);
   }
   
   .burger-button {
@@ -66,10 +67,13 @@
   .burger-ul {
     padding: 25px;
     position: relative;
-    top: 50px;
+    // top: 50px;
     left: 0;
-    width: 100%;
-    background-color:rgb(255, 209, 209);
+    width: 90%;
+    height: 87vh;
+    background-color: #fff;//rgb(255, 209, 209);
+    border-radius: 20px;
+
   }
   
   .burger-li {

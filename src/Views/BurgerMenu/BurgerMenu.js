@@ -9,6 +9,8 @@ import styles from "./styles.module.scss";
 const sidebar = {
     open: (height = 1000) => ({
         clipPath: `circle(${height * 2 + 200}px at 40px 40px)`,
+        backgroundColor: 'rgb(0,0,0);',
+        opacity: 0.5,
         transition: {
             type: "spring",
             stiffness: 20,
@@ -17,6 +19,7 @@ const sidebar = {
     }),
     closed: {
         clipPath: "circle(30px at 40px 40px)",
+        backgroundColor: 'rgb(255, 209, 209)',
         transition: {
             delay: 0.5,
             type: "spring",
@@ -30,6 +33,7 @@ const BurgerMenu = ({ itemIds}) => {
     const [isOpen, toggleOpen] = useCycle(false, true);
     const containerRef = useRef(null);
     const { height } = useDimensions(containerRef);
+    console.log(`isOpen`, isOpen);
     return (
         <motion.nav
             className={styles["burger-nav"]}

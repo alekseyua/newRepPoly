@@ -110,7 +110,7 @@ import defaultProductCard from './ProductCard/default-image.png';
 import tradingPlatformImg from './TradingPlatform/tradingPlatformBanner.jpg';
 
 // CooperationCard
-import cooperationCard1 from './CooperationCard/cooperationCard1.jpg';
+import cooperationCard1 from './CooperationCard/cooperationCard1.svg';
 import cooperationCard2 from './CooperationCard/cooperationCard2.jpg';
 
 // NewsCard
