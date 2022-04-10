@@ -5,6 +5,7 @@ import api from '../api';
 import { STATUS_FETCHER } from '../const';
 import { dataBalance } from './ComponentStore/Balance';
 
+
 export const cart = (store) => {
   store.on('@init', () => ({ cart: {}, totalPrice: 0 }));
   store.on('cart/update', ({ cart }, obj) => {
@@ -443,6 +444,7 @@ export const stateUpdateBalance = store => {
     return { stateUpdateBalance: obj }
   })
 }
+
 
 
 export const storeonParams = [

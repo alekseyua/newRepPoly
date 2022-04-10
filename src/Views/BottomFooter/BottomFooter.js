@@ -3,37 +3,11 @@ import { Link, NavLink } from 'react-router-dom';
 import style from './bottomFooter.module.scss';
 import SocialLinks from '../SocialLinks';
 import PaymentMethods from '../PaymentMethods';
-import { fbIcon, igIcon, vkIcon, waIcon, vIcon, fbmIcon } from '../../images';
 import { visaIcon, masterCardIcon, applePayIcon, mirIcon } from '../../images';
 
 const BottomFooter = ({ site_configuration, year, policy }) => {
   // const {social_links, payment_methods} = props;
-  const social_links = [
-    {
-      icon: fbIcon,
-      url: site_configuration?.fb_link ? site_configuration.fb_link : '#',
-    },
-    {
-      icon: igIcon,
-      url: site_configuration?.insta_link ? site_configuration.insta_link : '#',
-    },
-    {
-      icon: vkIcon,
-      url: site_configuration?.vk_link ? site_configuration.vk_link : '#',
-    },
-    {
-      icon: waIcon,
-      url: site_configuration?.whatsapp_link ? site_configuration.whatsapp_link : '#',
-    },
-    {
-      icon: vIcon,
-      url: site_configuration?.viber_link ? site_configuration.viber_link : '#',
-    },
-    {
-      icon: fbmIcon,
-      url: site_configuration?.twitter_link ? site_configuration.twitter_link : '#',
-    },
-  ];
+
   const payment_methods = [
     {
       icon: visaIcon,
@@ -63,7 +37,7 @@ const BottomFooter = ({ site_configuration, year, policy }) => {
               Публичная оферта
             </Link>
           </div>
-          <SocialLinks social_links={social_links} />
+          <SocialLinks site_configuration={site_configuration} />
           <PaymentMethods payment_methods={payment_methods} />
         </div>
       </div>

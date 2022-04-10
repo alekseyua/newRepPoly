@@ -1,16 +1,16 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion, useCycle } from "framer-motion";
 import useDimensions  from "./use-dimensions";
 import Navigation  from "./Navigation";
 import MenuToggle  from "./MenuToggle";
 import styles from "./styles.module.scss";
-
+import Modal from '../../Views/ModalCreator';
 
 const sidebar = {
     open: (height = 1000) => ({
         clipPath: `circle(${height * 2 + 200}px at 40px 40px)`,
-        backgroundColor: 'rgb(0,0,0);',
-        opacity: 0.5,
+        backgroundColor: 'rgba(0,0,0,.4)',
+        // opacity: 0.5,
         transition: {
             type: "spring",
             stiffness: 20,
@@ -29,21 +29,26 @@ const sidebar = {
     }
 };
 
-const BurgerMenu = ({ itemIds}) => {
+const BurgerMenu = ({ itemIds, site_configuration }) => {
     const [isOpen, toggleOpen] = useCycle(false, true);
     const containerRef = useRef(null);
     const { height } = useDimensions(containerRef);
-    console.log(`isOpen`, isOpen);
+    useEffect(() => {
+      const body = document.querySelector('body');
+      body.style.overflow = isOpen ? 'hidden' : 'auto';
+    }, [isOpen])
     return (
         <motion.nav
+        
             className={styles["burger-nav"]}
             initial={false}
             animate={isOpen ? "open" : "closed"}
             custom={height}
             ref={containerRef}
         >
+            <Modal.StorControllerModal />
             <motion.div className={styles["burger-background"]} variants={sidebar}>
-                <Navigation itemIds={itemIds} />
+                <Navigation itemIds={itemIds} site_configuration ={site_configuration } isOpen={isOpen}/>
                 <MenuToggle toggle={() => toggleOpen()} />
             </motion.div>
         </motion.nav>

@@ -52,11 +52,13 @@
   &__list {
     @include ul;
     @include flex(lc);
+    //.social-links__list-item{}
     &-item {
       position: relative;
       margin-right: 30px;
       transition: 0.3s;
       filter: brightness(0);
+      cursor: pointer;
       // &::after {
       //     position: absolute;
       //     content: '';
@@ -69,7 +71,7 @@
       //     mix-blend-mode: color;
       // }
       @include mobile {
-        margin: 0;
+        margin: 0 2px 0 0;
       }
       &:last-child {
         margin: 0;

@@ -13,7 +13,6 @@ GET
 http://91.218.229.240:8000/api/v1/order/correspondence_order_item/?order_item_id=№ товара
 
 POST
-
 ``````plagin for work VS CODE``````
 1) Auto Rename Tag 
 2) Auto Import
@@ -21,7 +20,22 @@ POST
 4) Better Comments
 5) Bracket Pair Colorizer 2
 6) Path Intellisense
-7) 
+7) Wrap Console Log
+
+
+``````plagin for work Subline Text 3``````
+1) Install Package Control
+2) Auto Close HTML Tags
+3) Emmet
+4) Tag (AppData\Roaming\Sublime Text 3\Installed Packages\Tag.sublime-package)
+5) Auto Save
+5) Wrap Console Log
+6) SASS
+7) SublimeLinter
+8) Color Highlighter
+9) BracketHighlighter
+10) AutoFileName
+11) Side Bar Enhancements
 
 `````REACT тестирование програмы на перерендеринг компонентов для отслеживания rerendering `````
 Why Did You Render

@@ -92,7 +92,7 @@
     }
     //.cooperation-wrap-box{}
     &-box{
-      width: 570px;
+      @include adaptive-value('width',570,320,px,2);
       height: 300px;
       background-color: #fff;
       border-radius: 20px;

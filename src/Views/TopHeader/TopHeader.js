@@ -92,7 +92,7 @@ const TopHeader = ({
         />
 
 
-        <RelativeBurgerBtn header_menu={header_menu} />
+        <RelativeBurgerBtn header_menu={header_menu} site_configuration={site_configuration}/>
       </div>
     </div>
   );

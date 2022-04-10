@@ -19,6 +19,7 @@ const contentApi = api.contentApi;
 
 export default ({ footer_menu = [], site_configuration, role_configuration, year, policy }) => {
   const { dispatch } = useStoreon('modal');
+
   const [optionsProblemArea, setoptionsProblemArea] = useState([]);
 
   const closeModal = () => {
@@ -188,6 +189,8 @@ export default ({ footer_menu = [], site_configuration, role_configuration, year
     });
   };
 
+
+
   useEffect(() => {
     contentApi.getProblemArea().then((res) => {
       setoptionsProblemArea(
@@ -199,7 +202,7 @@ export default ({ footer_menu = [], site_configuration, role_configuration, year
         }),
       );
     });
-  }, []);
+  }, []); 
 
   return (
     <footer>
@@ -220,3 +223,5 @@ export default ({ footer_menu = [], site_configuration, role_configuration, year
     </footer>
   );
 };
+
+

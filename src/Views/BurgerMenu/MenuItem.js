@@ -23,7 +23,9 @@ const variants = {
 const colors = ["#FF008C", "#D309E1", "#9C1AFF", "#7700FF", "#4400FF", "#3300FF", "#2200FF","#1100FF"];
 
 const MenuItem = ({ i,itemsMenu, url }) => {
-  const style = { border: `2px solid ${colors[i]}` };
+  // const style = { border: `2px solid ${colors[i]}` };
+  const style = { border: `none` };
+
   return (
     <NavLink
       key={`nav${i}`}
@@ -32,8 +34,8 @@ const MenuItem = ({ i,itemsMenu, url }) => {
     <motion.li
     className={styles["burger-li"]}
       variants={variants}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
+      // whileHover={{ scale: 1.1 }}
+      // whileTap={{ scale: 0.95 }}
     >
       
       <div className={styles["burger-icon-placeholder"]} style={style} ></div>

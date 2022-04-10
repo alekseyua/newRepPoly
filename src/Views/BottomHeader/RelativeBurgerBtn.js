@@ -4,7 +4,7 @@ import TopHeaderMenu from '../TopHeaderMenu';
 import style from './bottomHeader.module.scss';
 import BurgerMenu from '../BurgerMenu/BurgerMenu';
 
-const RelativeBurgerBtn = ({ header_menu }) => {
+const RelativeBurgerBtn = ({ header_menu, site_configuration }) => {
   const [classModificator, setClassModificator] = useState('hidden');
   const handlerDropDown = (e) => {
     setClassModificator(e.detail.isActive ? 'visible' : 'hidden');
@@ -12,7 +12,7 @@ const RelativeBurgerBtn = ({ header_menu }) => {
   return (
     <div className={style['bottom-header__burger-wrapper']}>
 
-      <BurgerMenu itemIds={header_menu[4].children}/>
+      <BurgerMenu itemIds={header_menu[4].children} site_configuration={site_configuration}/>
 
       {/* <GxHamburger onGxShow={handlerDropDown} className={style['bottom-header__burger-button']}>
         Кнопка
