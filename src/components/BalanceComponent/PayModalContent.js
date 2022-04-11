@@ -58,10 +58,11 @@ const PayModalContent = ({
   //     show: false,
   //   });
   // };
+
   const onSubmit = (data, { setFieldError }) => {
     const fdPayments = new FormData();
     fdPayments.set('requisites_id', requisites.id);
-    !!order_id?fdPayments.set('order_id', order_id):null;
+    !!order_id?fdPayments.set('order_id', +order_id.split('-')[1]):null;
     fdPayments.set('cost', data.cost);
     fdPayments.set('name', data.fio);
     fdPayments.set('comment', data.comment);

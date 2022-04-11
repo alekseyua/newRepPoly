@@ -7,48 +7,35 @@ import api from '../../api';
 import { ROLE } from '../../const';
 import { useStoreon } from 'storeon/react';
 
-
 const orderApi = api.orderApi;
-
 const OrderDetailsPersonalPageComponent = ({
   order,
   slug,
   currentCurrcensies,
-  role_configuration,
   setModalStates,
 }) => {
-
-  // components -> OrderDetailsPersonalPageComponent
   const { userPage } = useStoreon('userPage');
   const { role } = userPage.profile;
   const {
-    cart,
-    correspondence,
     created_at,
     delivery_address,
     delivery_method,
     id,
-    order_items,
-    order_cost,
     payment_method,
     status,
     comment,
     track_number,
     delivery_cost,
-    total,
     weight,
-    updated_at,
     discount,
     specification,
   } = order;
   const [orderItems, setOrderItems] = useState([]);
   const [dataOrder, setDataOrder] = useState({});
-  const [newOrderItems, setNewOrderItems] = useState([]);
   const [orderItemLength, setOrderItemLength] = useState(0);
   const [enableBtn, setEnableBtn] = useState(true);
   const [ state, setState ] = useState(false);
   const [dataOrderItem, setDataOrderItem] = useState([]);
-
   const { currenssies, dispatch } = useStoreon('currenssies');
   const { stateUpdateBalance } = useStoreon('stateUpdateBalance');
 
@@ -67,15 +54,13 @@ const OrderDetailsPersonalPageComponent = ({
       acc += cur?.items.length
       return acc
     },0)
-    // console.log('amount', amount)
-        setOrderItemLength(amount);
+    setOrderItemLength(amount);
   }
 
   useEffect(() => {
     getOrderItem();
   }, [slug, currenssies, enableBtn]);
 
-  //сделать если опт
   useEffect(()=>{
     if (role === ROLE.WHOLESALE) {
       let res = [];
@@ -84,11 +69,9 @@ const OrderDetailsPersonalPageComponent = ({
           res.push(item)
         })
       })
-      setNewOrderItems(res);
     }
   }, [orderItems, currenssies])
   // *****************************************************************************************
-  //
   const deleteElementOrder = (id_goods, order) => {
     const params = {
       order_id: order,
@@ -99,12 +82,9 @@ const OrderDetailsPersonalPageComponent = ({
       .cancelOrderItem(params)
       .then(res => {
         setEnableBtn(!enableBtn)
-        console.log('result delete')
-
-          setState(!state)
-
-        })
-        .catch(err => console.log('ERROR btnDelOrder dont work', err));
+        setState(!state)
+      })
+      .catch(err => console.log('ERROR btnDelOrder dont work', err));
     }
     useEffect(()=>{
 
@@ -121,15 +101,12 @@ const OrderDetailsPersonalPageComponent = ({
           total: 18.22, 
         }
         let massiveOrder = [];
-
         res.results.map(orders=>{
           result = {
             id : orders.id,
             status : orders.status.status,
             total: orders.total,
           }
-          console.log('resData', orders)
-
           massiveOrder.push(result)
         });
 
@@ -144,7 +121,6 @@ const OrderDetailsPersonalPageComponent = ({
         order.id === id ?
         resData = order
         :null
-
         setDataOrder(resData)
       })
     }, [dataOrderItem, state])
@@ -226,7 +202,6 @@ const OrderDetailsPersonalPageComponent = ({
                             deleteElementOrder={deleteElementOrder}
                             id={item.id}
                             setModalStates={setModalStates}
-
                           />
                         );
                       })}
