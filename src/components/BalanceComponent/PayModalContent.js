@@ -17,7 +17,6 @@ import ErrMessageForm from '../Popupe/ErrMessageForm';
 const orderApi = api.orderApi;
 
 const PayModalContent = ({
-  closeModal,
   requisites = '',
   callbackSubmit = () => { },
   order_id = false,
@@ -52,12 +51,12 @@ const PayModalContent = ({
   };
 
 
-  // const closeModal = () => {
-  //   setModalStates({
-  //     content: null,
-  //     show: false,
-  //   });
-  // };
+  const closeModal = () => {
+    setModalStates({
+      content: null,
+      show: false,
+    });
+  };
 
   const onSubmit = (data, { setFieldError }) => {
     const fdPayments = new FormData();
@@ -102,10 +101,9 @@ const PayModalContent = ({
 
   return (
     <ModalContentViews.ModalWrapper customClassName={'modal-payments'}>
-      <ModalContentViews.CloseBtn
+      {/* <ModalContentViews.CloseBtn
         closeModal={closeModal}
-
-      />
+      /> */}
       <ModalContentViews.HeaderBlock mb={'20px'} title={'Пополнение баланса для оплаты'} />
       {<>
         {

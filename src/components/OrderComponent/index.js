@@ -131,7 +131,7 @@ const OrderComponent = ({
     setStatusFildValue(+e.target.value);
   };
 
-  const closeModal = () => {
+  const closeModal = () => {    
     setmodalStates({
       show: false,
       content: null,
@@ -569,7 +569,7 @@ const OrderComponent = ({
             modalStates.cusstomClassNameModalResize,
         })}
       >
-        <ModalContentViews.CloseBtn closeModal={null} />
+        <ModalContentViews.CloseBtn closeModal={closeModal} />
         {modalStates.content}
       </GxModal>
 

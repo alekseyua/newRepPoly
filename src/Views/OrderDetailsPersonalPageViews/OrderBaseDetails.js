@@ -37,7 +37,7 @@ const OrderBaseDetails = ({
   delivery_cost,
   currentCurrcensies,
   setModalStates,
-  numberOrder,
+  numberOrder, 
 }) => {
   const {
     city,
