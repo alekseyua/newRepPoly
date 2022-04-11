@@ -306,7 +306,7 @@ const SectionProdPage = ({
               priceOneProduct={recommended_priceHook}
               allPrice={pricesHook.old_price}
               currentPrice={pricesHook.price}
-              image={mediaHook[0].image.includes('http://') ? mediaHook[0].image : mediaFirstHook[0].image}
+              image={mediaHook[0].image.includes('https://') ? mediaHook[0].image : mediaFirstHook[0].image}
               handleClose={closeCustomModal}
               sizes={sizes}
             />
@@ -322,7 +322,6 @@ const SectionProdPage = ({
     setMediaFirstHook(media)
     let arr = Array.from(product_sku);
     let filterArr = arr.filter(item => item.color === colorData);
-    console.log(`filter arr`, filterArr)
     setMediaHook(filterArr);
   }
   // ******************************************************************************************************
@@ -345,7 +344,6 @@ const SectionProdPage = ({
         });
         setIn_cart_countHook(count)
         if (collectionsHook) dispatch('stateCountRestart/add', !stateCountRestart)
-
 
         if (openModalSucces && stateCountCart.in_cart === 0) {
           openModalSuccessAddToCart(colorsn, sizesn);
@@ -450,6 +448,7 @@ const SectionProdPage = ({
       {({ handleSubmit, setFieldValue, handleChange, values, errors }) => {
         return (
           <GxForm noValidate onGx-submit={handleSubmit}>
+
             <ProductDetailsViews.SectionProdPage modalView={modalView}>
               <GxModal
                 onGx-after-hide={closeCustomModal}

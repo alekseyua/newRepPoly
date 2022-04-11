@@ -177,7 +177,6 @@ const Combine = (props) => {
             const DevPage = PAGE_TYPES['development-page'];
             return <DevPage {...page} {...props} />;
           }
-              console.log('page', page);
           if ( page.profile === undefined ){
               console.log('profile если undefined из combine')
               //alert('page.profile === undefined of Combine, времменно оставляем для выявления 500')

@@ -48,7 +48,7 @@ const PayModalContent = ({
     requiredField: Text({ text: 'requiredField' }),
     shortComments: Text({ text: 'short.comments' }),
     longComments: Text({ text: 'long.comments' }),
-    receipt:  "не добавлен файл"
+    receipt:  "файл не добавлен"
   };
 
 
@@ -61,7 +61,6 @@ const PayModalContent = ({
   const onSubmit = (data, { setFieldError }) => {
     const fdPayments = new FormData();
     fdPayments.set('requisites_id', requisites.id);
-    // fdPayments.set('order_id', order_id ? 11 : order_id);
     !!order_id?fdPayments.set('order_id', order_id):null;
     fdPayments.set('cost', data.cost);
     fdPayments.set('name', data.fio);
@@ -92,11 +91,6 @@ const PayModalContent = ({
             }
           }
         }
-        // console.log(`почему ошибка ????? ${err}`,err)
-        // console.log(`почему ошибка ????? ${err}`,err)
-
-        // !(slug === "balance") ? history.push('orders') : history.push('balance');
-        // closeModal();
       });
     }
   };
@@ -122,8 +116,6 @@ const PayModalContent = ({
                 now_balance={now_balance}
                 currenssies={currenssies}
               />
-
-
             </>
             )
             : null
@@ -136,9 +128,6 @@ const PayModalContent = ({
       <ModalContentViews.WarningBlock>
         <ModalContentViews.SubTitle>Реквизиты для пополнения баланса:</ModalContentViews.SubTitle>
         <div dangerouslySetInnerHTML={{ __html: requisites.requisites }}></div>
-        Пополнение баланса возможно только при наличии чека, прикрепленного в форматах .jpg (jpeg),
-        .png, bmp, .zip, .rar, .pdf. Для отправки нескольких файлов, приложите архив (zip, rar) в
-        этой форме.
       </ModalContentViews.WarningBlock>
       <ModalContentViews.ContentBlock>
         <ModalContentViews.ContentBlock>

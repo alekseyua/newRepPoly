@@ -31,7 +31,11 @@ const UserRoutingPanel = ({
   const openModalPay = () => {
     orderApi.getRandomRequizites().then((res) => {
       setModalStates({
-        content: <PayModalContent closeModal={closeModal} requisites={res} />,
+        content: <PayModalContent 
+                    closeModal={closeModal}
+                    requisites={res}
+                    order_id={false}
+                 />,
         show: true,
         addClass: 'modal-payments',
       });

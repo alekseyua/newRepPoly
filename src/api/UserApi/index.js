@@ -11,8 +11,6 @@ export default class UserApi extends AbstractBaseApi {
     console.log('pass user', params)
     const res = await this.post('/user/login/', params);
     const data = res.data;
-    console.log('get  user data', data)
-
     if (remember) remember = 2592e3;
     this.setAuthToken(data.token, remember);
     return data;

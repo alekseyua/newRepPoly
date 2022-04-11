@@ -579,13 +579,12 @@ const OrderComponent = ({
         onSubmit={onSubmit}
       >
         {({ handleSubmit, handleChange, values, errors, setFieldValue, touched }) => {
-          //запускаем анимацию кнопки создания заказа и отправка на бэк запроса
+          const [fieldCountry, setFieldCountry] = useState('country');
           handleChange = (data) => {
             getNowCurrencyNowCountry(data);
           };
-          const [fieldCountry, setFieldCountry] = useState('country');
           setFieldCountryOut(fieldCountry);
-
+            //запускаем анимацию кнопки создания заказа и отправка на бэк запроса
           if (orderFunc) {
             const timerBtn = setTimeout(() => {
               creteOrder(values);
@@ -628,6 +627,7 @@ const OrderComponent = ({
                             values={values.payment_methods}
                             payment_methods={payment_methods}
                           />
+
                           <OrderingDelivery
                             values={{
                               variant: values.variant,
@@ -672,7 +672,6 @@ const OrderComponent = ({
                       </Title>
                     </>
                   )
-                  // <div className={styleModal['message__order']}>Небыло создано не одного заказа для продолжения добавте товар в корзину и оформите новый заказ</div>
                 }
               </GxCol>
               <GxCol
@@ -689,7 +688,6 @@ const OrderComponent = ({
                       <Text text={'you.order'} />
                     </CartViews.Text>
                     <CartViews.Text type={'text-sub'}>
-                      {/* {cart_contentOrder.cartitem_set.length + cart_contentOrder.in_stock.length}&nbsp; */}
                       {cart_contentOrder.render ? cart_contentOrder.selected : null}&nbsp;
                       <Text text={'product.s'} />
                     </CartViews.Text>
@@ -768,28 +766,14 @@ const OrderComponent = ({
                       }
                     </CartViews.Text>
                   </CartViews.BlockRightSide>
-                  <CartViews.CommentOrder
-                    name={'comment_order'}
-                    handleChange={handleChange}
-                    value={!!values.comment_order?values.comment_order:''}
-                    // placeholder={'Написать комментарий к заказу...'}
-                    placeholder={
-                      ROLE.RETAIL !== role?
-                      'При желании укажите информацию для Менеджера по упаковке (например, что Вы желаете сделать отправку по своей накладной СDEK, отправить товар без бирок и тп...)'
-                      :'При желании укажите информацию для Менеджера по упаковке'
-                    }
-                  />
-                  {/* выподающий список для добавления товара в существующий заказ */}
                   <div className={style['old-order']}>
                     <GxTooltip
                       content="Добавить товары к существующему заказу "
                       placement="top"
-                      // open={openTooltip}
                     >
                       <Select
                         onFocus={focuseSelector}
                         autoFocus
-                        //onFocus={e => e.currentTarget.select()}
                         variant="black"
                         value={statusFildValue}
                         placeholder="Добавить товары к существующему заказу"

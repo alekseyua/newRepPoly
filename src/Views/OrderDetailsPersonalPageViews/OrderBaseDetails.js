@@ -131,7 +131,11 @@ const OrderBaseDetails = ({
       e.preventDefault()
       orderApi.getRandomRequizites().then((res) => {
           setModalStates({
-            content: <PayModalContent closeModal={closeModal} requisites={res} order_id={false} />,
+            content: <PayModalContent 
+                        closeModal={closeModal} 
+                        requisites={res} 
+                        order_id={numberOrder}
+                      />,
             show: true,
             addClass: 'modal-payments',
           });

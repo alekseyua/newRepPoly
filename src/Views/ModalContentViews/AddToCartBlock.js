@@ -22,11 +22,8 @@ const AddToCartBlock = ({
 
   const { dispatch, currenssies, stateCountRestart } = useStoreon('currenssies', 'stateCountRestart'); //currenssies
   const { userPage }    = useStoreon('userPage');
-
   const history         = useHistory();
-
   const { role }        = userPage.profile;
-  console.log(`sizes`, currentPrice * sizes.length)
   return (
     <div className={style['add_to_cart-wrapper']}>
       <HeaderBlock title={'Добавлено в корзину'} mb={20} />

@@ -25,7 +25,7 @@ const SendChatBlock = ({
             setValues({...values,'text_field': e.target.value})
           }}
           className={style['cabinet_orders_details__chat_send_input']}
-          placeholder="Написать сообщение..."
+          placeholder="Написать Менеджеру по упаковке"
         />
         <GxButton 
           variant="text"

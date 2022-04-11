@@ -526,6 +526,20 @@ p {
       }
       &_input {
           border: none;
+          font-size: 16px;
+          color: var(--gx-input-placeholder-color);
+          @media (max-width: 1200px) {
+            @include adaptive-value('font-size',16,9,px,2);
+          }
+          @media (max-width: 960px) {
+            font-size: 16px;
+          }
+          @media (max-width: 767.1px) {
+            font-size: 14px;
+          }
+          @media (max-width: 680.1px) {
+            font-size: 16px;
+          }
           @include mobile-sm {
             margin: 0;
           }

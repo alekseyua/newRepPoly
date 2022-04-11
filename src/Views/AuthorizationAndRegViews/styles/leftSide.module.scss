@@ -50,7 +50,7 @@
   }
   &__midle-title {
     // font-family: Cormorant Garamond;
-    @extend %font;
+    @extend %font-title;
     font-style: normal;
     font-weight: 600;
     text-align: center;
@@ -68,7 +68,7 @@
   }
   &__lower-title {
     // font-family: Cormorant Garamond;
-    @extend %font;
+    @extend %font-title;
     font-style: normal;
     font-weight: normal;
     font-size: 24px;

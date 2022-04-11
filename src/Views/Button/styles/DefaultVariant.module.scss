@@ -520,7 +520,7 @@
       top: 0px;
       --gx-input-height-medium: 65px;
       &::part(base) {
-        @extend %font;
+        @extend %font-title;
         // font-family: Cormorant Garamond;
         font-style: normal;
         font-weight: bold;
