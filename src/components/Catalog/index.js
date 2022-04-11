@@ -404,9 +404,7 @@ const Catalog = ({
                                     handleSubmit();
                                   }}
                                 />
-                                {role !== ROLE.RETAIL && role !== ROLE.UNREGISTRED ?
                                 <CheckBoxFilters role={role} {...paramsForUpdateCardSet} />
-                                :null}
                                 {checkIsShowCategorysAndProducType() ? (
                                   <AsyncTypeProductFilters
                                     categories={byProductTyoe}
