@@ -18,11 +18,12 @@ const orderApi = api.orderApi;
 
 const PayModalContent = ({
   requisites = '',
-  callbackSubmit = () => { },
+  callbackSubmit,
   order_id = false,
   total_price,
   now_balance,
   currenssies,
+  closeModal,
 }) => {
   const initialValues = {
     fio: null,
@@ -51,72 +52,63 @@ const PayModalContent = ({
   };
 
 
-  const closeModal = () => {
-    setModalStates({
-      content: null,
-      show: false,
-    });
-  };
+    const onSubmit = (data, { setFieldError }) => {
+      const fdPayments = new FormData();
+    
+      let res = +order_id.toString().split('-')[1]
+      order_id.toString().includes('-') ? order_id = res : order_id;
 
-  const onSubmit = (data, { setFieldError }) => {
-    const fdPayments = new FormData();
-    fdPayments.set('requisites_id', requisites.id);
-    !!order_id?fdPayments.set('order_id', +order_id.split('-')[1]):null;
-    fdPayments.set('cost', data.cost);
-    fdPayments.set('name', data.fio);
-    fdPayments.set('comment', data.comment);
-    fdPayments.set('receipt', data.receipt);
-    if (fdPayments.get('receipt') === 'null'){
-      setErrClickSend(true)
-      resulcConfirm ? null : history.location.pathname === '/balance' ? closeModal() : history.push('balance')
-    }else{
-    setStateClickSend(true)
-    orderApi
-      .createPayments(fdPayments)
-      .then((res) => {
-        dispatch('stateUpdateBalance/update', !stateUpdateBalance)
+      fdPayments.set('requisites_id', requisites.id);
+      !!order_id?fdPayments.set('order_id', order_id):null;
+      fdPayments.set('cost', data.cost);
+      fdPayments.set('name', data.fio);
+      fdPayments.set('comment', data.comment);
+      fdPayments.set('receipt', data.receipt);
 
-        !(slug === 'balance') ? history.push('orders') : history.push('balance');
-        closeModal();
-        callbackSubmit();
-      })
-      .catch((err) => {
-        if (!!err) {
-          setStateClickSend(false)
-          const data = err.response.data;
-          for (const key in data) {
-            const element = Array.isArray(data[key]) ? data[key][0] : data[key];
-            if (initialValues.hasOwnProperty(key)) {
-              setFieldError(key, element);
+      if (fdPayments.get('receipt') === 'null'){
+        setErrClickSend(true)
+      }else{
+        setStateClickSend(true)
+        orderApi
+          .createPayments(fdPayments)
+          .then((res) => {
+            dispatch('stateUpdateBalance/update', !stateUpdateBalance)
+            !(slug === 'balance') ? history.push('orders') : history.push('balance');
+            closeModal();
+          })
+          .catch((err) => {
+            if (!!err) {
+              setStateClickSend(false)
+              const data = err.response.data;
+              for (const key in data) {
+                const element = Array.isArray(data[key]) ? data[key][0] : data[key];
+                if (initialValues.hasOwnProperty(key)) {
+                  setFieldError(key, element);
+                }
+              }
             }
-          }
-        }
-      });
-    }
-  };
+          });
+      }
+    };
 
   const setHistory=(path)=>{
     history.push(path)
   }
 
+
+
   return (
     <ModalContentViews.ModalWrapper customClassName={'modal-payments'}>
-      {/* <ModalContentViews.CloseBtn
-        closeModal={closeModal}
-      /> */}
       <ModalContentViews.HeaderBlock mb={'20px'} title={'Пополнение баланса для оплаты'} />
       {<>
-        {
-
-          (total_price)
-            ? (<>
+        {total_price? 
+            <>
               <InfoBalanse
                 total_price={total_price}
                 now_balance={now_balance}
                 currenssies={currenssies}
               />
             </>
-            )
             : null
         }
       </>
@@ -128,6 +120,7 @@ const PayModalContent = ({
         <ModalContentViews.SubTitle>Реквизиты для пополнения баланса:</ModalContentViews.SubTitle>
         <div dangerouslySetInnerHTML={{ __html: requisites.requisites }}></div>
       </ModalContentViews.WarningBlock>
+      
       <ModalContentViews.ContentBlock>
         <ModalContentViews.ContentBlock>
           <Formik

@@ -138,7 +138,7 @@ const CardWoasale = ({
                         :&nbsp;
                       </span>
                       <span>
-                        <span className={style['content-card__price--color']}>{price}</span>&nbsp;
+                        <span className={style['content-card__price--color']}>{price.toFixed(2)}</span>&nbsp;
                         {currenssies}
                       </span>
                       {old_price ? (
@@ -183,9 +183,9 @@ const CardWoasale = ({
                   <span className={style['content-card__price--color']}>{price}</span>&nbsp;
                   {currenssies}
                 </span>
-                {!old_price ? (
+                {old_price ? (
                   <span className={style['content-card__price-mob--old']}>
-                    111{old_price} {currenssies}
+                    {old_price} {currenssies}
                   </span>
                 ) : null}
               </div>

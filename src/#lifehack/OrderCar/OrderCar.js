@@ -5,12 +5,10 @@ import { useStoreon } from 'storeon/react';
 const OrderCar = ({enabled, styleCar, setStyleCar}) => {
 	
 	const { orderFunc, dispatch } = useStoreon('orderFunc');
-	const [ clickCar, setClickCar ] = useState(enabled)
 		const lifehack = () =>{
+			console.log('orderFunction', orderFunc)
 			window?.localStorage?.removeItem('numOrder')
 			setStyleCar('orderCar animate');
-			//return addOrder;
-			setClickCar(enabled) 
 			dispatch('orderFunc/state', true);
 		}
 
@@ -18,7 +16,6 @@ const OrderCar = ({enabled, styleCar, setStyleCar}) => {
 		<div className="oderMain">
 			<button 
 				className={styleCar}
-				// disabled={clickCar} 
 				onClick={lifehack}
 			>
 				<span className="default">{!enabled ? "ОФОРМИТЬ ЗАКАЗ НА ВЫКУП" :"ОФОРМИТЬ ЗАКАЗ НА ВЫКУП"}</span>

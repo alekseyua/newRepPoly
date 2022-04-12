@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import Title from '../../Views/Title';
 import Text from '../Text';
 import CartViews from '../../Views/CartViews';
@@ -57,23 +57,17 @@ const OrderComponent = ({
   //************************************** */
   const history = useHistory();
   const { stateCountCart, dispatch } = useStoreon('stateCountCart');
-  const { stateValuePoly } = useStoreon('stateValuePoly');
-  const { numberIdProduct } = useStoreon('numberIdProduct');
   const { stateCountRestart } = useStoreon('stateCountRestart');
   const { updateCurrenssies } = useStoreon('updateCurrenssies');
-  const { updateCurrenssiesForOrders } = useStoreon('updateCurrenssiesForOrders');
-  const { statusRequstOrderCountryPayment } = useStoreon('statusRequstOrderCountryPayment');
   const { stateUpdateBalance } = useStoreon('stateUpdateBalance');
-
-
-  const [styleCar, setStyleCar] = useState('orderCar disable');
   const { dataBalance } = useStoreon('dataBalance');
-  const { orderCountryPayment } = useStoreon('orderCountryPayment');
   const { currenssies } = useStoreon('currenssies'); //currenssies
   const { userPage } = useStoreon('userPage');
   const { orderFunc } = useStoreon('orderFunc');
-  const { orderCreate } = useStoreon('orderCreate');
+  
+  const [stateCreateOrder, setStateCreateOrder] = useState(false);
   const [cart_contentOrder, setCart_contentOrder] = useState({});
+  const [styleCar, setStyleCar] = useState('orderCar disable');
   const [priceNowDilevery, setPriceNowDilevery] = useState(0);
   const [agreeWitheRegulations, setAgreeWitheRegulations] = useState(true);
   const [fieldCountryOut, setFieldCountryOut] = useState('country');
@@ -110,7 +104,8 @@ const OrderComponent = ({
       .catch((err) => console.log('response list order ERROR', err));
   }, [updateCurrenssies]);
 
-  const options = listOrders.map((el) => {
+  let newListRes = listOrders.filter(el=>el.status?.status === 'in_process' || el.status?.status === 'payment_waiting');
+  const options = newListRes.map((el) => {
     return {
       title: `${el.order_number} (${el.total} ${currenssies})`,
       value: el.id,
@@ -130,11 +125,17 @@ const OrderComponent = ({
     setStatusFildValue(+e.target.value);
   };
 
+  
   const closeModal = () => {    
     setmodalStates({
       show: false,
       content: null,
     });
+    history.location.pathname === '/order' && stateCreateOrder ? 
+      history.push('orders') 
+      : history.location.pathname === '/order' && !stateCreateOrder ?
+        history.push('cart')
+        : null
   };
 
   const openModalAddAddress = (content = null) => {
@@ -148,7 +149,8 @@ const OrderComponent = ({
     orderApi
       .getRandomRequizites()
       .then((res) => {
-        const callbackSubmit = () => {
+        const callbackSubmit = (data) => {
+          console.log('data',data)
           history.push('orders');
         };
         setmodalStates({
@@ -193,21 +195,16 @@ const OrderComponent = ({
 
   // **************************************************************************************************************************************
   const getNowCurrencyNowCountry = (country) => {
-    // if (fieldCountryOut !== 'country') {
       if (country === fieldCountryOut) {
-        // console.log('fieldCountryOut !== country:', fieldCountryOut)
-        // fieldCountryOut !== 'country'
         orderApi
           .getCountryDeliviry({ country: fieldCountryOut, currency: currenssies })
           .then((res) => {
-            console.log('res.price:', res.price)
             setPriceNowDilevery(res.price);
           })
           .catch((err) => console.error(`ERROR!!!!! ${err}`));
       }else{
         setPriceNowDilevery(0);
       }
-    // }
   };
   // **********создаём заказ с отправкой на сервер***************************************************************************************************************
 
@@ -252,6 +249,7 @@ const OrderComponent = ({
           .createOrder(params)
           .then((res) => {
             const order_id = res.id;
+            setStateCreateOrder(true)
             openModalPay(order_id);
             dispatch('stateCountRestart/add', !stateCountRestart);
           })
@@ -280,6 +278,7 @@ const OrderComponent = ({
             .createOrder(params)
             .then((res) => {
               const order_id = res.id;
+              setStateCreateOrder(true)
               openModalPay(order_id, dataBalance.balance, params.total_cost);
               dispatch('stateCountRestart/add', !stateCountRestart);
             })
@@ -301,6 +300,7 @@ const OrderComponent = ({
           .createOrder(params) 
           .then((res) => {
             const order_id = res.id;
+            setStateCreateOrder(true)
             openModalPay(order_id, dataBalance.balance, params.total_cost);
             dispatch('stateCountRestart/add', !stateCountRestart);
             dispatch('stateUpdateBalance/update', !stateUpdateBalance)
@@ -315,6 +315,7 @@ const OrderComponent = ({
           .then((res) => {
             const order_id = res.id;
             //диалоговое окно оплаты по реквизитам
+            setStateCreateOrder(true)
             openModalPay(order_id, dataBalance.balance, params.total_cost);
             dispatch('stateCountRestart/add', !stateCountRestart);
           })
@@ -325,6 +326,10 @@ const OrderComponent = ({
       }
     } else if (ROLE.WHOLESALE === role) {
       //если оптовик
+      //! const order_id = 211;
+      //! setStateCreateOrder(true)
+      //! openModalPay(order_id, dataBalance.balance, params.total_cost);
+
       if (valueStatePay === 1) {
         //создаём заказ
         orderApi
@@ -334,6 +339,7 @@ const OrderComponent = ({
             //диалоговое окно оплаты по реквизитам
             openModalPay(order_id, dataBalance.balance, params.total_cost);
             dispatch('stateCountRestart/add', !stateCountRestart);
+               setStateCreateOrder(true)
           })
           .catch((err) => {
             console.log(`ERROR creteOrder pay ONLINE, ${err}`);
@@ -359,6 +365,7 @@ const OrderComponent = ({
             .then((res) => {
               const order_id = res.id;
               //диалоговое окно оплаты по реквизитам
+              setStateCreateOrder(true)
               openModalPay(order_id, dataBalance.balance, params.total_cost);
               dispatch('stateCountRestart/add', !stateCountRestart);
             })
@@ -375,8 +382,7 @@ const OrderComponent = ({
   };
 
   // **************************************************************************************************************************************
-
-  const getEnabledToPayments = (values, errors) => {
+    const getEnabledToPayments = (values, errors) => {
     //устанавливаем состояние как делать оплату online(1) или с баланса(3)
     if (!statusFildValue) {
       values.payment_methods === 1 ? setValueStatePay(1) : setValueStatePay(3);
@@ -436,36 +442,13 @@ const OrderComponent = ({
     });
   };
 
-  // ****************обновляем состояние доставки*****************************************************************************************
-  useEffect(() => {
-    if (orderCountryPayment.length > 0) {
-      const delivery_priceCountry = orderCountryPayment.map((item) => {
-        if (item.title === fieldCountryOut) {
-          return setCart_contentOrder({
-            cart_items: cart_content.cart_items,
-            discount: cart_content.discount,
-            in_stock: cart_content.in_stock,
-            price: cart_content.price,
-            total_price: cart_content.total_price,
-            delivery: {
-              description: cart_content.delivery.description || '',
-              price: priceNowDilevery?.price && 0,
-            },
-          });
-        }
-      });
-    }
-  }, [priceNowDilevery, fieldCountryOut]);
-
   // создадим новый моссив с товарами для отрисовки
   useEffect(() => {
-      getNowCurrencyNowCountry(fieldCountryOut)
     if (stateCountCart !== 0) {
       let newCartAlPerfomed = {};
       if (stateCountCart.is_performed) {
         let res_cartitem_set = [];
         let res_in_stock = [];
-        let cart_items = [];
         const createDataItemsOptDrop = (data) => {
           let res = [];
           data.items.map((el) => {
@@ -564,7 +547,7 @@ const OrderComponent = ({
   return (
     <React.Fragment>
       <GxModal
-        onGx-after-hide={closeModal}
+        // onGx-after-hide={closeModal}
         open={modalStates.show}
         className={classNames({
           [styleModal['modal_creator']]: true,
@@ -584,22 +567,21 @@ const OrderComponent = ({
         {({ handleSubmit, handleChange, values, errors, setFieldValue, touched }) => {
           const [fieldCountry, setFieldCountry] = useState('country');
           handleChange = (data) => {
-            getNowCurrencyNowCountry(data);
+            fieldCountryOut !== data ? null : getNowCurrencyNowCountry(data);
           };
           setFieldCountryOut(fieldCountry);
             //запускаем анимацию кнопки создания заказа и отправка на бэк запроса
-          if (orderFunc) {
+          if (orderFunc && !stateCreateOrder) {
             const timerBtn = setTimeout(() => {
+              console.log('hz-hz-hz ',orderFunc, 'stateCreateOrder', !stateCreateOrder)
               creteOrder(values);
               dispatch('orderFunc/state', false);
-              clearTimeout(timerBtn);
+              return () =>clearTimeout(timerBtn);
             }, 10000);
           } else {
             null;
           }
 
-
-          console.log('fieldCountry',fieldCountry);
           return (
             <React.Fragment>
               <GxCol

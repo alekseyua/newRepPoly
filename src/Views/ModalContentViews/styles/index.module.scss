@@ -1,6 +1,9 @@
 @import '../../../styles/variables/index.scss';
 @import '../../../styles/fonts/index.scss';
 
+.dialog.dialog--open.dialog--visible{
+  pointer-events: none;
+}
 .modal {
   &-block_wrapper {
     &-center {
