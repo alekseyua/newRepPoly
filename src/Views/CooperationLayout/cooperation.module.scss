@@ -65,7 +65,7 @@
     height: 110px;
     margin: 0 auto;
     @include adaptive-value('margin-top',67,5,px,2);
-    @include adaptive-value('width',650,320,px,2);
+    @include adaptive-value('width',750,320,px,2);
 
     & > h2 {
       font-family: 'Cormorant';

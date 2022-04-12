@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { GxGrid } from '@garpix/garpix-web-components-react';
 import { GxButton, GxIcon } from '@garpix/garpix-web-components-react';
 import { NavLink } from 'react-router-dom';
@@ -23,6 +23,8 @@ import { motion, AnimatePresence } from 'framer-motion';
  */
 const TopHeaderMenu = ({ header_menu = [], handlerActiveDropDownMenuItem, classModificator }) => {
   const [activeDropDown, setActiveDropDown] = useState(-1);
+  const [clickActiveCurrencies, setClickActiveCurrencies] = useState(false);
+  const clickOutRef = useRef();
   const classNameBlock = classNames({
     [style['top-header-menu']]: true,
     [style[classModificator]]: !!classModificator,
@@ -54,13 +56,20 @@ const TopHeaderMenu = ({ header_menu = [], handlerActiveDropDownMenuItem, classM
     }
   };
 
+  useEffect(() => {
+    const onClick = e => clickOutRef.current.contains(e.target) || setActiveDropDown(-1)
+
+    document.addEventListener('click', onClick);
+    return () => document.removeEventListener('click',onClick)
+  }, [])
+
   return (
     <div className={classNameBlock}>
       <ul className={style['top-header-menu__list']}>
         {header_menu.map((el, i) => {
           return (
             <motion.li
-
+              ref={clickOutRef}
               onClick={(e) => {
                 if (el.children.length) {
                   setActiveDropDown(i === activeDropDown ? -1 : i);
@@ -120,7 +129,7 @@ const TopHeaderMenu = ({ header_menu = [], handlerActiveDropDownMenuItem, classM
                   opacity: 0
                 }}
                 animate={{
-                  y: 330 ,
+                  y: 463 ,
                   opacity:1
                 }}
                 // exit={{y: 0,opacity:0}}
