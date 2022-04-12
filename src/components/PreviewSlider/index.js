@@ -17,19 +17,19 @@ const FancyButton = React.forwardRef(({ className, ...props }, ref) => (
 const PreviewSlider = ({ 
   imageOrVideoSet = [],
   defaultImage,
-  product_sku=[],
-  colorsn,
+  colorId
 }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [controlledSwiper, setControlledSwiper] = useState(null);
   const [controlledTwoSwiper, setControlledTwoSwiper] = useState(null);
-
   const navigationPrevRef = useRef(null);
   const navigationNextRef = useRef(null);
-  
+  useEffect(()=>{
+    controlledSwiper? controlledSwiper.slideTo(0,800) : null   
+  },[imageOrVideoSet])
   return (
     <SliderViews.Wrapper>
-      <SliderViews.FirstSliderWrapper>
+       <SliderViews.FirstSliderWrapper>
         <FancyButton className={'swiper-button-prev'} ref={navigationPrevRef}></FancyButton>
         <Swiper
           id="main"
@@ -42,7 +42,7 @@ const PreviewSlider = ({
           }}
           resizeObserver
           resistance
-          observer
+          observer={true}
           observeSlideChildren
           direction={'vertical'}
           spaceBetween={10}
@@ -61,13 +61,11 @@ const PreviewSlider = ({
             return (
               <SwiperSlide key={v4()}>
                 <SliderViews.Slide
-                
                   image={
                     imageOrVideoSet[0]?.color?
-                    el.image
-                    :el.type === 'video' ? el.preview : el.image}
-                  //image={'http://91.218.229.240:8000' + el.image_thumb}
-
+                      el.image
+                      :el.type === 'video' ? el.preview : el.image
+                    }
                 ></SliderViews.Slide>
               </SwiperSlide>
             );
