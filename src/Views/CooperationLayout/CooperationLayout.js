@@ -36,11 +36,11 @@ const CooperationLayout = (props) => {
                           <div className={style['cooperation-wrap-box-title']}>{el.title}</div>
                           <div className={style['cooperation-wrap-box-context']} dangerouslySetInnerHTML={{ __html: el.content }}></div>
                           <div className={style['cooperation-wrap-box-footnote']}>{el.footnote}</div>
-                          <Link 
-                            to={el.url}
-                            className={style["content-about-info__btn"]}
-                            >Подробнее
-                          </Link>
+                            <Link 
+                              to={el.url}
+                              className={style["content-about-info__btn"]}
+                              >Подробнее
+                            </Link>
                         </div>
                       </div>
                   );
