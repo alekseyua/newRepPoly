@@ -74,10 +74,9 @@ const OrderComponent = ({
   const { orderFunc } = useStoreon('orderFunc');
   const { orderCreate } = useStoreon('orderCreate');
   const [cart_contentOrder, setCart_contentOrder] = useState({});
-  const [valueSetIdOrder, setValueSetIdOrder] = useState(null);
   const [priceNowDilevery, setPriceNowDilevery] = useState(0);
   const [agreeWitheRegulations, setAgreeWitheRegulations] = useState(true);
-  const [fieldCountryOut, setFieldCountryOut] = useState('Украина');
+  const [fieldCountryOut, setFieldCountryOut] = useState('country');
   const [valueStatePay, setValueStatePay] = useState(3);
   const [modalStates, setmodalStates] = useState({
     show: false,
@@ -194,17 +193,21 @@ const OrderComponent = ({
 
   // **************************************************************************************************************************************
   const getNowCurrencyNowCountry = (country) => {
-    if (fieldCountryOut !== 'country') {
+    // if (fieldCountryOut !== 'country') {
       if (country === fieldCountryOut) {
-        fieldCountryOut !== 'country'
+        // console.log('fieldCountryOut !== country:', fieldCountryOut)
+        // fieldCountryOut !== 'country'
         orderApi
           .getCountryDeliviry({ country: fieldCountryOut, currency: currenssies })
           .then((res) => {
+            console.log('res.price:', res.price)
             setPriceNowDilevery(res.price);
           })
           .catch((err) => console.error(`ERROR!!!!! ${err}`));
+      }else{
+        setPriceNowDilevery(0);
       }
-    }
+    // }
   };
   // **********создаём заказ с отправкой на сервер***************************************************************************************************************
 
@@ -295,7 +298,7 @@ const OrderComponent = ({
         //???????????????????????????????????????????????????????
         //создаём заказ когда списуют деньги со счёта
          orderApi
-          .createOrder(params)
+          .createOrder(params) 
           .then((res) => {
             const order_id = res.id;
             openModalPay(order_id, dataBalance.balance, params.total_cost);
@@ -594,6 +597,9 @@ const OrderComponent = ({
           } else {
             null;
           }
+
+
+          console.log('fieldCountry',fieldCountry);
           return (
             <React.Fragment>
               <GxCol

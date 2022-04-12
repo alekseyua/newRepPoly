@@ -6,6 +6,7 @@ import CartViews from '../../../Views/CartViews';
 import api from '../../../api';
 import style from '../styles/index.module.scss';
 import { Link } from 'react-router-dom';
+import { categoryCard1} from '../../../images';
 
 const apiCart = api.cartApi;
 
@@ -74,7 +75,7 @@ const CardWoasale = ({
                   <Link to={url}>
                     <div
                       className={style['order-card__img']}
-                      style={{ backgroundImage: `url(${image})` }}
+                      style={!!image? {backgroundImage: `url(${image})` } : { backgroundImage: `url(${categoryCard1})` }}
                     ></div>
                   </Link>
                 </div>

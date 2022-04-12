@@ -1,26 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { categoryCard1, paperclip, send } from '../../../images';
-import { GxButton, GxIcon, GxInput, GxTooltip } from '@garpix/garpix-web-components-react';
+import { categoryCard1} from '../../../images';
+import { GxTooltip } from '@garpix/garpix-web-components-react';
 import Text from '../../../components/Text';
 import CheckBox from '../../../Views/CheckBox';
 import api from '../../../api';
-import ImageUpload from '../../../components/ImageUpload';
 import style from '../styles/index.module.scss';
 import { Link } from 'react-router-dom';
 import { useStoreon } from 'storeon/react';
 import { ROLE } from '../../../const';
 
-
 const apiCart = api.cartApi;
 const CardDropAndRetail = ({currenssies,el, count}) => {
  
 const id = el.id;
-const fileInputRef = React.useRef(null);
-const [ amountFile, setAmountFile ] = useState(null);
 const { userPage } = useStoreon('userPage');
 const { role } = userPage.profile;
 const [stateChecked, setStateChecked] = useState(false)
-
       
       const changeAgreement = (e) => {
         const checked = e.target.checked;
@@ -54,7 +49,7 @@ const [stateChecked, setStateChecked] = useState(false)
                 <Link 
                   to={el.url}
                 >
-                  <div className={style["order-card__img"]} style={{backgroundImage: `url(${el.product.image})` }}></div>
+                  <div className={style["order-card__img"]} style={ !!el.product.image? {backgroundImage: `url(${el.product.image})` } : { backgroundImage: `url(${categoryCard1})` }}></div>
                 </Link>
               </div>
             </div>
@@ -90,7 +85,7 @@ const [stateChecked, setStateChecked] = useState(false)
 
                 <div className={style['content-card__price-wrapper']}>
                   <div className={style["content-card__amount"]}><span><Text text="count" />:&nbsp;</span>{el.qty}&nbsp;шт.</div>
-                  <div className={style["content-card__price"]}><span> <Text text="price" />:&nbsp;</span><span><span className={style["content-card__price--color"]}>{el.price}</span>&nbsp;{currenssies}</span>
+                  <div className={style["content-card__price"]}><span> <Text text="price" />:&nbsp;</span><span><span className={style["content-card__price--color"]}>{el.price.toFixed(2)}</span>&nbsp;{currenssies}</span>
                     {el.old_price ? (
                       <span className={style['content-card__price--old']}>
                         {el.old_price} {currenssies}
@@ -118,7 +113,7 @@ const [stateChecked, setStateChecked] = useState(false)
 
           <div className={style["content-card__inner-price"]}>
             <div className={style["content-card__amount-mob"]}><span><Text text="count" />:&nbsp;</span>{el.qty}&nbsp;шт.</div>
-            <div className={style["content-card__price-mob"]}> <span> <Text text="price" />:&nbsp;</span><span><span className={style["content-card__price--color"]}>{el.price}</span>&nbsp;{currenssies}</span>
+            <div className={style["content-card__price-mob"]}> <span> <Text text="price" />:&nbsp;</span><span><span className={style["content-card__price--color"]}>{el.price.toFixed(2)}</span>&nbsp;{currenssies}</span>
               {el.old_price ? (
                 <span className={style['content-card__price--old']}>
 
@@ -152,7 +147,7 @@ const [stateChecked, setStateChecked] = useState(false)
                 <Link
                   to={el.url}
                 >
-                  <div className={style["order-card__img"]} style={{backgroundImage: `url(${el.image})` }}></div>
+                  <div className={style["order-card__img"]} style={!!el.image? {backgroundImage: `url(${el.image})` } : { backgroundImage: `url(${categoryCard1})` }}></div>
                 </Link>
               </div>
             </div>
@@ -184,7 +179,7 @@ const [stateChecked, setStateChecked] = useState(false)
 
                 <div className={style['content-card__price-wrapper']}>
                   <div className={style["content-card__amount"]}><span><Text text="count" />:&nbsp;</span>{el.qty}&nbsp;шт.</div>
-                  <div className={style["content-card__price"]}><span> <Text text="price" />:&nbsp;</span><span><span className={style["content-card__price--color"]}>{el.price}</span>&nbsp;{currenssies}</span>
+                  <div className={style["content-card__price"]}><span> <Text text="price" />:&nbsp;</span><span><span className={style["content-card__price--color"]}>{el.price.toFixed(2)}</span>&nbsp;{currenssies}</span>
                     {el.old_price ? (
                       <span className={style['content-card__price--old']}>
                         {el.old_price} {currenssies}
@@ -213,7 +208,7 @@ const [stateChecked, setStateChecked] = useState(false)
 
           <div className={style["content-card__inner-price"]}>
             <div className={style["content-card__amount-mob"]}><span><Text text="count" />:&nbsp;</span>{el.qty}&nbsp;шт.</div>
-            <div className={style["content-card__price-mob"]}> <span> <Text text="price" />:&nbsp;</span><span><span className={style["content-card__price--color"]}>{el.price}</span>&nbsp;{currenssies}</span>
+            <div className={style["content-card__price-mob"]}> <span> <Text text="price" />:&nbsp;</span><span><span className={style["content-card__price--color"]}>{el.price.toFixed(2)}</span>&nbsp;{currenssies}</span>
               {el.old_price ? (
                 <span className={style['content-card__price-mob--old']}>
                   {el.old_price} {currenssies}
