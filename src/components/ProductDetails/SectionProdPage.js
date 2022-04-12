@@ -318,14 +318,17 @@ const SectionProdPage = ({
 
   // ******************************************************************************************************
   newProduct_sku = mediaHook;
-  const heandlerSlideColor = () => {}
   const getColorForMedia = (colorData) => {
     setMediaFirstHook(media)
     let arr = Array.from(product_sku);
+    console.log('arr:', arr)
     let filterArr = arr.filter(item => item.color === colorData);
     filterArr = [...filterArr, ...arr]
+    filterArr = Array.from(new Set(filterArr))
+    console.log('filterArr:', filterArr)
+    // console.log('filterArr id:', Array.from(new Set(filterArr)))
+
     setMediaHook(filterArr);
-    heandlerSlideColor()
   }
   // ******************************************************************************************************
   const addToCart = ({ count = 1, openModalSucces, color, size }) => {
@@ -491,8 +494,6 @@ const SectionProdPage = ({
                     <PreviewSlider
                       imageOrVideoSet={mediaHook}
                       defaultImage={defaultProductCard}
-                      heandlerSlideColor={heandlerSlideColor}
-                      // colorId={}
                     />
                   </ProductDetailsViews.DataProductLeft>
                   <ProductDetailsViews.DataProductRigth>
