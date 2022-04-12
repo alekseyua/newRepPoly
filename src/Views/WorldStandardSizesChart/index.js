@@ -730,6 +730,10 @@ const WorldStandardSizesChart = ({ productTableVariant = false, site_configurati
     }
   }, [productTableVariant]);
 
+  const handClick = () => {
+    setRussianStandart(!russiasStandart)
+  }
+
   return (
     <React.Fragment>
       <h3
@@ -743,24 +747,24 @@ const WorldStandardSizesChart = ({ productTableVariant = false, site_configurati
       </h3>
 
       <div className={style['information-howto__switcher']}>
-        <button
+        <div
           className={classNames({
             [style['information-howto__switcher-heading']]: true,
             [style['active']]: russiasStandart,
           })}
-          onClick={() => setRussianStandart(true)}
+          onClick={() => russiasStandart?null:handClick()}
         >
           <Text text={productTableVariant ? 'ru.size' : 'russian.standart.size'} />
-        </button>
-        <button
+        </div>
+        <div
           className={classNames({
             [style['information-howto__switcher-heading']]: true,
             [style['active']]: !russiasStandart,
           })}
-          onClick={() => setRussianStandart(false)}
+          onClick={() => russiasStandart?handClick():null}
         >
           <Text text={productTableVariant ? 'er.size' : 'euro.standart.size'} />
-        </button>
+        </div>
       </div>
       {russiasStandart ? (
         <Table

@@ -216,21 +216,19 @@ const SizesItems = ({
               :null
             }
             </p>
-            <div className={style['prodpage-range__wrap']}>
             {role === ROLE.DROPSHIPPER && collections?
-              <>
+              <div className={style['prodpage-range__wrap']}>
                 Данная модель реализуется производителем только размерным рядом. Для того, чтобы участвовать в сборе, необходимо выбрать нужный размер в одном из открытых сборов, добавить в корзину. Занятые размеры окрашены темно-серым цветом.
                 Единовременно положить в корзину можно только одну единицу товара. Выбранный размер будет зарезервирован за Вами <span>после подтверждения оплаты</span>.
                 Сбор завершён (и товары выкупаются на фирме) тогда, когда будут  заняты все размеры из ряда- об этом Вы получите уведомление в личном кабинете
-              </>
+              </div>
               :role === ROLE.WHOLESALE?
-              <>
+              <div className={style['prodpage-range__wrap']}>
                 {/* Данная модель реализуется производителем  размерным рядом. В корзину положить можно только целый размерный ряд */}
                 Заказать выкуп данной модели Вы можете согласно <span>Общим условиям выкупа.</span> Можно выбрать микс товаров этого бренда , любых моделей, в любых цветах, но не менее количества, указанного в условиях
-              </>
+              </div>
               :null
               }
-            </div>
 
           </div>
             {/* кнопка  Иформация по открытым сборам*/}
@@ -252,18 +250,7 @@ const SizesItems = ({
 }
         </React.Fragment>
       ) : 
-          <React.Fragment>
-          {/* не показываем кнопку для добавления сбора если сбор 0 */}
-
-            <div className={style['prodpage-range__box']}>
-              {/* <p className={style['prodpage-range__title']}>Условие покупки:</p>
-              <p className={style['prodpage-range__condition']}>{product_rc}</p> */}
-              <div className={style['prodpage-range__wrap']}>
-              </div>
-            </div>
-            <div className={style['add-collection']}>
-            </div>
-          </React.Fragment>
+          null
       }
       {renderSizesFromCollectionOrSky()}
       {in_stock_count ? (

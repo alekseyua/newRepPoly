@@ -321,7 +321,12 @@ const SectionProdPage = ({
   const getColorForMedia = (colorData) => {
     setMediaFirstHook(media)
     let arr = Array.from(product_sku);
+    console.log('arr:', arr)
     let filterArr = arr.filter(item => item.color === colorData);
+    console.log('filterArr 1:', filterArr)
+    filterArr = [...filterArr, ...arr]
+    console.log('filterArr 2:', filterArr)
+    
     setMediaHook(filterArr);
   }
   // ******************************************************************************************************

@@ -193,13 +193,18 @@
   }
   &__switcher {
     padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     &-heading {
+      text-align: center;
       width: 50%;
       @extend %cab-h3;
       background-color: transparent;
       border: none;
       border-bottom: 1px solid $g;
       padding-bottom: 10px;
+      cursor: pointer;
       &.active {
         border-bottom: 1px solid $p;
       }
