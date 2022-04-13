@@ -56,7 +56,7 @@ const Slider = ({ images, sizes, product_rc, url, profile, id, setCardIdproductF
                 setClickDisables(!clickDisables);
                 const startTimer = setTimeout(() => {
                   setClickDisables(false)
-                  return clearTimeout(startTimer)
+                  return ()=>clearTimeout(startTimer)
                 }, 3000);
               dispatch('reqestIdProduct/add', id)
               }}

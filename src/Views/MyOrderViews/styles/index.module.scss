@@ -136,10 +136,10 @@
     @include tablet-md {
       margin-left: 15px;
     }
-
+    //.cabinet-topfilter__left
     &__left {
       max-width: 280px;
-      min-width: 250px;
+      min-width: 260px;
     }
     @include mobile {
       flex-direction: column;

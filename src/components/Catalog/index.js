@@ -527,6 +527,7 @@ const Catalog = ({
                           {/* прорисовывает отфильтрованые элементы */}
                           <CatalogViews.WrapperCard>
                             {results.map((el) => {
+                              console.log('el images',el);
                               return (
                                 <AsyncProductCard
                                   profile={newProfile}

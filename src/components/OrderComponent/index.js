@@ -116,7 +116,7 @@ const OrderComponent = ({
     setOpenTooltip(null);
   };
   options.push({
-    title: 'отменить выбор',
+    title: 'Отменить выбор',
     value: null,
   });
 
