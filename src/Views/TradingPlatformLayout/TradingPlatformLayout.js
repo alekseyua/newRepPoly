@@ -6,16 +6,17 @@ import { tradingPlatformImg, cartIcon } from '../../images';
 import Button from '../Button';
 import Text from '../../components/Text';
 import { useHistory } from "react-router-dom";
+import Settings from '../../#lifehack/Settings/Settings';
 
 
-const TradingPlatformLayout = ({ first_screen, page_type_catalog }) => {
+const TradingPlatformLayout = ({ first_screen, page_type_catalog, front_admin } = props) => {
+
   const { title, overtitle, undertitle, filters = [], image } = first_screen;
   const history = useHistory();
-   const goToCatalog = (event) => {
-        event.preventDefault();
-        history.push(page_type_catalog)
+  const goToCatalog = (event) => {
+      event.preventDefault();
+      history.push(page_type_catalog)
   }
-
   return (
     <div className={style['trading-platform']}>
       <div className={style['trading-platform__image']}>
@@ -23,17 +24,19 @@ const TradingPlatformLayout = ({ first_screen, page_type_catalog }) => {
       </div>
       <div className={'container'}>
         <div className={style['trading-platform-wrap']}>
+
           <div className={style['trading-platform__content']}>
             <div className={style['trading-platform__info']}>
+                {front_admin?<Settings nameComponent={'TradingPlatformLayout'} /> : null }
               <h6 className={style['trading-platform__subtitle']}>{overtitle}</h6>
 
               <h1 className={style['trading-platform__title']}>{title}</h1>
 
               {/* <div className={style['body-slogan']}>
               <div className={style["sign"]}>
-                  <span className={style["fast-flicker"]}>F</span>ASHI<span className={style["flicker"]}>ON</span>&nbsp;TO<span className={style["fast-flicker"]}>W</span>N
+              <span className={style["fast-flicker"]}>F</span>ASHI<span className={style["flicker"]}>ON</span>&nbsp;TO<span className={style["fast-flicker"]}>W</span>N
               </div>
-              </div> */}
+            </div> */}
 
               <p className={style['trading-platform__text']}>{undertitle}</p>
               <div className={style['trading-platform__buttons']}>

@@ -3,7 +3,7 @@ import MainReviewsLayout from '../../Views/MainReviewsLayout';
 import api from '../../api';
 
 const apiContent = api.contentApi;
-const MainReviews = ({ reviews: initialReviews, reviews_url, setModalStates }) => {
+const MainReviews = ({ reviews: initialReviews, reviews_url, setModalStates, front_admin }) => {
   const [reviews, setReviews] = useState(initialReviews);
   const setLike = ({ id }) => {
     apiContent
@@ -39,6 +39,7 @@ const MainReviews = ({ reviews: initialReviews, reviews_url, setModalStates }) =
       reviews_url={reviews_url}
       setModalStates={setModalStates}
       setLike={setLike}
+      front_admin = {front_admin}
     />
   );
 };

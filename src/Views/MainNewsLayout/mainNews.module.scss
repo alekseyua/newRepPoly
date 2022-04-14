@@ -1,6 +1,7 @@
 @import "../../styles/variables/index.scss";
 
 .main-news {
+    position: relative;
     padding: 60px 0 96px 0;
     @include padding-for-mobile;
     @include laptop-sm {

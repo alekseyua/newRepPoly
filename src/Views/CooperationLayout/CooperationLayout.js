@@ -5,12 +5,15 @@ import Text from '../../components/Text';
 import Title from '../Title';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
+import Settings from '../../#lifehack/Settings/Settings';
 // ? структура одного элемента карточки
 
 const CooperationLayout = (props) => {
-  const { partner_banners } = props;
+  const { partner_banners, front_admin } = props;
   return (
     <div className={style['cooperation']}>
+      {front_admin?<Settings nameComponent={'CooperationLayout'} /> : null }
+
       <div className={style['cooperation-bgi']} 
         style={{backgroundImage: `url(${cooperationCard1})`}}
       >  

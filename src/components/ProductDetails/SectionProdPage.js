@@ -73,6 +73,7 @@ const SectionProdPage = ({
   site_configuration,
   product_sku,
   article,
+  product_rcAmount,
   ...props
 }) => {
   const history = useHistory();
@@ -216,9 +217,12 @@ const SectionProdPage = ({
       // pack ??????
     }
     colorsn.id || sizesn.id ? (
+
       apiContent
         .getProduct(productId, params)
         .then((res) => {
+        console.log('res-------:3', res)
+
           let color = res.colors.filter(el => el.selected)
           let size = res.sizes.filter(el => el.selected)
           setColorsn(color[0])
@@ -291,6 +295,7 @@ const SectionProdPage = ({
     }
   };
   // модалка 
+  console.log('product_rcAmount:', product_rcAmount)
   const openModalSuccessAddToCart = (currentColor, currentSize, prices) => {
     setCustomModalStates({
       ...customModalStates,
@@ -306,9 +311,9 @@ const SectionProdPage = ({
               priceOneProduct={recommended_priceHook}
               allPrice={pricesHook.old_price}
               currentPrice={pricesHook.price}
-              image={mediaHook[0].image.includes('https://') ? mediaHook[0].image : mediaFirstHook[0].image}
+              image={mediaHook[0].image.includes('https://') || mediaHook[0].image.includes('http://') ? mediaHook[0].image : mediaFirstHook[0].image}
               handleClose={closeCustomModal}
-              sizes={sizes}
+              product_rcAmount={product_rcAmount}
             />
           </ModalContentViews.ContentBlock>
         </ModalContentViews.ModalWrapper>
@@ -360,7 +365,6 @@ const SectionProdPage = ({
           }
         }
         dispatch('stateCountRestart/add', !stateCountRestart)
-
       });
   };
 
@@ -389,6 +393,8 @@ const SectionProdPage = ({
       size: size,
       productId: productId,
     }
+    
+    console.log('heandlerAddCollections: просто проверяю', heandlerAddCollections)
     apiContent
       .getProduct(productId, params)
       .then((res) => {
@@ -555,11 +561,13 @@ const SectionProdPage = ({
                       addToCart={addToCart}
                       modalView={modalView}
                       collections={collectionsHook}
-                      listCollectionsHook={listCollectionsHook}
+                      is_collection={is_collection}
                       sizes={sizes}
                       url={urlHook}
                       changeColorBtn={changeColorBtn}
                       setChangeColorBtn={setChangeColorBtn}
+                      role={role}
+
                     />
                     {!modalView ? (
                       <ProductDetailsViews.DeliveryInfo
@@ -567,7 +575,6 @@ const SectionProdPage = ({
                         description={role_configuration.delivery_condition}
                       />
                     ) : null}
-                    {/* <div><h5><strong>Артикул:</strong> {article}</h5></div>  */}
                   </ProductDetailsViews.DataProductRigth>
                 </ProductDetailsViews.DataProductRow>
               </Container>

@@ -9,10 +9,11 @@ import Text from '../../components/Text';
 import FiltersReviewsHome from '../FiltersReviewsHome';
 import Title from '../Title';
 import { v4 } from 'uuid';
+import Settings from '../../#lifehack/Settings/Settings';
 
 SwiperCore.use([Navigation, Pagination, Autoplay, Virtual]);
 
-const MainReviewsLayout = ({ reviews, reviews_url, setModalStates, setLike }) => {
+const MainReviewsLayout = ({ reviews, reviews_url, setModalStates, front_admin }) => {
   const initialFilters = [
     {
       id: v4(),
@@ -52,6 +53,7 @@ const MainReviewsLayout = ({ reviews, reviews_url, setModalStates, setLike }) =>
 
   return (
     <div className={style['main-reviews']}>
+      {front_admin?<Settings nameComponent={'MainReviewsLayout'} /> : null }
       <div className={'container'}>
         <div className={style['main-reviews-wrap']}>
           <Title type={'h2'} variant={'reviews-title'}>

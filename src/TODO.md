@@ -54,15 +54,16 @@ $ sudo sysctl fs.inotify.max_user_watches=524288
 $ sudo sysctl -p
 
 
+```` component for admin ````
 
-b262816b2039922db83ff2faae457c24b648728a - drop
-b262816b2039922db83ff2faae457c24b648728a
+                import Settings from '../../#lifehack/Settings/Settings';
 
-703f6bee3a7f382e00b5c9fe840a4b36099376fa - opt
-703f6bee3a7f382e00b5c9fe840a4b36099376fa
+                {front_admin?<Settings nameComponent={'TradingPlatformLayout'} /> : null }
 
-1f70a8c9cfe5aa6f30788a5e083826b130098271 - roz
-1f70a8c9cfe5aa6f30788a5e083826b130098271
+
+
+``----------------------------------------------------``
+
 
 			@include adaptive-value('font-size',33,20,px,2);
 			@include adaptive-value('line-height',60,28,px,2);

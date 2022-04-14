@@ -1,6 +1,7 @@
 @import '../../styles/variables/index.scss';
 
 .main-categories {
+  position: relative;
   padding: 48px 0 8px;
   @include padding-for-mobile;
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   productCard1,
   change,
@@ -24,8 +24,6 @@ const Card = ({
   size,
   color,
   change_agreement,
-  comment,
-  commentImage = 'http://91.218.229.240:8000/media/uploads/2022/2/photo-2022-02-19-12-07-11-iiata_225x300.jpg',
   order,
   prices,
   image,
@@ -35,25 +33,10 @@ const Card = ({
   id,
   setModalStates,
 }) => {
-  const apiCart = api.cartApi;
   const orderApi = api.orderApi;
-
-  const { stateValuePoly, dispatch } = useStoreon('stateValuePoly');
   const fileInputRef = React.useRef(null);
-  const { userPage } = useStoreon('userPage');
   const { currenssies } = useStoreon('currenssies');
-  const [inputText, setInputText] = useState({
-    id: 1,
-    text: null,
-  });
-  const [idGoods, setIdGoods] = useState();
-  const [textComment, setTextComment] = useState({ comment: comment, image: commentImage });
   const [amountFile, setAmountFile] = useState(null);
-  const fd = new FormData();
-  const [stateFile, setStateFile] = useState({
-    id: 1,
-    files: null,
-  });
 
   const getIconFromStatus = (id) => {
     const statusIcons = {
@@ -101,15 +84,17 @@ const Card = ({
     file_list: [],
   });
   const getChatData = () => {
+    let hhhh=0
+    console.log('count', hhhh++);
     orderApi.getCorrespondence_order_item({ order_item_id: id }).then((res) => {
       setcorrespondenceState(res);
     });
   };
   const sendCommentFromTextField = (order_id) => {
+    const fd = new FormData();
     fd.set('order_item_id', order_id);
     fd.set('message', valuesState.text_field);
-    fd.set('files', valuesState.file_list);
-
+    fd.set('files', valuesState.file_list); 
     orderApi.postCorrespondence_order_item(fd).then((res) => {
       getChatData();
       setAmountFile(null);
@@ -117,12 +102,6 @@ const Card = ({
         text_field: '',
         file_list: [],
       });
-    });
-  };
-  const handleChange = (key, value) => {
-    setvaluesState({
-      ...valuesState,
-      [key]: value,
     });
   };
 
@@ -134,6 +113,10 @@ const clickOpenCommit = () => {
   console.log(`click`)
   setUpDownBtn(c=>!c)
 }
+
+
+
+
   return (
     <div className={style['cabinet_orders_details__card']}>
       <div className={style['cabinet_orders_details__wrapper-block']}>

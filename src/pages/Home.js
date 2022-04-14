@@ -25,7 +25,6 @@ const Home = (props) => {
     profile,
     cartUpdate,
   } = props;
-
   const {
     page_type_catalog,
     page_type_news,
@@ -41,40 +40,37 @@ const Home = (props) => {
       <Modal.StorControllerModal />
       
       <HomeComponent.TradingPlatform
-      //блок с изображением  Торговая бизнес-платформа для розничных, оптовых
         first_screen={first_screen}
-        page_type_catalog={page_type_catalog}
+        page_type_catalog ={page_type_catalog}
+        front_admin = {props.profile.front_admin}
       />
-     {/* <OrderCar
-        enabled={{enabled:true}}
-      />  */}
+
       <HomeComponent.MainCategories 
-        // второй блок с карточками на главной стронице
         banners={banners}
+        front_admin = {props.profile.front_admin}
       />
-        {/* <div>💞</div> */}
       <HomeComponent.ProductsInStock
-      // третий блок Товары в наличии
         profile={profile}
+        front_admin = {props.profile.front_admin}
         in_stock_product_filters={in_stock_product_filters}
         setModalStates={setModalStates}
         products={products}
         catalog_url={page_type_catalog}
       /> 
 
-      <HomeComponent.Cooperation 
-        // Сотрудничество
+      <HomeComponent.Cooperation
+        front_admin = {props.profile.front_admin}
         partner_banners={partner_banners} 
       />
 
       <HomeComponent.MainNews 
-        // Новости
+        front_admin = {props.profile.front_admin}
         news={news} 
         news_url={page_type_news} 
       />
 
       <HomeComponent.MainAbout 
-        //О компании
+        front_admin = {props.profile.front_admin}
         about_banner={about_banner} 
       />
 
@@ -86,7 +82,7 @@ const Home = (props) => {
       /> */}
 
       <HomeComponent.MainReviews
-        //Отзывы
+        front_admin = {props.profile.front_admin}
         reviews={reviews}
         reviews_url={page_type_reviews}
         setModalStates={setModalStates}

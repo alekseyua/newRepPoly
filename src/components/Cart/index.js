@@ -280,11 +280,11 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
           setFullItemCartCheckedState(false)
           return { ...res, items }
         }) : null
-//       // ----------------------------------------------
+        //       // ----------------------------------------------
         collectionGoods = [];
         goodsInPack =  [];
 
-//       // *-*-*-*-*-*-*-*-*-*-*-*-*-*
+        //       // *-*-*-*-*-*-*-*-*-*-*-*-*-*
       goods = {
         collectiion: collectionGoods,
         is_pack: goodsInPack,
@@ -418,6 +418,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
     }
     return results;
   };
+
   const getEnabledCartItems = (items) => {
     let result = [];
     items.forEach((el) => {
@@ -425,6 +426,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
     });
     return result;
   };
+
   const multipleDeleteFromCart = () => {
     setOneClick(!oneClick)
     setTimeout(() => {
@@ -455,6 +457,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
         });
     });
   };
+
   const confirmDeleteCartItem = (callback) => {
     setmodalStates({
       ...modalStates,
@@ -488,53 +491,11 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
     setTooltipNoSelectedProductsOpen(false);
   };
 
-  const setFullValuesCheсked = (data, isChecked) => {
-    const result = [];
-    if (Array.isArray(data)) {
-      for (const key in data) {
-        const element = data[key];
-        result.push({
-          selected: isChecked,
-          qty: element.qty,
-          id: element.id,
-        });
-      }
-    } else {
-      for (let i = 0; i < data.length; i++) {
-        const element = data[i];
-        result.push({
-          selected: isChecked,
-          qty: element.qty,
-          id: element.id,
-        });
-      }
-    }
-
-    return result;
-  };
-
-  const checkFullSelectedElements = (data) => {
-    if (Array.isArray(data)) {
-      for (let i = 0; i < data.length; i++) {
-        const element = data[i];
-        if (!element.selected) return false;
-      }
-    } else {
-      for (const key in data) {
-        const element = data[key];
-        if (!element.selected) return false;
-      }
-    }
-
-    return true;
-  };
-
   if (!massiveCart.cartitem_set.length && !massiveCart.is_pack.length && !massiveCart.in_stock.length) {
     return <DefaultCartPreview page_type_catalog={page_type_catalog} />;
   }
 
   /********************************************************************** */
-  let testArr = massiveCart.cartitem_set.find(el => el.title === "Lara")
 
   return (
     <Container>
@@ -735,19 +696,8 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
                     {total_discount} {currentCurrcensies}
                   </CartViews.Text>
                 </CartViews.BlockRightSide>
-
-                {/* <CartViews.BlockRightSide>
-                  <CartViews.Text type={'text-default'}>
-                    <Text text={'shipping'} />
-                  </CartViews.Text>
-                  <CartViews.Text type={'text-default_currency'}>
-                    {delivery_price} {currentCurrcensies}
-                  </CartViews.Text>
-                </CartViews.BlockRightSide> */}
               </div>
-
-
-            ) : null
+              ) : null
             }
 
             <CartViews.Line />
@@ -774,9 +724,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
                 onGx-change={(e) => {
                   const checked = e.target.checked;
                   if (checked === null) return;
-
                   setAgreeWitheRegulations(checked);
-
                 }}
                 label={
                   <CartViews.Text type={'text-label'}>

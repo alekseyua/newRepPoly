@@ -10,14 +10,12 @@ import { ROLE } from '../../const';
 const AddToCartBlock = ({
   title = 'Свитер такой-то',
   image = categoryCard1,
-  size = 'Размер: S',
-  priceOneProduct = false,
+  size = 'ИДЕА́ЛЬНЫЙ',
   allPrice = false,
   currentPrice = false,
-  sale = false,
   handleClose,
   product_rcHook,
-  sizes
+  product_rcAmount = 1, 
 }) => {
 
   const { dispatch, currenssies, stateCountRestart } = useStoreon('currenssies', 'stateCountRestart'); //currenssies
@@ -58,19 +56,19 @@ const AddToCartBlock = ({
 
           {allPrice ? (
             <div className={style['add_to_cart-wrapper-content--price-sell']}>
-              {allPrice} {currenssies}
+              {allPrice.toFixed(2)} {currenssies}
             </div>
             ) : null
           }
           
           {currentPrice ? (
             <span className={style['add_to_cart-wrapper-content--price']}>
-              {currentPrice} {currenssies}
+              {currentPrice.toFixed(2)} {currenssies}
             </span>
           ) : null
           }
           {role === ROLE.WHOLESALE ?
-            <div className={style['add_to_cart-wrapper-content--price']}>{(currentPrice * sizes.length).toFixed()} {currenssies}</div>
+            <div className={style['add_to_cart-wrapper-content--price']}>{(currentPrice * product_rcAmount).toFixed(2)} {currenssies}</div>
             : null
           }
          

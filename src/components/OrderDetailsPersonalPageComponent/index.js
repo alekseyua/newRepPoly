@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Title from '../../Views/Title';
 import OrderDetailsPersonalPageViews from '../../Views/OrderDetailsPersonalPageViews';
 import Chat from './Chat';
@@ -25,26 +25,36 @@ const OrderDetailsPersonalPageComponent = ({
     status,
     comment,
     track_number,
-    delivery_cost,
     weight,
     discount,
     specification,
+    delivery_cost, 
+    order_cost,
+    total_cost,
   } = order;
+  
   const [orderItems, setOrderItems] = useState([]);
-  const [dataOrder, setDataOrder] = useState({});
+  const [dataOrder, setDataOrder] = useState({
+    delivery_cost: delivery_cost, 
+    order_cost: order_cost,
+    total: total_cost,
+    id : id,
+    status : status,
+  });
+
   const [orderItemLength, setOrderItemLength] = useState(0);
   const [enableBtn, setEnableBtn] = useState(true);
   const [ state, setState ] = useState(false);
-  const [dataOrderItem, setDataOrderItem] = useState([]);
   const { currenssies, dispatch } = useStoreon('currenssies');
   const { stateUpdateBalance } = useStoreon('stateUpdateBalance');
 
-  const getOrderItem = () => { 
+  const getOrderItem = () => {
     orderApi
       .getOrderItems({ order_id: id })
       .then((res) => {
         setOrderItems(res);
-        res[0]?.items?getAmountGoods(res):null
+        console.log('amount request',res); 
+        !!res[0]?.items?getAmountGoods(res):null
       })
       .catch(err => console.log(`Ошибка получения списка товаров находящихся в заказе №${id}`, err));
   };
@@ -58,6 +68,7 @@ const OrderDetailsPersonalPageComponent = ({
   }
 
   useEffect(() => {
+
     getOrderItem();
   }, [slug, currenssies, enableBtn]);
 
@@ -85,9 +96,9 @@ const OrderDetailsPersonalPageComponent = ({
         setState(!state)
       })
       .catch(err => console.log('ERROR btnDelOrder dont work', err));
-    }
-    useEffect(()=>{
+  }
 
+    useEffect(()=>{
       dispatch('stateUpdateBalance/update', !stateUpdateBalance)
     }, [state])
   // *****************************************************************************************
@@ -95,35 +106,27 @@ const OrderDetailsPersonalPageComponent = ({
     orderApi
       .getOrders() 
       .then(res => {
-        let result = {
-          id : 111,
-          status : "in_process",
-          total: 18.22, 
-        }
-        let massiveOrder = [];
         res.results.map(orders=>{
-          result = {
-            id : orders.id,
-            status : orders.status.status,
-            total: orders.total,
+          if (orders.id === id){
+            setDataOrder({
+              ...dataOrder,
+              ...orders
+            })
           }
-          massiveOrder.push(result)
         });
-
-        setDataOrderItem(massiveOrder)
       })
       .catch(err => console.error(`ERROR from request getOrders`, err))
   }, [currenssies, state])
 
-    useEffect(()=>{
-      let resData={};
-      dataOrderItem.map(order=>{
-        order.id === id ?
-        resData = order
-        :null
-        setDataOrder(resData)
-      })
-    }, [dataOrderItem, state])
+
+  //! const updateDataChat = setTimeout(() => {
+  //   // getOrderItem()
+  //   console.log('ddddddd')
+  //   // updateDataChat
+  //   // return () => 
+  //   // clearTimeout(updateDataChat);
+  // }, 10000)
+
   return (
     <>
       <OrderDetailsPersonalPageViews.Wrapper>
@@ -142,13 +145,15 @@ const OrderDetailsPersonalPageComponent = ({
           delivery_method={delivery_method}
           comment={comment}
           status={status}
-          delivery_cost={delivery_cost}
           weight={weight}
-          order_cost={dataOrder.total}
           discount={discount}
           currentCurrcensies={currentCurrcensies}
           setModalStates={setModalStates}
           numberOrder={slug}
+          
+          delivery_cost={dataOrder.delivery_cost}
+          order_cost={dataOrder.order_cost}
+          total_cost={dataOrder.total}
         />
         <OrderDetailsPersonalPageViews.ListTable
           count={role !== ROLE.WHOLESALE ? orderItems.length : orderItemLength}

@@ -5,6 +5,8 @@ import style from '../styles/index.module.scss';
 import Button from '../../Button';
 import { useStoreon } from 'storeon/react';
 import classnNames from 'classnames';
+import { ROLE } from '../../../const'
+
 const ControlButtons = ({
   in_cart_count,
   addToCart,
@@ -13,8 +15,9 @@ const ControlButtons = ({
   collections, //boolen
   changeColorBtn,
   setChangeColorBtn,
-  listCollectionsHook, //
+  is_collection, //
   sizes,
+  role,
 }) => {
   const { stateCountCart, dispatch } = useStoreon('stateCountCart');
   const [ countInBtn, setCountInBtn ] = useState()
@@ -92,6 +95,9 @@ const ControlButtons = ({
       </Button>
     );
   };
+
+  console.log('is_collection && role === ROLE.WHOLESALE',is_collection , role , ROLE.WHOLESALE);
+
   if (in_cart_count) {
     return (
       <div className={style['prodpage-control-buttons']}>
@@ -112,7 +118,7 @@ const ControlButtons = ({
           src={shoppingIcon}></GxIcon>
             <span 
               className={style['prodpage-control-buttons__add-to-cart--span']}
-            > в корзине: {countInBtn} шт.</span>
+            > в корзине: {countInBtn} {is_collection && role === ROLE.WHOLESALE? 'ряд(а)' : 'шт.'}</span>
           </p>
           <GxButton
             onClick={(e) => {
@@ -128,7 +134,6 @@ const ControlButtons = ({
       </div>
     );
   }else{
-    //когда дроп, когда есть колекция, когда добавлен один пустой или не закрытый сбор
     return (
     <div className={style['prodpage-control-buttons']}>
       <div className={style['prodpage-control-buttons__add']}>

@@ -1,14 +1,15 @@
 import React from 'react';
 import style from './mainNews.module.scss';
-import { newsCard } from '../../images/index';
 import NewsCard from '../NewsCard';
 import MoreLink from '../MoreLink';
 import Text from '../../components/Text';
 import Title from '../Title';
+import Settings from '../../#lifehack/Settings/Settings';
 
-const MainNewsLayout = ({ news, news_url }) => {
+const MainNewsLayout = ({ news, news_url, front_admin }) => {
   return (
     <div className={style['main-news']}>
+      {front_admin?<Settings nameComponent={'MainNewsLayout'} /> : null }
       <div className={'container'}>
         <div className={style['main-news-wrap']}>
           <Title type={'h2'} variant={'news-title'}>

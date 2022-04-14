@@ -35,7 +35,6 @@ const ProductPreview = ({
   breadcrumbs = [],
   productId = 0,
   title = 'title',
-  article = 'test article',
   brand,
   prices = { more_3_item_price: 0, more_5_item_price: 0, old_price: 0, price: 0 },
   recommended_price = 0,
@@ -47,8 +46,6 @@ const ProductPreview = ({
   in_stock_count,
   colors = [],
   sizes = [],
-  location,
-  in_category,
   recommended,
   in_cart_count = 0,
   profileId,
@@ -59,8 +56,6 @@ const ProductPreview = ({
 }) => {
   const { updateCurrenssies } = useStoreon('updateCurrenssies');
   const { updateWish } = useStoreon('updateWish');
-  const { stateValuePoly,dispatch } = useStoreon('stateValuePoly');
-  const { dataProductFromId } = useStoreon('dataProductFromId');
   const [ newProductId, setNewProductId ] = useState(productId)
   const [modalStates, setModalStates] = useState({
     show: false,
@@ -88,6 +83,7 @@ const ProductPreview = ({
     review: { all_count: 0, all_count_percent: 0, max_stars_count: 0, stars_count: 0 },
     collections: [],
     is_collection: false,
+    minimum_rc: 1,
   });
 
   const history = useHistory();
@@ -112,37 +108,26 @@ const ProductPreview = ({
         });
         data[0].active = true;
       }
-    }
- 
+    } 
     return data;
   };
-
-  const canselationCallback = () => {
-
-  };
+  const canselationCallback = () => {};
 
   const openModalFinalyAddReview = (type, content) => {
     setModalStates({
       ...modalStates,
       show: false,
       content: content,
-      //content: null,
       successAddReview: type,
       resultAddReviewModal: true,
     });
   };
-      /**
-       * создаём переменную для получения Id
-       * переход с AsyncRecomendetProduct (проверено)
-       * переход с AsyncYouHaveAlreadyWatched (проверено)
-       * переход с AsyncYouMayLike (не проверено) закомили блок необновляется цена
-       */
+
   const [cardIdproductFromSlider, setCardIdproductFromSlider] = useState();
   useEffect(()=>{
     cardIdproductFromSlider ? setNewProductId(cardIdproductFromSlider):null
     },[updateCurrenssies, cardIdproductFromSlider])
 
-//title1: prodSectionsProp.title,
   useEffect(() => {
     apiContent
       .getProduct(newProductId)
@@ -170,17 +155,12 @@ const ProductPreview = ({
           is_collection: res.is_collection,
           product_sku: res?.product_sku,
           article: res?.article ? res?.article : res.id,
+          minimum_rc: res.minimum_rc,
         });
       })
       .catch(err=>console.error(`ERROR getProduct(newProductId) ${err}`));
-    
-  }, [
-    updateCurrenssies,
-    updateWish,
+  }, [updateCurrenssies, updateWish, newProductId,]);
 
-    // stateValuePoly.stateProductId,
-    newProductId,
-  ]);
     return (
     <ProductDetailsViews.Wrapper>
       <GxModal
@@ -239,6 +219,7 @@ const ProductPreview = ({
         is_collection={prodSectionsProp.is_collection}
         product_sku={prodSectionsProp.product_sku}
         article={prodSectionsProp?.article}
+        product_rcAmount={prodSectionsProp.minimum_rc}
       />
       {prodSectionsProp.content || prodSectionsProp.extra ? (
           <SectionDescription content={prodSectionsProp.content} extra={prodSectionsProp.extra} article={prodSectionsProp?.article}/>

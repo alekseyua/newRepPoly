@@ -7,6 +7,7 @@ import ProductCard from '../../components/ProductCard';
 import CatalogViews from '../../Views/CatalogViews'
 import api from '../../api';
 import { useStoreon } from 'storeon/react';
+import Settings from '../../#lifehack/Settings/Settings';
 
 const apiContent = api.contentApi;
 const ProductsInStock = ({
@@ -15,6 +16,7 @@ const ProductsInStock = ({
   catalog_url,
   setModalStates,
   in_stock_product_filters = [],
+  front_admin,
 }) => {
   const { currenssies } = useStoreon('currenssies'); //currenssies
   const [filterList, setFilterList] = useState(in_stock_product_filters);
@@ -70,13 +72,16 @@ const ProductsInStock = ({
             setFilterList={setFilterList}
             catalog_url={catalog_url}
           >
+
+              { front_admin ? <Settings nameComponent = {'ProductsInStock'} /> : null }
             {status === 'loading' ? (
               <CatalogViews.SpinnerWrapper>
                 <GxSpinner className="spiner" />
               </CatalogViews.SpinnerWrapper>
             ) : (
+              
               results.map((el, key) => {
-    // Component -> ProductsInStock
+                // Component -> ProductsInStock
                 return (
                   <ProductCard 
                     key={el.id}

@@ -193,6 +193,7 @@ const ProductCard = ({
                   is_collection={res.is_collection}
                   product_rc={res.product_rc}
                   article={article}
+                  product_rcAmount={res.minimum_rc}
                 />
               </ModalContentViews.ContentBlock>
             </ModalContentViews.ModalWrapper>

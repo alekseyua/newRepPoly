@@ -31,13 +31,14 @@ const OrderBaseDetails = ({
   delivery_address,
   comment,
   discount,
-  order_cost,
   weight,
   status,
-  delivery_cost,
   currentCurrcensies,
   setModalStates,
-  numberOrder, 
+  numberOrder,
+  delivery_cost = 0,
+  order_cost = 0,
+  total_cost = 0, 
 }) => {
   const {
     city,
@@ -86,7 +87,9 @@ const OrderBaseDetails = ({
       addClass: null,
     });
   };
-  const sumFromDilivery = (delivery_cost + order_cost).toFixed(2);
+
+
+  // const sumFromDilivery = (delivery_cost + order_cost).toFixed(2);
   const heandlerClickInfo = () => {
     setModalStates({
       content: (<>
@@ -104,7 +107,7 @@ const OrderBaseDetails = ({
           status.id === 'payment_waiting'?
               `Ваш заказ №${numberOrder} уже получен нами, ожидаем поступление оплаты за заказ. В течении суток необходимо прикрепить чек оплаты, либо заказ будет отменен.`
               : status.id === 'in_process' ?
-                <>Ваш заказ {numberOrder} оплачен и передан в работу Менеджеру по закупкам. Вас будут информировать о ходе закупки. Если товар в статусе "Заказано"-товар заказан у поставщика. Ожидаем поступления на склад. {role === ROLE.RETAIL ? '' : ' Если товар в статусе "В сборе" это значит, что идет сбор на размерный ряд. Как только ряд будет собран совместно всеми участниками сбора, статус товара изменится на "Товар оплачен". С этого момента отмена всего заказа возможна только через Администрацию сайта'} </>
+                <>Ваш заказ №{numberOrder} оплачен и передан в работу Менеджеру по закупкам. Вас будут информировать о ходе закупки. Если товар в статусе "Заказано"-товар заказан у поставщика. Ожидаем поступления на склад. {role === ROLE.RETAIL ? '' : ' Если товар в статусе "В сборе" это значит, что идет сбор на размерный ряд. Как только ряд будет собран совместно всеми участниками сбора, статус товара изменится на "Товар оплачен". С этого момента отмена всего заказа возможна только через Администрацию сайта'} </>
                   : status.id === 'packaging' ?
                     `Ваш заказ  №${numberOrder} находится на упаковке и будет отправлен в течении двух рабочих дней`
                     : status.id === 'delivery_payment_waiting' && role === ROLE.DROPSHIPPER ?
@@ -202,8 +205,7 @@ const OrderBaseDetails = ({
               <Text text={'order.cost'} />&nbsp;
             </CartViews.Text>
             <CartViews.Text type={'text-default_currency'}>
-            {order_cost}&nbsp;{currentCurrcensies}
-              {/* 980 {currentCurrcensies} */}
+            {order_cost.toFixed(2)}&nbsp;{currentCurrcensies}
             </CartViews.Text>
           </CartViews.BlockRightSide>
 
@@ -214,7 +216,7 @@ const OrderBaseDetails = ({
                 <Text text={'sale'} />
               </CartViews.Text>
               <CartViews.Text type={'text-red'}>
-                {discount} {currentCurrcensies}
+                {discount.toFixed(2)} {currentCurrcensies}
               </CartViews.Text>
             </CartViews.BlockRightSide>
             <CartViews.BlockRightSide>
@@ -222,10 +224,10 @@ const OrderBaseDetails = ({
                 <Text text={'shipping'} />
               </CartViews.Text>
               <CartViews.Text type={'text-default_currency'}>
-                              {delivery_cost ? (
+                              {!!delivery_cost ? (
                                 <>
                                 &nbsp;                                
-                                  {delivery_cost}&nbsp;
+                                  {delivery_cost.toFixed(2)}&nbsp;
                                   {currentCurrcensies}{' '}
                                 </>
                               ):( 
@@ -234,39 +236,28 @@ const OrderBaseDetails = ({
                                 </>
                               )}
                             
-                {/* 130 {currentCurrcensies} */}
               </CartViews.Text>
             </CartViews.BlockRightSide>
           </>)
           :(role === ROLE.DROPSHIPPER)
           ?( <>  
-            {/* <CartViews.BlockRightSide>
-              <CartViews.Text type={'text-default'}>
-                <Text text={'sale'} />
-              </CartViews.Text>
-              <CartViews.Text type={'text-red'}>
-                {discount} {currentCurrcensies}
-              </CartViews.Text>
-            </CartViews.BlockRightSide> */}
             <CartViews.BlockRightSide>
               <CartViews.Text type={'text-default'}>
                 <Text text={'shipping'} />
               </CartViews.Text>
               <CartViews.Text type={'text-default_currency'}>
-                              {delivery_cost ? (
+                              {!!delivery_cost ? (
                                 <>
                                 &nbsp;                                
-                                  {delivery_cost}&nbsp;
+                                  {delivery_cost.toFixed(2)}&nbsp;
                                   {currentCurrcensies}{' '}
                                 </>
                               ):( 
                                 <>
-                                  {/* <CartViews.Text type={'text-default_currency'}>{weight} кг</CartViews.Text> */}
-                                  {'0.000'}&nbsp;{currentCurrcensies}
+                                  {'0.00'}&nbsp;{currentCurrcensies}
                                 </>
                               )}
                             
-                {/* 130 {currentCurrcensies} */}
               </CartViews.Text>
             </CartViews.BlockRightSide>
           </>)
@@ -279,17 +270,7 @@ const OrderBaseDetails = ({
             </CartViews.Text>
             <CartViews.Text type={'text-title'}>
               {' '}
-              {(role === ROLE.RETAIL)
-              ?(
-                <>
-                {sumFromDilivery}&nbsp;{currentCurrcensies}
-                </>
-                ):(
-                <>
-                  {order_cost}&nbsp;{currentCurrcensies}
-                </>
-                )}
-                           
+                  {total_cost.toFixed(2)}&nbsp;{currentCurrcensies}                         
             </CartViews.Text>
           </CartViews.BlockRightSide>
         </CartViews.WrapperRightSide>

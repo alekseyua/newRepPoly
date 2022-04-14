@@ -225,19 +225,21 @@ const OrderComponent = ({
       wait_call: values.waitForCall,
       comment_passport: values.comment,
       comment_order: values.comment_order,
+
       order_cost: cart_contentOrder.price,
       discount: cart_contentOrder.discount,
       total_cost: cart_contentOrder.price,
       currency: currenssies,
       add_goods_order_id: statusFildValue,
     };
-      role !== ROLE.DROPSHIPPER? 
+      role === ROLE.RETAIL ? 
       params = {
         ...params,
         delivery_cost: priceNowDilevery,
-        total_cost: priceNowDilevery ? cart_contentOrder.price + priceNowDilevery : cart_contentOrder.price + 0,
       }
       :null //cart_content.delivery.price,
+      
+      console.log('params:', params)
     // ДЕЛАЕМ ПРОВЕРКУ НА ДРОПШИПЕРА И "ПРОВЕРКУ НА НАЛИЧЕЕ ДОСТАТОЧНО ЛИ СРЕДСТ ДЛЯ ВЫКУПА ТОВАРА"
     if (role === ROLE.DROPSHIPPER) {
       //если дробшипер списание со счета при достаточном количестве денег на счету

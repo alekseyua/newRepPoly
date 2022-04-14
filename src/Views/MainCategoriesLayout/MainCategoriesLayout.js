@@ -5,11 +5,13 @@ import style from './mainCategories.module.scss';
 import { categoryCard1 } from '../../images/index';
 import classNames from 'classnames';
 import { isTargetBlank } from '../../utils';
+import Settings from '../../#lifehack/Settings/Settings';
 
-const MainCategoriesLayout = ({ banners }) => {
+const MainCategoriesLayout = ({ banners, front_admin }) => {
   //todo: вынести карточку в компонент вместо миксина
   return (
     <div className={style['main-categories']}>
+      {front_admin?<Settings nameComponent={'MainCategoriesLayout'} /> : null }
       <div className={'container'}>
         <div className={style['main-categories-wrap']}>
           {banners.map((el, i) => {

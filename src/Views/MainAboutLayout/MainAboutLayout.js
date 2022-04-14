@@ -3,11 +3,14 @@ import { NavLink } from 'react-router-dom';
 import style from './mainAbout.module.scss';
 import Text from '../../components/Text';
 import { mainAboutImg } from '../../images/index';
+import Settings from '../../#lifehack/Settings/Settings';
 
-const MainAboutLayout = ({ about_banner }) => {
+const MainAboutLayout = ({ about_banner, front_admin }) => {
   const { content, title, image, banner_type, url = "#" } = about_banner;
   return (
     <div className={style['main-about']}>
+      {front_admin?<Settings nameComponent={'MainAboutLayout'} /> : null }
+
       <div className={'container'}>
         <div className={style['main-about-wrap']}>
           <div className={style['main-about__content']}>

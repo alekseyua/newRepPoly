@@ -2,6 +2,7 @@
 @import '../../styles/fonts/index.scss';
 
 .products-in-stock {
+  position: relative;
   &-wrap {
     padding-bottom: 41px;
     // @include padding-for-mobile;
