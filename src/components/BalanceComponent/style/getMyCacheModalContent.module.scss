@@ -52,3 +52,13 @@
 .form__wrapper{
     width: 100%;
 }
+
+.callback-many{
+    color: $a2;
+    font-size: 14px;
+    cursor: pointer;
+    &:hover{
+      // color: $pi3;
+      text-decoration: underline;
+    }
+}

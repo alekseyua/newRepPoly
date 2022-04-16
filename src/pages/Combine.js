@@ -182,7 +182,8 @@ const Combine = (props) => {
               //alert('page.profile === undefined of Combine, времменно оставляем для выявления 500')
               // window.location.reload()
           }
-          console.log('page data', page)
+          console.log("page getPage", page);
+
           page ? dispatch('userPage/add', page) : null;
           page ? setRoleConfiguration(page) : null;
           return <Page {...page} {...props} cartUpdate={stateCountCart} />;

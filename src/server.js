@@ -37,6 +37,7 @@ server
   .use(express.static(publicFolder))
   .use(express.static('public'))
   .use('/static', express.static(__dirname + '/public'))
+  
   .use(cookieParser())
   .get('/*', (req, res, next) => {
   // .get('/*', (req, res) => {

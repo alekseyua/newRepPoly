@@ -150,7 +150,6 @@ const OrderComponent = ({
       .getRandomRequizites()
       .then((res) => {
         const callbackSubmit = (data) => {
-          console.log('data',data)
           history.push('orders');
         };
         setmodalStates({
@@ -238,8 +237,9 @@ const OrderComponent = ({
         delivery_cost: priceNowDilevery,
       }
       :null //cart_content.delivery.price,
+      // console.log('dataBalance',dataBalance)
       
-      console.log('params:', params)
+      // console.log('params:', params)
     // ДЕЛАЕМ ПРОВЕРКУ НА ДРОПШИПЕРА И "ПРОВЕРКУ НА НАЛИЧЕЕ ДОСТАТОЧНО ЛИ СРЕДСТ ДЛЯ ВЫКУПА ТОВАРА"
     if (role === ROLE.DROPSHIPPER) {
       //если дробшипер списание со счета при достаточном количестве денег на счету

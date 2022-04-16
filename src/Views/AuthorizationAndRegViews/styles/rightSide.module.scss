@@ -1,13 +1,6 @@
-@mixin laptop-sm {
-  @media screen and (max-width: 1366px) {
-    @content;
-  }
-}
-@mixin mobile {
-  @media screen and (max-width: 568px) {
-    @content;
-  }
-}
+@import '../../../styles/variables/index.scss';
+
+
 .wrapper {
   display: flex;
   align-items: baseline;
@@ -27,6 +20,14 @@
   padding: 60px 135px 66px 135px;
   bottom: 0px;
   position: absolute;
+  & > div{
+    font-size: 14px;
+    cursor: pointer;
+    line-height: 160%;
+    &:hover{
+        color: $a2;
+    }
+  }
   @include laptop-sm {
     position: static;
     padding: 0 0 60px 0;

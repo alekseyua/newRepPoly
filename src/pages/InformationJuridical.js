@@ -5,21 +5,58 @@ import InformationViews from '../Views/InformationViews';
 import Title from '../Views/Title';
 import Breadcrumbs from '../Views/Breadcrumbs';
 import Container from '../Views/Container';
-import { Link } from 'react-router-dom';
 import Modal from '../Views/ModalCreator';
-
+import Settings from '../#lifehack/Settings';
+import { useStoreon } from 'storeon/react';
+import ModalContentViews from '../Views/ModalContentViews';
+import { ROLE } from '../const';
 
 const InformationJuridical = (props) => {
   const { cabinet_menu, create_shop, cabinet_site_menu, profile, breadcrumbs = [] } = props;
   const { user = {}, shop = {}, role, passport, organization, links, balance } = profile;
   const { is_has_shop, shop_link } = shop;
   const { username = '' } = user;
+  const { dispatch } = useStoreon();
+  const closeModalReeder = () => {
+    dispatch('modal/update', {
+      show: false,
+      content: null,
+      addClass: false,
+    });
+  };
+const openModalFeedbackReedFile = (file) => {    
+  dispatch('modal/update', {
+    show: true,
+    addClass: 'modal-file_views',
+    content: (
+      <ModalContentViews.ModalPreviewFile>
+              <ModalContentViews.CloseBtn closeModal={closeModalReeder} />
+                  {<iframe src={file}
+                    className='noselect'
+                    style={{
+                      width: '100%',
+                      height: '95vh',                    
+                    }}
+                  >              
+                  </iframe>}
+      </ModalContentViews.ModalPreviewFile>
+      )
+  })
+}
 
-  //todo: можно пропсом кастрировать футер
+  const heandlerPolicy = (e) => {
+    let valueList = e.target.attributes['data-name'].value;
+    if(valueList === 'public_offer'){
+      props.profile.role === ROLE.WHOLESALE? valueList = 'public_offer_2' : valueList = 'public_offer_1';
+    }
+    openModalFeedbackReedFile(props.site_configuration[valueList]);
+  }
 
   return (
     <Layout profile={profile} {...props}>
+      {/* <Modal.ModalCreator {...modalStates} setModalStates={setModalStates} /> */}
       <Modal.StorControllerModal />
+
       <Container>
         <Breadcrumbs breadcrumbs={breadcrumbs} />
         <InformationViews.PaymentsConteiner>
@@ -80,17 +117,25 @@ const InformationJuridical = (props) => {
                   проводить платежи в рублях и иностранной валюте, управлять корпоративными картами.
                 </InformationViews.PaymentsDescription>
                 <InformationViews.PaymentsDescription>
-                  <Link to="#" className="information-exchange__link">
-                    Политика конциденциальности
-                  </Link>
-                  <br />
-                  <Link to="#" className="information-exchange__link">
-                    Пользовательское соглашение
-                  </Link>
-                  <br />
-                  <Link to="#" className="information-exchange__link">
-                    Другой документ
-                  </Link>{' '}
+                  <div className='information-exchange__wrapper'>
+                    <div onClick={heandlerPolicy} data-name="privacy_policy" className="information-exchange__link">
+                      Политика конциденциальности
+                    </div>
+
+                    <div onClick={heandlerPolicy} data-name="public_offer" className="information-exchange__link">
+                      Пользовательское соглашение
+                    </div>
+
+                    <div onClick={heandlerPolicy} data-name="delivery_user_agreement" className="information-exchange__link">
+                      Пользовательское соглашение о доставке
+                    </div>
+
+                    <div onClick={heandlerPolicy} data-name="statement_performance" className="information-exchange__link">
+                      Заявление_о_некачественном_выполнении_услуги_по_подбору_и_выкупу
+                    </div>                    
+                  {props?.profile.front_admin?<Settings nameComponent={'InformationJuridical'} /> : null }
+                    
+                  </div>
                 </InformationViews.PaymentsDescription>
               </InformationViews.ContainerMin>
             </InformationViews.BlockHowTo>

@@ -7,7 +7,7 @@ import style from '../InformationViews/styles/index.module.scss';
 import styleTable from '../Table/styles/table.module.scss';
 import Button from '../Button';
 
-const WorldStandardSizesChart = ({ productTableVariant = false, site_configuration = {} }) => {
+const WorldStandardSizesChart = ({ slug='', productTableVariant = false, site_configuration = {} }) => {
   const tableHeaderDataRu = [
     [
       {
@@ -783,19 +783,20 @@ const WorldStandardSizesChart = ({ productTableVariant = false, site_configurati
           tableHeaderData={productTableVariant ? [] : state.tableHeaderDataEu}
         />
       )}
-      {productTableVariant ? (
-        <div>
-          <p>
-            * Приведенные данные в таблице являются ориентиром для самостоятельного определения
-            своего размера согласно мировым стандартам. Реальные размеры товаров, представленных на
-            сайте, могут отличаться. Если вы затрудняетесь с определением своего размера, просьба
-            обратиться в нашу техническую поддержку.
-          </p>
-          <Button href={'/information/how_to'} variant={'cancel-black-full'}>
-            <Text text={'how.choose.size'} />
-          </Button>
-        </div>
-      ) : null}
+        {slug !== 'how_to'?
+          <div>
+            <p>
+              * Приведенные данные в таблице являются ориентиром для самостоятельного определения
+              своего размера согласно мировым стандартам. Реальные размеры товаров, представленных на
+              сайте, могут отличаться. Если вы затрудняетесь с определением своего размера, просьба
+              обратиться в нашу техническую поддержку.
+            </p>
+            <Button href={'/information/how_to'} variant={'cancel-black-full'}>
+              <Text text={'how.choose.size'} />
+            </Button>
+          </div>
+        :null
+        }
     </React.Fragment>
   );
 };

@@ -110,7 +110,6 @@ class Api extends AbstractBaseApi {
       );
       
       const page = res.data;
-      // console.log("page getPage", page);
       const pageType = page.type;
 
     if (!PAGES[pageType]) {

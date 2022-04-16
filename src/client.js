@@ -6,10 +6,8 @@ import React from 'react';
 import { storeonParams } from './store';
 import { createStoreon } from 'storeon';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
-
 import ReactDOM from 'react-dom';
 import { applyPolyfills, defineCustomElements } from '@garpix/garpix-web-components/loader';
-
 import { RE_CAPTHA_KEY } from './const';
 const store = createStoreon(storeonParams);
 

@@ -3,15 +3,21 @@ import style from './styles/rightSide.module.scss';
 import { NavLink } from 'react-router-dom';
 import { ROLE } from '../../const';
 
-//todo: доделать ссылки в низу
-const RightSide = ({ children, role }) => {
+const RightSide = ({ children, role, openModalFeedbackReedFile, site_configuration }) => {
+  console.log('site_configuration',site_configuration);
+  const privacyPolicy = () => {
+    openModalFeedbackReedFile(site_configuration.privacy_policy);
+  }
+  const heandlerPolicy = () => {
+    openModalFeedbackReedFile(site_configuration.policy_1);
+  }
   return (
     <div className={style['right__side']}>
       <div className={style['wrapper']}>{children}</div>
       {ROLE.UNREGISTRED === role ? (
         <div className={style['links']}>
-          <NavLink to={'#'}>Политика конфиденциальности</NavLink>
-          <NavLink to={'#'}>Пользовательское соглашение</NavLink>
+          <div onClick={privacyPolicy}>Политика конфиденциальности</div>
+          <div onClick={heandlerPolicy}>Пользовательское соглашение</div>
         </div>
       ) : null}
     </div>

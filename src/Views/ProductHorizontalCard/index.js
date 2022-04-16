@@ -32,6 +32,7 @@ const ProductHorizontalCard = ({
   role,
   url,
   selected,
+  is_collection,
   ...props
 }) => {
 
@@ -131,14 +132,15 @@ const changeState = (e) =>{
           <div className={style['product__base_info__color']}>
             <Text text={'color'} />: {color}
           </div>
-          {condition && role !== ROLE.RETAIL ? (
-            <div className={style['product__base_info__size']}>
-              Условие покупки:
-              <div className={style['product__base_info__size-black']}>
-                {condition}
+          {is_collection?
+              <div className={style['product__base_info__size']}>
+                Условие покупки:
+                <div className={style['product__base_info__size-black']}>
+                  {condition}
+                </div>
               </div>
-            </div>
-          ) : null}
+           : null
+          }
         </div>
         <Button
           onClick={() => {

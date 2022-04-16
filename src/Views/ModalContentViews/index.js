@@ -24,8 +24,12 @@ import FormBlock from './FormBlock';
 import FormButtons from './FormButtons';
 import ButtonsWrapper from './ButtonsWrapper';
 import AddToCartBlock from './AddToCartBlock';
+import ModalPreviewFile from './ModalPreviewFile';
+
+
 
 export default {
+  ModalPreviewFile,
   AddToCartBlock,
   GoBackToCartContent,
   ButtonsWrapper,

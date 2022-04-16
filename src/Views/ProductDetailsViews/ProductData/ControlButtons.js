@@ -96,8 +96,6 @@ const ControlButtons = ({
     );
   };
 
-  console.log('is_collection && role === ROLE.WHOLESALE',is_collection , role , ROLE.WHOLESALE);
-
   if (in_cart_count) {
     return (
       <div className={style['prodpage-control-buttons']}>

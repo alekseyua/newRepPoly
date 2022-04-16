@@ -31,15 +31,15 @@ const ContentDropDownAccount = ({
   const logOut = () => {
     console.log('выход с аккаунта');
     const ft_token = getCookie('ft_token');
-    removeCookie(COOKIE_KEYS.AUTH);
-    console.log(`boolen ft_token`, !!ft_token)
+    console.log('выход с аккаунта',ft_token);
+
+      removeCookie(COOKIE_KEYS.AUTH);
     if (!!ft_token){
       logOut()
     }else{
-      history.push('/en')
+      history.push('/ru')
       window.location.reload()
     }
-
   };
   const variantDropDown = {
     accessCheck: (

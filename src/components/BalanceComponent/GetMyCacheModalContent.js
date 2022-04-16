@@ -12,7 +12,7 @@ import Text from '../../components/Text';
 import api from '../../api';
 import * as yup from 'yup'
 import style from './style/getMyCacheModalContent.module.scss'
-const GetMyCacheModalContent = ({ closeModal }) => {
+const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
   const history = useHistory();
   const orderApi = api.orderApi;
   const [stateClickSend, setStateClickSend] = useState(false)
@@ -155,16 +155,21 @@ const GetMyCacheModalContent = ({ closeModal }) => {
     return null
   }
 
+    const callBackMoney = () => {
+      window.open(callback_money)
+    }
 
   return (
     <ModalContentViews.ModalWrapper customClassName={'modal-payments'}>
       <ModalContentViews.CloseBtn closeModal={closeModal} />
       <ModalContentViews.HeaderBlock mb={'20px'} title={'Возврат денежных средств в связи с отменой заказа'} />
       <ModalContentViews.WarningBlock>
-        Оформление возврата возможно только при наличии скан-копии заявления на возврат,
-        прикрепленного в форматах .jpg (jpeg), .png, bmp, .zip, .rar, .pdf. Для отправки нескольких
-        файлов, приложите архив (zip, rar) в этой форме.
-        <ModalContentViews.Link to={'#'}> Скачать образец заявления</ModalContentViews.Link>
+        <p>
+            Оформление возврата возможно только при наличии скан-копии заявления на возврат,
+          прикрепленного в форматах .jpg (jpeg), .png, bmp, .zip, .rar, .pdf. Для отправки нескольких
+          файлов, приложите архив (zip, rar) в этой форме.
+        </p>
+        <div className={style["callback-many"]} onClick={callBackMoney}> Скачать образец заявления</div>
       </ModalContentViews.WarningBlock>
       <ModalContentViews.ContentBlock>
         <ModalContentViews.ContentBlock>
@@ -281,10 +286,10 @@ const GetMyCacheModalContent = ({ closeModal }) => {
                   <hr>
                   </hr>
                   <button 
-                  type="submit" 
-                  disabled={!isValid} 
-                  onClick={handleSubmit}
-                  className={style['button__form']}
+                    type="submit" 
+                    disabled={!isValid} 
+                    onClick={handleSubmit}
+                    className={style['button__form']}
                   >оформить возврат</button>
                 </Form>
               )

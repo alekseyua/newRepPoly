@@ -36,11 +36,16 @@ const Card = ({
   const orderApi = api.orderApi;
   const fileInputRef = React.useRef(null);
   const { currenssies } = useStoreon('currenssies');
+  const [correspondenceState, setcorrespondenceState] = useState([]);
   const [amountFile, setAmountFile] = useState(null);
-
+  const [upDownBtn, setUpDownBtn] = useState(true);
+  const [valuesState, setvaluesState] = useState({
+    text_field: '',
+    file_list: [],
+  });
   const getIconFromStatus = (id) => {
     const statusIcons = {
-      ordered: shoppingBag,
+      collection: shoppingBag,
       redeemed: bayicon,
       replacement: change,
       canceled: errorCanceled,
@@ -77,12 +82,7 @@ const Card = ({
       addClass: 'modal-review',
     });
   };
-
-  const [correspondenceState, setcorrespondenceState] = useState([]);
-  const [valuesState, setvaluesState] = useState({
-    text_field: '',
-    file_list: [],
-  });
+  
   const getChatData = () => {
     let hhhh=0
     console.log('count', hhhh++);
@@ -108,14 +108,11 @@ const Card = ({
   useEffect(() => {
     getChatData();
   }, []);
-const [upDownBtn, setUpDownBtn] = useState(true);
-const clickOpenCommit = () => {
-  console.log(`click`)
-  setUpDownBtn(c=>!c)
-}
 
-
-
+  const clickOpenCommit = () => {
+    console.log(`click`)
+    setUpDownBtn(c=>!c)
+  }
 
   return (
     <div className={style['cabinet_orders_details__card']}>
@@ -160,13 +157,9 @@ const clickOpenCommit = () => {
                 <div>
                   <b>Цена:&nbsp;</b>
                 </div>
-                {}
                 <span className={style['cabinet_orders_details__base_info__desc-red']}>
                   {prices.price} {currenssies}&nbsp;
                 </span>
-                {/* <span className={style['cabinet_orders_details__base_info__desc-black']}>
-                  ({prices.price} {currenssies}/шт.)
-                </span> */}
               </div>
               <div className={style['cabinet_orders_details__base_info__desc']}>
                 <div className={style['cabinet_orders_details__base_info__desc--status-main']}>
@@ -188,7 +181,6 @@ const clickOpenCommit = () => {
                   ) : status.id === 'sended' ? (
                     <span className={style['cabinet_orders_icon-sended']}>🛫</span>
                   ) : null}
-                  {/* id: "ordered" title: "Товар заказан" */}
                   <span className={style['cabinet_orders_details__base_info__desc--status']}>
                     {status.title}
                   </span>
@@ -228,7 +220,6 @@ const clickOpenCommit = () => {
           if (!Array.isArray(preview) && preview) {
             preview = [preview];
           }
-// classNames
           return (
             <div className={style['ordering_comment']}>
               <div
@@ -240,7 +231,6 @@ const clickOpenCommit = () => {
                 >
                 <div
                   className={style['ordering_comment__field-comment']}
-                  // onClick={(e)=>console.log("sss",e.current.value)}
                 >
                   {correspondenceState.map((el, i) => {
                     if (el.is_me) {
@@ -265,7 +255,6 @@ const clickOpenCommit = () => {
                   })}
                 </div>
                 <div className={style['ordering_comment__field-files']}>
-                  {/* {state.files[id] && renderImageSet(state.files[id], serializeFileList)} */}
                 </div>
 
                {!!correspondenceState.length? <div className={style['ordering_comment__up-down']}></div>:null}
@@ -301,7 +290,6 @@ const clickOpenCommit = () => {
                       name={'image'}
                       onChange={(event) => {
                         const files = event.currentTarget.files;
-                        // changeFilesAddField(files);
                         setAmountFile(event.currentTarget.files.length);
                         setvaluesState({ text_field: valuesState.text_field, file_list: files[0] });
                       }}
@@ -312,7 +300,6 @@ const clickOpenCommit = () => {
                         {amountFile}
                       </gx-badge>
                     ) : null}
-                    {/* <GxIcon src={paperclip} /> */}
                   </GxButton>
                   <GxButton
                     onClick={() => sendCommentFromTextField(id)}

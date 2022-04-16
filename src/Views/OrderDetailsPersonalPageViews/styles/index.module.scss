@@ -383,16 +383,13 @@ p {
   }
   &__chat {
     box-shadow: 0px 0px 44px rgba(0, 0, 0, 0.15);
-    // margin-top: 30px;
     margin-bottom: 10px;
     position: sticky;
     max-width: 370px;
-    // min-width: 320px;
-    // top: 200px;
     &_head {
-      // @extend %cab-h2;
       @include h(3);
-      @include flex(sc);
+      display: flex;
+      // @include flex(sc);
       line-height: 120%;
       color: $w;
       background-color: $a2;

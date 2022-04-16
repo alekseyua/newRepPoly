@@ -221,8 +221,6 @@ const SectionProdPage = ({
       apiContent
         .getProduct(productId, params)
         .then((res) => {
-        console.log('res-------:3', res)
-
           let color = res.colors.filter(el => el.selected)
           let size = res.sizes.filter(el => el.selected)
           setColorsn(color[0])
@@ -295,7 +293,6 @@ const SectionProdPage = ({
     }
   };
   // модалка 
-  console.log('product_rcAmount:', product_rcAmount)
   const openModalSuccessAddToCart = (currentColor, currentSize, prices) => {
     setCustomModalStates({
       ...customModalStates,
@@ -424,10 +421,8 @@ const SectionProdPage = ({
           brandHook={brandHook}
           product_rcHook={product_rcHook}
           setIsOpen={setIsOpen}
-          openTableModal={openTableModal}
           closeModal={closeModal}
           site_configuration={site_configuration}
-          modalStates={modalStates}
           styleModal={styleModal}
           AsyncWorldStandardSizesChart={AsyncWorldStandardSizesChart}
           AsyncLabels={AsyncLabels}
@@ -440,6 +435,7 @@ const SectionProdPage = ({
           in_cart_countHook={in_cart_countHook}
           heandlerAddCollections={heandlerAddCollections}
           styleSocialItems={styleSocialItems}
+          modalStates={modalStates}
         >
         </Popupe>
       })
@@ -483,6 +479,7 @@ const SectionProdPage = ({
                     <ModalContentViews.ContentBlock>
                       <AsyncWorldStandardSizesChart
                         site_configuration={site_configuration}
+                        productTableVariant={false}
                       />
                     </ModalContentViews.ContentBlock>
                   </ModalContentViews.ModalWrapper>
@@ -554,6 +551,7 @@ const SectionProdPage = ({
                       setIsOpen={setIsOpen}
                       currenssies={currenssies}
                       pricesHook={pricesHook}
+                      product_rcAmount={product_rcAmount}
                     />
                     <AsyncControlButtons
                       countProduct={in_stock_countHook}

@@ -15,7 +15,6 @@ const BalancePage = (props) => {
   const { username = '' } = user;
 
   
-
   //todo: можно пропсом кастрировать футер
   return (
     <Layout main profile={profile} {...props}>
@@ -42,7 +41,7 @@ const BalancePage = (props) => {
               dataBalance={dataBalance}
               setModalStates={setModalStates}
             />
-            <BalanceComponent.WithdrawalFunds setModalStates={setModalStates} />
+            <BalanceComponent.WithdrawalFunds setModalStates={setModalStates} site_configuration={props.site_configuration}/>
             <BalanceComponent.HistoryPayments />
           </>
         }

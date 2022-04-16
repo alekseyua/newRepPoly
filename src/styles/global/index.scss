@@ -85,7 +85,7 @@ html, body {
   }
   &::-webkit-scrollbar-thumb {
     background:#ffa6b0;
-    border: 1px solid#ffa6b0;
+    border: 1px solid #ffa6b0;
     border-radius: 50px;
   }
   &::-webkit-scrollbar-thumb:hover {
@@ -111,6 +111,8 @@ html, body {
 
 
 }
+
+
 
 body {
   // font-family: 'Champagne & Limousines Bold Italic';
@@ -205,7 +207,7 @@ header {
 }
 
 .header {
-  padding-top: 151px;
+  padding-top: 108px; 
   @include tablet-lg {
     padding-top: 106px;
   }
@@ -353,6 +355,13 @@ header {
 }
 
 .modal {
+  &-preview_file{
+    width: 100%;
+    height: 100%;
+    & > .modal-closebtn{
+      opacity: 1;
+    } 
+  }
   &-wrap {
     padding: 40px 50px 50px;
     overflow-y: auto;
@@ -781,7 +790,7 @@ div[class*='prodpage__left'] {
   &__left,
   &__right,
   &__empty {
-    padding-top: 40px;
+    // padding-top: 40px;
     padding-bottom: 60px;
     @include tablet-lg {
       padding-top: 0;
@@ -908,4 +917,38 @@ main {
   top: 50%;
   font-size: 40px;
   cursor: pointer;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+// & > html > body > div#outerContainer > div#mainContainer > div#viewerContainer > 
+div#viewer.pdfViewer {
+  pointer-events: none;
+}
+
+//.information-exchange__link{}
+.information-exchange{
+  &__wrapper{
+    display: flex;
+    flex-direction: column;
+    line-height: 140%;
+    position: relative;
+  } 
+  &__link{
+    color: $a2;
+    font-size: 14px;
+    cursor: pointer;
+    &:hover{
+      // color: $pi3;
+      text-decoration: underline;
+    }
+  }
 }

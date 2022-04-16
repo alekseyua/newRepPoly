@@ -12,6 +12,8 @@ import api from '../../api';
 import Grid from '../../Views/Grid';
 import Coll from '../../Views/Coll';
 import Text from '../Text';
+import { useStoreon } from 'storeon/react';
+
 
 const apiUser = api.userApi;
 const initialState = {
@@ -65,7 +67,7 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
   const [serverError, setServerError] = useState([]);
   const [state, setState] = useState(initialState);
   const [values, setValues] = useState(initialValues);
-
+  const {dispatch} = useStoreon();
   const registration = (newValues, setFieldError, step) => {
     let params = serializeDataRegistration(newValues, state.role);
     apiUser
@@ -180,6 +182,34 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
     });
   };
 
+  const closeModalReeder = () => {
+      dispatch('modal/update', {
+        show: false,
+        content: null,
+        addClass: false,
+      });
+    };
+  const openModalFeedbackReedFile = (file) => {    
+    dispatch('modal/update', {
+      show: true,
+      addClass: 'modal-file_views',
+      content: (
+        <ModalContentViews.ModalPreviewFile>
+                <ModalContentViews.CloseBtn closeModal={closeModalReeder} />
+                    {<iframe src={file}
+                      className='noselect'
+                      style={{
+                        width: '100%',
+                        height: '95vh',                    
+                      }}
+                    >              
+                    </iframe>}
+        </ModalContentViews.ModalPreviewFile>
+        )
+    })
+  }
+
+
   useEffect(() => {
     if (role === ROLE.RETAIL) {
       setState({
@@ -203,7 +233,11 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
           <AuthorizationAndRegViews.LeftSide />
         </Coll>
         <Coll sizeLg={6} sizeMd={12} sizeSm={12} sizeXl={6} sizeXs={12}>
-          <AuthorizationAndRegViews.RightSide role={role}>
+          <AuthorizationAndRegViews.RightSide 
+            role={role}
+            site_configuration={site_configuration}
+            openModalFeedbackReedFile={openModalFeedbackReedFile}
+          >
             {step !== 0 ? (
               <AuthorizationAndRegViews.StepsBreadcrumbs
                 setPrevStep={setPrevStep}

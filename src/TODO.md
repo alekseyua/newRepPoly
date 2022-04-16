@@ -21,6 +21,8 @@ POST
 5) Bracket Pair Colorizer 2
 6) Path Intellisense
 7) Wrap Console Log
+8) Import Cost
+9) 
 
 
 ``````plagin for work Subline Text 3``````
@@ -41,8 +43,6 @@ POST
 Why Did You Render
 https://www.npmjs.com/package/@welldone-software/why-did-you-render
 
-yarn add --dev @welldone-software/why-did-you-render
-
 
 
 ```в линуксе чтобы обойти лимит ```
@@ -61,9 +61,25 @@ $ sudo sysctl -p
                 {front_admin?<Settings nameComponent={'TradingPlatformLayout'} /> : null }
 
 
-
+```` попап показа pdf файла ````
+dispatch('modal/update', {
+      show: true,
+      addClass: 'modal-file_views',
+      content: (
+        <ModalContentViews.ModalPreviewFile>
+                <ModalContentViews.CloseBtn closeModal={closeModal} />
+                    {<iframe src={file}
+                      className='noselect'
+                      style={{
+                        width: '100%',
+                        height: '95vh',                    
+                      }}
+                    >              
+                    </iframe>}
+              </ModalContentViews.ModalPreviewFile>
+        )
+    })
 ``----------------------------------------------------``
-
 
 			@include adaptive-value('font-size',33,20,px,2);
 			@include adaptive-value('line-height',60,28,px,2);

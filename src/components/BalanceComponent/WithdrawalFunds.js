@@ -5,7 +5,7 @@ import Text from '../Text';
 import PersonalPageViews from '../../Views/PersonalPageViews';
 import GetMyCacheModalContent from './GetMyCacheModalContent';
 
-const WithdrawalFunds = ({ setModalStates }) => {
+const WithdrawalFunds = ({ setModalStates, site_configuration }) => {
   const closeModal = () => {
     setModalStates({
       content: null,
@@ -16,7 +16,7 @@ const WithdrawalFunds = ({ setModalStates }) => {
 
   const openModalGetMyCache = () => {
     setModalStates({
-      content: <GetMyCacheModalContent closeModal={closeModal} />,
+      content: <GetMyCacheModalContent closeModal={closeModal} callback_money={site_configuration.return_rules}/>,
       show: true,
       addClass: 'modal-payments',
     });

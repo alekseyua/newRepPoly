@@ -1,12 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import style from './popupe.module.scss';
 import { motion } from 'framer-motion';
-import { GxButton, GxIcon, GxModal } from '@garpix/garpix-web-components-react';
-import { hanger } from '../../images';
+import { GxModal } from '@garpix/garpix-web-components-react';
 import ModalContentViews from '../../Views/ModalContentViews';
 import classNames from 'classnames';
 import Text from '../Text';
-import { useStoreon } from 'storeon/react';
 import { v4 } from 'uuid';
 import {defaultProductCard} from '../../images';
 
@@ -15,11 +13,7 @@ const Popupe = ({
   title,
   setShowPopapInfoColection,
   showPopapInfoColection,
-  mediaHook,
-  brandHook,
-  product_rcHook,
   setIsOpen,
-  openTableModal,//размерный ряд
   closeModal,
   site_configuration,
   modalStates,
@@ -33,19 +27,10 @@ const Popupe = ({
   currenssies,
   recommended_priceHook,
   in_cart_countHook,
-  heandlerAddCollections,
 }) => {
   const [classState, setClassState] = useState(new Set());
-  const [sizeCollection, setSizeCollection] = useState(0);
-  const [clickAddCollect, setClickAddCollect] = useState(false);
-  const { stateCountCart, dispatch } = useStoreon('stateCountCart');
   const customImg = defaultProductCard;
 
-
-
-  // useEffect(()=>{
-  //   setCollectionsGoods(dataPopup)
-  // }, [dataPopup])
 
   const sortCollection = (collections) => {
 
@@ -144,7 +129,6 @@ const Popupe = ({
             <ModalContentViews.ContentBlock>
               <AsyncWorldStandardSizesChart
                 site_configuration={site_configuration}
-              // productTableVariant ????????????????????
               />
             </ModalContentViews.ContentBlock>
           </ModalContentViews.ModalWrapper>
@@ -214,23 +198,7 @@ const Popupe = ({
                       </div>
                       <div className={style['body-collectiion__goods']}>
                         <div className={style['body-collection__size']}>
-                          <GxButton
-                            onClick={openTableModal}
-                            className={style['prodpage-sizes__btn']}
-                            variant="text"
-                          >
-                            <GxIcon
-                              slot="icon-left"
-                              src={hanger}
-                              className={style['prodpage-sizes__icon']}
-                            ></GxIcon>
-                            Таблица размеров
-                          </GxButton>
-
                           <ul
-                            // className={classNames({
-                            //   [style['prodpage-sizes__items']]: true
-                            // })}
                             className={style['prodpage-sizes__items']}
                           >
                             {colec.map((el, i) => {
@@ -248,7 +216,6 @@ const Popupe = ({
                                     style={el.test.has(collections.id + (el.size.id + index * 444)) ? { background: 'rgb(0, 0, 0)', color:'rgb(255,255,255)' } : null}
                                     onClick={(e) => {
                                       addOrRemoveEl(e.target.id)
-                                      setSizeCollection(el.size.id)
                                     }}
                                     className={style['prodpage-sizes__size-buttonPopupe']}
                                   >
@@ -262,56 +229,7 @@ const Popupe = ({
                         </div>
                       </div>
                     </div>
-                    {/* <div className={style['body-collectiion__control']}>
-                      <button
-                        type="button"
-                        id={collections.id}
-                        className={enableBtn.length ? style['body-collectiion__btn-apply'] : style['body-collectiion__btn-apply--disable']}
-                        disabled={enableBtn.length ? '' : 'true'}
-                        // style={clickAddCollect ?
-                        //  `#${collections.id} {
-                        //     position: relative
-                        //     &:before{
-                        //       content: '';
-                        //       width: 100%;
-                        //       height: 100%;
-                        //       position: absolute;
-                        //       background-color: '#07880ccc';
-                        //       z-index: 100000;
-                        //     }
-                        //   }
-                        //   `
-                        //   : null
-                        // }
-                        onClick={(e) => {
-                          if (sizeCollection) {
-                            let btnId = +collections.id;
-                            let countCart = 0;
-                             if (+ e.target.id === btnId) {
-                              setClickAddCollect(true)
-                              countCart = stateCountCart.in_cart + 1
-                              dispatch('stateCountCart/add', { ...stateCountCart, in_cart: countCart })
-                              heandlerAddCollections(1, false, collections?.items[0]?.size?.color_id, sizeCollection)
-                              const timerClick = setTimeout(() => {
-                              setClickAddCollect(false)
-                                return () => clearTimeout(timerClick)
-                              }, 300);
-                            }                            
-                          } else {
-                        alert('Вы не указали размер заказа')
-                            return (
-                      <div
-                      >
-
-                      </div>)
-                          }
-                        }
-                        }
-                      >
-                      {enableBtn.length ? 'Добавить в корзину' : 'Сбор собран'}
-                    </button>
-
-                  </div> */}
+                   
                 </div>
                 </li>
           )

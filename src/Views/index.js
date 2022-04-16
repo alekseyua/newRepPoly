@@ -9,6 +9,7 @@ import ButtonScrollTopComponent from '../components/ButtonScrollTopComponent';
 import { useStoreon } from 'storeon/react';
 import Modal from '../Views/ModalCreator';
 import { useHistory } from 'react-router-dom';
+import ModalContentViews from './ModalContentViews';
 
 const Layout = ({
   headerModClosed = false,
@@ -29,7 +30,7 @@ const Layout = ({
   policy,
   cartUpdate,
 }) => {
-const { userPage } = useStoreon('userPage');
+const { userPage, dispatch } = useStoreon('userPage');
 let { profile } = userPage;
 const history = useHistory();
 const [modalStates, setModalStates] = useState(Modal.defaultModalStates);
@@ -45,6 +46,38 @@ if ( profile === undefined ){
     main: main,
     responsive: responsive,
   });
+
+  const closeModal = () => {
+    dispatch('modal/update', {
+      show: false,
+      content: null,
+      addClass: false,
+    });
+  };
+
+  const openModalFeedbackReedFile = (file) => {
+
+    dispatch('modal/update', {
+      show: true,
+      addClass: 'modal-file_views',
+      content: (
+        <ModalContentViews.ModalPreviewFile>
+                <ModalContentViews.CloseBtn closeModal={closeModal} />
+                    {<iframe src={file}
+                      className='noselect'
+                      style={{
+                        width: '100%',
+                        height: '95vh',                    
+                      }}
+                    >              
+                    </iframe>}
+              </ModalContentViews.ModalPreviewFile>
+        )
+    })
+  }
+
+
+
   return (
     <>
       <Header
@@ -61,6 +94,8 @@ if ( profile === undefined ){
          
       <Helmet>
         <title>{title}</title>
+        {/* <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />   */}
         <meta name="description" content={description} />
       </Helmet>
       <main className={mainClassModufy}>
@@ -72,12 +107,15 @@ if ( profile === undefined ){
       </main>
       <Footer
         year={year}
-        policy={site_configuration.policy}
+        policy_1={site_configuration?.policy_1}
+        policy_2={site_configuration?.policy_2}
         footer_menu={footer_menu}
         role_configuration={role_configuration}
         site_configuration={site_configuration}
+        profile={profile}
+        openModalFeedbackReedFile={openModalFeedbackReedFile}
       />
-    </>
+    </> 
   );
 };
 

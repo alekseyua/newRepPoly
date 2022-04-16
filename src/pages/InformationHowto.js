@@ -17,8 +17,10 @@ const InformationHowto = (props) => {
     profile,
     breadcrumbs,
     components = [],
+    page_info,
   } = props;
-  const { user = {}, shop = {}, role, passport, organization, links, balance } = profile;
+  const { slug } = page_info;
+  const { user = {}, shop = {} } = profile;
   const { is_has_shop, shop_link } = shop;
   const { username = '' } = user;
   const { dispatch, faq } = useStoreon('faq');
@@ -45,7 +47,7 @@ const InformationHowto = (props) => {
               <InformationViews.ImageWoman />
             </InformationViews.BlockHowTo>
             {/* таблица */}
-            <WorldStandardSizesChart />
+            <WorldStandardSizesChart slug={slug}/>
             {/* подпись под таблицей */}
             <InformationViews.HowToDecription modificatorClass={'small'}>
               Приведенные данные в таблице являются ориентиром для самостоятельного определения

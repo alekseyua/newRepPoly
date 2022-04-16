@@ -22,13 +22,13 @@
     display: flex;
     flex-direction: column;
     &_head {
-      @include flex(sc);
+      display: flex;
+      // @include flex(sc);
       padding: 20px;
       background-color: $a2;
       &_text {
         @extend %font-head;
         color: $w;
-
         font-weight: bold;
         font-size: 28px;
         line-height: 120%;

@@ -6,7 +6,7 @@ import dayjs from '../../utils/dayjs';
 import api from '../../api';
 import { ROLE } from '../../const';
 import { useStoreon } from 'storeon/react';
-
+import { useHistory } from 'react-router-dom';
 const orderApi = api.orderApi;
 const OrderDetailsPersonalPageComponent = ({
   order,
@@ -15,6 +15,7 @@ const OrderDetailsPersonalPageComponent = ({
   setModalStates,
 }) => {
   const { userPage } = useStoreon('userPage');
+  const history = useHistory()
   const { role } = userPage.profile;
   const {
     created_at,
@@ -41,7 +42,6 @@ const OrderDetailsPersonalPageComponent = ({
     id : id,
     status : status,
   });
-
   const [orderItemLength, setOrderItemLength] = useState(0);
   const [enableBtn, setEnableBtn] = useState(true);
   const [ state, setState ] = useState(false);
@@ -52,8 +52,8 @@ const OrderDetailsPersonalPageComponent = ({
     orderApi
       .getOrderItems({ order_id: id })
       .then((res) => {
+        if (res.length === 0) history.push('orders')
         setOrderItems(res);
-        console.log('amount request',res); 
         !!res[0]?.items?getAmountGoods(res):null
       })
       .catch(err => console.log(`Ошибка получения списка товаров находящихся в заказе №${id}`, err));
@@ -68,7 +68,6 @@ const OrderDetailsPersonalPageComponent = ({
   }
 
   useEffect(() => {
-
     getOrderItem();
   }, [slug, currenssies, enableBtn]);
 
@@ -118,15 +117,6 @@ const OrderDetailsPersonalPageComponent = ({
       .catch(err => console.error(`ERROR from request getOrders`, err))
   }, [currenssies, state])
 
-
-  //! const updateDataChat = setTimeout(() => {
-  //   // getOrderItem()
-  //   console.log('ddddddd')
-  //   // updateDataChat
-  //   // return () => 
-  //   // clearTimeout(updateDataChat);
-  // }, 10000)
-
   return (
     <>
       <OrderDetailsPersonalPageViews.Wrapper>
@@ -149,8 +139,7 @@ const OrderDetailsPersonalPageComponent = ({
           discount={discount}
           currentCurrcensies={currentCurrcensies}
           setModalStates={setModalStates}
-          numberOrder={slug}
-          
+          numberOrder={slug}          
           delivery_cost={dataOrder.delivery_cost}
           order_cost={dataOrder.order_cost}
           total_cost={dataOrder.total}

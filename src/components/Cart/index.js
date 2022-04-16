@@ -360,6 +360,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
         in_stock: goodsInStock,
       }
       setGoodsStateDropAndRetail(goods);
+
     }
     /**================================================================================================================= */
     setCartData(stateCountCart);
@@ -496,7 +497,6 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
   }
 
   /********************************************************************** */
-
   return (
     <Container>
       <GxModal
@@ -552,7 +552,10 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
           />
           <Title variant={'cart-min'} type={'h3'}>
             {(role === ROLE.WHOLESALE) ?
-              <Text text={'minShopping.cart'} />
+              <>
+                <Text text={'minShopping.cart_path_1'} />{currentCurrcensies}
+                <Text text={'minShopping.cart_path_2'} />
+              </>
               : null
             }
           </Title>
@@ -567,11 +570,9 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
             {(role === ROLE.WHOLESALE) ?
 
               (<>
-
                 {Object.keys(goodsStateOpt.other_goods).length ?
                   goodsStateOpt.other_goods.map((el, i) => {
-                    const isVisibleLine = goodsStateOpt.other_goods.length - 1 !== i;
-                  
+                    const isVisibleLine = goodsStateOpt.other_goods.length - 1 !== i;                  
                     return (
                       <ProductWhosaleHorizontalCard
                         key={el.id}
@@ -584,10 +585,8 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
                     );
                   })
                   : null}
-
                   {
                     Object.keys(goodsStateOpt.collectiion).length ?
-
                     <ProductWhosaleIsCollectionHorizontalCard
                       {...goodsStateOpt.collectiion}
                         currentCurrcensies={currentCurrcensies}
@@ -595,12 +594,9 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
                         updateProductFromCart={contextUpdateProductFromCard}
                       items={goodsStateOpt.collectiion}
                         is_collection={true}
-                      />
-    
+                      />    
                     : null
-
                  }
-
 
                 {Object.keys(goodsStateOpt.is_pack).length ?
                   <ProductWhosaleIsPackHorizontalCard
@@ -627,7 +623,9 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
                 goodsStateDropAndRetail.other_goods ?
                   goodsStateDropAndRetail.other_goods.map(el => {
                     return (
+
                       <ProductHorizontalCard
+                        is_collection={el.is_collection}
                         key={el.id}
                         {...el}
                         role={role}
@@ -642,6 +640,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
                     goodsStateDropAndRetail.in_stock.map(el => {
                       return (
                         <ProductHorizontalCard
+                          is_collection={el.is_collection}
                           key={el.id}
                           {...el}
                           role={role}
@@ -711,7 +710,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
             </CartViews.BlockRightSide>
 
             <CartViews.LinkToFirmalization
-              enabled={role === ROLE.WHOLESALE ? (agreeWitheRegulations && is_performed && selected >= 30) : (agreeWitheRegulations && is_performed)}
+              enabled={agreeWitheRegulations && is_performed}
               to={checkout_slug}
             >
               <Text text={'go.to.registration'} />
@@ -730,14 +729,15 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
                   <CartViews.Text type={'text-label'}>
                     Согласен с{' '}
                     <Link
-                      target="_blank"
-                      to={site_configuration.order_condition}>
+                      // target="_blank"
+
+                      to={'/information/juridical'}>
                       условиями оформления заказа{' '}
                     </Link>
                     на торговой бизнес-платформе и с{' '}
                     <Link
-                      target="_blank"
-                      to={site_configuration.return_rules}>
+                      // target="_blank"
+                      to={'/information/exchange'}>
                       правилами возврата
                     </Link>
                   </CartViews.Text>

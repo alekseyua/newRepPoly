@@ -62,7 +62,9 @@ const CreateStoreComponent = ({ site_configuration, profile }) => {
           <AuthorizationAndRegViews.LeftSide image={createIMImage} />
         </Coll>
         <Coll sizeLg={6} sizeMd={12} sizeSm={12} sizeXl={6} sizeXs={12}>
-          <AuthorizationAndRegViews.RightSide>
+          <AuthorizationAndRegViews.RightSide 
+            
+          >
             <AuthorizationAndRegViews.FormCreateIM>
               <Formik
                 validationSchema={createShopSheme(errorsMessenge)}

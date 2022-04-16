@@ -23,6 +23,7 @@ const SizesItems = ({
   setIsOpen,
   currenssies,
   pricesHook,
+  product_rcAmount,
 }) => {
   const [selectedSizeList, setselectedSizeList] = useState(false);
   const { userPage } = useStoreon('userPage')
@@ -212,7 +213,7 @@ const SizesItems = ({
               {role === ROLE.WHOLESALE? product_rc : null }            
               {role === ROLE.WHOLESALE && collections ?
                 <div className={style['prodpage-range__condition-price']}>
-                  Стоимость ряда: {(pricesHook.price * sizes.length).toFixed(2)} {currenssies}
+                  Стоимость ряда: {(pricesHook.price * product_rcAmount).toFixed(2)} {currenssies}
                 </div>
                 :null
               }

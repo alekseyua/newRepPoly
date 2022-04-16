@@ -19,6 +19,11 @@ const Settings = (props) => {
                 return "https://back.ftownpl.com/admin/content/banner/6/change/";                
             case 'MainReviewsLayout' :
                 return "https://back.ftownpl.com/admin/content/review/";
+            case 'BottomFooter-offer' :
+                return "https://back.ftownpl.com/admin/config/siteconfiguration/";
+            case 'InformationJuridical' :
+                return "https://back.ftownpl.com/admin/config/siteconfiguration/";
+               
             default: ''
         }
     }

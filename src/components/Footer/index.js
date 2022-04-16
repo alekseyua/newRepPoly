@@ -17,7 +17,7 @@ import { ERROR_STATUS } from '../../const';
 
 const contentApi = api.contentApi;
 
-export default ({ footer_menu = [], site_configuration, role_configuration, year, policy }) => {
+export default ({ footer_menu = [], site_configuration, role_configuration, year, policy_1, policy_2,profile, openModalFeedbackReedFile }) => {
   const { dispatch } = useStoreon('modal');
 
   const [optionsProblemArea, setoptionsProblemArea] = useState([]);
@@ -190,7 +190,6 @@ export default ({ footer_menu = [], site_configuration, role_configuration, year
   };
 
 
-
   useEffect(() => {
     contentApi.getProblemArea().then((res) => {
       setoptionsProblemArea(
@@ -203,7 +202,6 @@ export default ({ footer_menu = [], site_configuration, role_configuration, year
       );
     });
   }, []); 
-
   return (
     <footer>
       <TopFooter
@@ -217,7 +215,11 @@ export default ({ footer_menu = [], site_configuration, role_configuration, year
       <BottomFooter
         site_configuration={site_configuration}
         year={year}
-        policy={policy}
+        policy_1={policy_1}
+        policy_2={policy_2}
+        openModalFeedbackReedFile={openModalFeedbackReedFile}
+        front_admin={profile.front_admin}
+        role={profile.role}
         // payment_methods={}
       />
     </footer>
