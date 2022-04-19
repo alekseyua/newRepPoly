@@ -8,7 +8,8 @@ import Container from '../Views/Container';
 import Modal from '../Views/ModalCreator';
 import Settings from '../#lifehack/Settings';
 import { useStoreon } from 'storeon/react';
-import ModalContentViews from '../Views/ModalContentViews';
+import ModalPreviewFile from '../Views/ModalContentViews/ModalPreviewFile';
+
 import { ROLE } from '../const';
 
 const InformationJuridical = (props) => {
@@ -17,32 +18,33 @@ const InformationJuridical = (props) => {
   const { is_has_shop, shop_link } = shop;
   const { username = '' } = user;
   const { dispatch } = useStoreon();
-  const closeModalReeder = () => {
+  const closeModal = () => {
     dispatch('modal/update', {
       show: false,
       content: null,
       addClass: false,
     });
   };
-const openModalFeedbackReedFile = (file) => {    
-  dispatch('modal/update', {
-    show: true,
-    addClass: 'modal-file_views',
-    content: (
-      <ModalContentViews.ModalPreviewFile>
-              <ModalContentViews.CloseBtn closeModal={closeModalReeder} />
-                  {<iframe src={file}
-                    className='noselect'
-                    style={{
-                      width: '100%',
-                      height: '95vh',                    
-                    }}
-                  >              
-                  </iframe>}
-      </ModalContentViews.ModalPreviewFile>
-      )
-  })
-}
+  const openModalFeedbackReedFile = (file) => {
+    console.log('file pdf',file);
+        dispatch('modal/update', {
+          show: true,
+          addClass: 'modal-file_views',
+          content: (
+                  <ModalPreviewFile closeModal={closeModal}>
+                        {<iframe src={file}
+                          className='noselect'
+                          style={{
+                            width: '100%',
+                            height: '95vh',                    
+                          }}
+                        >              
+                        </iframe>}
+                  </ModalPreviewFile>
+            )
+        })
+      }
+    
 
   const heandlerPolicy = (e) => {
     let valueList = e.target.attributes['data-name'].value;
@@ -118,7 +120,7 @@ const openModalFeedbackReedFile = (file) => {
                 </InformationViews.PaymentsDescription>
                 <InformationViews.PaymentsDescription>
                   <div className='information-exchange__wrapper'>
-                    <div onClick={heandlerPolicy} data-name="privacy_policy" className="information-exchange__link">
+                    <div onClick={heandlerPolicy} data-name="policy" className="information-exchange__link">
                       Политика конциденциальности
                     </div>
 
@@ -126,7 +128,7 @@ const openModalFeedbackReedFile = (file) => {
                       Пользовательское соглашение
                     </div>
 
-                    <div onClick={heandlerPolicy} data-name="delivery_user_agreement" className="information-exchange__link">
+                    <div onClick={heandlerPolicy} data-name="terms" className="information-exchange__link">
                       Пользовательское соглашение о доставке
                     </div>
 

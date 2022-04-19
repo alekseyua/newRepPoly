@@ -5,6 +5,7 @@ import RegistrationFormFirst from './RegistrationFormFirst';
 import RegistrationFormBaseInfo from './RegistrationFormBaseInfo';
 import SocialMediaCompanyData from './SocialMediaCompanyData';
 import ModalContentViews from '../../Views/ModalContentViews';
+import ModalPreviewFile from '../../Views/ModalContentViews/ModalPreviewFile';
 import { ROLE } from '../../const';
 import { withRouter } from 'react-router-dom';
 import { serializeDataRegistration, serializeErrorResponse } from '../../utils/serializers';
@@ -182,29 +183,22 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
     });
   };
 
-  const closeModalReeder = () => {
-      dispatch('modal/update', {
-        show: false,
-        content: null,
-        addClass: false,
-      });
-    };
   const openModalFeedbackReedFile = (file) => {    
     dispatch('modal/update', {
       show: true,
       addClass: 'modal-file_views',
       content: (
-        <ModalContentViews.ModalPreviewFile>
-                <ModalContentViews.CloseBtn closeModal={closeModalReeder} />
-                    {<iframe src={file}
-                      className='noselect'
+              <ModalPreviewFile closeModal={closeModal}>
+                    {<iframe src={`${file}`}
+                      className='noselect' 
                       style={{
                         width: '100%',
-                        height: '95vh',                    
+                        height: '95vh',
+                        'user-select': 'none',
                       }}
                     >              
                     </iframe>}
-        </ModalContentViews.ModalPreviewFile>
+              </ModalPreviewFile>
         )
     })
   }

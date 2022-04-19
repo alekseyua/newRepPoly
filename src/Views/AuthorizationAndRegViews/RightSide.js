@@ -6,10 +6,10 @@ import { ROLE } from '../../const';
 const RightSide = ({ children, role, openModalFeedbackReedFile, site_configuration }) => {
   console.log('site_configuration',site_configuration);
   const privacyPolicy = () => {
-    openModalFeedbackReedFile(site_configuration.privacy_policy);
+    openModalFeedbackReedFile(site_configuration.policy);
   }
   const heandlerPolicy = () => {
-    openModalFeedbackReedFile(site_configuration.policy_1);
+    openModalFeedbackReedFile(site_configuration.public_offer_1);
   }
   return (
     <div className={style['right__side']}>

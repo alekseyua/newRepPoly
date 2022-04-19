@@ -9,7 +9,7 @@ import ButtonScrollTopComponent from '../components/ButtonScrollTopComponent';
 import { useStoreon } from 'storeon/react';
 import Modal from '../Views/ModalCreator';
 import { useHistory } from 'react-router-dom';
-import ModalContentViews from './ModalContentViews';
+import ModalPreviewFile from './ModalContentViews/ModalPreviewFile';
 
 const Layout = ({
   headerModClosed = false,
@@ -56,13 +56,11 @@ if ( profile === undefined ){
   };
 
   const openModalFeedbackReedFile = (file) => {
-
     dispatch('modal/update', {
       show: true,
       addClass: 'modal-file_views',
       content: (
-        <ModalContentViews.ModalPreviewFile>
-                <ModalContentViews.CloseBtn closeModal={closeModal} />
+              <ModalPreviewFile closeModal={closeModal}>
                     {<iframe src={file}
                       className='noselect'
                       style={{
@@ -71,7 +69,7 @@ if ( profile === undefined ){
                       }}
                     >              
                     </iframe>}
-              </ModalContentViews.ModalPreviewFile>
+              </ModalPreviewFile>
         )
     })
   }
@@ -107,8 +105,8 @@ if ( profile === undefined ){
       </main>
       <Footer
         year={year}
-        policy_1={site_configuration?.policy_1}
-        policy_2={site_configuration?.policy_2}
+        policy_1={site_configuration?.public_offer_1}
+        policy_2={site_configuration?.public_offer_1}
         footer_menu={footer_menu}
         role_configuration={role_configuration}
         site_configuration={site_configuration}

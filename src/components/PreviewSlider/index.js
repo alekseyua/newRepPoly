@@ -15,7 +15,7 @@ const FancyButton = React.forwardRef(({ className, ...props }, ref) => (
 ));
   
 const PreviewSlider = ({ 
-  imageOrVideoSet = [],
+  imageOrVideoSet = [], 
   defaultImage,
   colorId
 }) => {
