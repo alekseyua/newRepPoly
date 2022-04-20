@@ -64,11 +64,11 @@ const serializeCardDataToFormValueWoosale = (data) => {
   });
   return results;
 };
-const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) => {
+const Cart = ({ role, checkout_slug, page_type_catalog, components }) => {
 
   const { currenssies, dispatch } = useStoreon('currenssies'); //currenssies
   const { valueStock } = useStoreon('valueStock');
-  const { stateValuePoly } = useStoreon('stateValuePoly');
+  const { dataBalance } = useStoreon('dataBalance');
   const { stateCountCart } = useStoreon('stateCountCart');
   const { stateCountRestart } = useStoreon('stateCountRestart');
   const [goodsStateDropAndRetail, setGoodsStateDropAndRetail] = useState({});
@@ -497,6 +497,10 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
   }
 
   /********************************************************************** */
+const textConditionPayPart_1 =  components[0].children[0].content.replace(/<p>|<\/p>/isg, '')
+const textConditionPayPart_2 =  components[0].children[1].content.replace(/<p>|<\/p>/isg, '')
+const {opt_minimum_price} = dataBalance;
+console.log('dataBalance',opt_minimum_price);
   return (
     <Container>
       <GxModal
@@ -551,10 +555,12 @@ const Cart = ({ role, checkout_slug, page_type_catalog, site_configuration }) =>
             countSelected={stateCountCart.selected}
           />
           <Title variant={'cart-min'} type={'h3'}>
+            
             {(role === ROLE.WHOLESALE) ?
               <>
-                <Text text={'minShopping.cart_path_1'} />{currentCurrcensies}
-                <Text text={'minShopping.cart_path_2'} />
+              {textConditionPayPart_1}{' '}
+              {!!opt_minimum_price? opt_minimum_price.toFixed() : null}{' '}{currentCurrcensies}
+              {textConditionPayPart_2}
               </>
               : null
             }

@@ -68,8 +68,16 @@ $ sudo sysctl -p
 ```` component for admin ````
 
                 import Settings from '../../#lifehack/Settings/Settings';
-
                 {front_admin?<Settings nameComponent={'TradingPlatformLayout'} /> : null }
+
+condition_pay
+https://back.ftownpl.com/admin/garpix_page/component/27/change/
+
+
+```` избовляемся от тегов  ````
+let word = '<p>Ваш заказ должен быть не менее</p>';
+console.log('components:', word.replace(/<p>|<\/p>/isg, ''))
+console.log('components:', components[0].children[1].content.replace(/<p[^>]+?[^>]+>|<\/p>/isg, ''))
 
 
 ```` попап показа pdf файла ````

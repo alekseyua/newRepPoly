@@ -22,6 +22,7 @@ const CartPage = (props) => {
         checkout_slug={checkout_slug}
         site_configuration={site_configuration}
         page_type_catalog={page_type_catalog}
+        components={props.components}
       />
     </Layout>
   );
