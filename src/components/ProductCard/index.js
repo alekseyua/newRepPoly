@@ -194,6 +194,7 @@ const ProductCard = ({
                   product_rc={res.product_rc}
                   article={article}
                   product_rcAmount={res.minimum_rc}
+                  product_sku={res.product_sku}
                 />
               </ModalContentViews.ContentBlock>
             </ModalContentViews.ModalWrapper>

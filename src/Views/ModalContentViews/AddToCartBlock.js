@@ -16,6 +16,7 @@ const AddToCartBlock = ({
   handleClose,
   product_rcHook,
   product_rcAmount = 1, 
+  is_collection,
 }) => {
 
   const { dispatch, currenssies, stateCountRestart } = useStoreon('currenssies', 'stateCountRestart'); //currenssies
@@ -67,7 +68,7 @@ const AddToCartBlock = ({
             </span>
           ) : null
           }
-          {role === ROLE.WHOLESALE ?
+          {role === ROLE.WHOLESALE && is_collection?
             <div className={style['add_to_cart-wrapper-content--price']}>{(currentPrice * product_rcAmount).toFixed(2)} {currenssies}</div>
             : null
           }

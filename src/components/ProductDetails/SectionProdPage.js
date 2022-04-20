@@ -76,6 +76,7 @@ const SectionProdPage = ({
   product_rcAmount,
   ...props
 }) => {
+  
   const history = useHistory();
   const { stateCountCart, dispatch } = useStoreon('stateCountCart');
   const { stateCountRestart } = useStoreon('stateCountRestart')
@@ -311,6 +312,7 @@ const SectionProdPage = ({
               image={mediaHook[0].image.includes('https://') || mediaHook[0].image.includes('http://') ? mediaHook[0].image : mediaFirstHook[0].image}
               handleClose={closeCustomModal}
               product_rcAmount={product_rcAmount}
+              is_collection={is_collection}
             />
           </ModalContentViews.ContentBlock>
         </ModalContentViews.ModalWrapper>
@@ -324,7 +326,11 @@ const SectionProdPage = ({
     media = media.filter(item => item);
   }
   const getColorForMedia = (colorData) => {
+
     setMediaFirstHook(media)
+    console.log('arr',product_sku);
+    console.log('colorData',colorData);
+
     let arr = Array.from(product_sku);
     let filterArr = arr.filter(item => item.color === colorData);
     filterArr = [...filterArr, ...arr]
