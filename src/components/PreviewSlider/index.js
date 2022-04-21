@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import SliderViews from '../../Views/SliderViews';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Player, BigPlayButton } from 'video-react';
+import { Player, BigPlayButton, Video, ControlBar } from 'video-react';
 import SwiperCore, { Navigation, Pagination, Controller, Thumbs } from 'swiper';
 import { v4 } from 'uuid';
-
 
 SwiperCore.use([Navigation, Pagination, Controller, Thumbs]);
 
@@ -17,7 +16,7 @@ const FancyButton = React.forwardRef(({ className, ...props }, ref) => (
 const PreviewSlider = ({ 
   imageOrVideoSet = [], 
   defaultImage,
-  colorId
+  colorId,
 }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [controlledSwiper, setControlledSwiper] = useState(null);
@@ -58,17 +57,27 @@ const PreviewSlider = ({
             </SwiperSlide>
           ) : null}
           {imageOrVideoSet.map((el, i) => {
-            return (
+            if(el.type === 'video'){
               <SwiperSlide key={v4()}>
-                <SliderViews.Slide
-                  image={
-                    imageOrVideoSet[0]?.color?
-                      el.image
-                      :el.type === 'video' ? el.preview : el.image
-                    }
-                ></SliderViews.Slide>
-              </SwiperSlide>
+                  <Video
+                    autoPlay
+                    className="news-details-page__slider_item"
+                    fluid={true}
+                    poster={el.video}
+                    src={el.preview}
+                  >
+                    {/* <BigPlayButton position="center"></BigPlayButton> */}
+                  </Video>
+                </SwiperSlide>
+            }else{
+              return (
+                <SwiperSlide key={v4()}>
+                  <SliderViews.Slide
+                    image={ !!el.image? el.image : defaultImage}
+                  ></SliderViews.Slide>
+                </SwiperSlide>
             );
+          }
           })}
         </Swiper>
         <FancyButton className={'swiper-button-next'} ref={navigationNextRef}></FancyButton>
@@ -100,7 +109,7 @@ const PreviewSlider = ({
                     className="news-details-page__slider_item"
                     fluid={true}
                     poster={el.preview}
-                    src={el.video}
+                    src={el.preview}
                   >
                     <BigPlayButton position="center"></BigPlayButton>
                   </Player>
@@ -109,11 +118,8 @@ const PreviewSlider = ({
             } else {
               return (
                 <SwiperSlide key={v4()}>
-                  <SliderViews.Slide image={
-                    imageOrVideoSet[0]?.color ?
-                      el.image
-                      :el.image                    
-                    }></SliderViews.Slide>
+                  <SliderViews.Slide image={el.image}>
+                  </SliderViews.Slide>
                 </SwiperSlide>
               );
             }
