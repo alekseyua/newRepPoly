@@ -4,6 +4,8 @@ const Settings = (props) => {
 
 
     const defaultComponent = (component) => {
+        console.log('switcher path:', component)
+
         switch (component){
             case 'TradingPlatformLayout':
                 return "https://back.ftownpl.com/admin/content/mainpage/";
@@ -23,7 +25,10 @@ const Settings = (props) => {
                 return "https://back.ftownpl.com/admin/config/siteconfiguration/";
             case 'InformationJuridical' :
                 return "https://back.ftownpl.com/admin/config/siteconfiguration/";
-               
+            case 'opt_minimum_price' :
+                return "https://back.ftownpl.com/admin/garpix_page/component/27/change/";
+            case 'howWorkSite' :
+                return "https://back.ftownpl.com/admin/garpix_page/component/";
             default: ''
         }
     }

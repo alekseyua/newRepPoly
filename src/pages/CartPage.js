@@ -12,7 +12,7 @@ const CartPage = (props) => {
     profile,
     site_configuration,
   } = props;
-  const { user = {}, shop, role, passport, organization, links, id } = profile;
+  const { user = {}, shop, role, passport, organization, links, id, front_admin } = profile;
   const { checkout_slug, page_type_catalog } = site_configuration;
   return (
     <Layout main {...props}>
@@ -23,6 +23,7 @@ const CartPage = (props) => {
         site_configuration={site_configuration}
         page_type_catalog={page_type_catalog}
         components={props.components}
+        front_admin={front_admin}
       />
     </Layout>
   );

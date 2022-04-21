@@ -22,6 +22,7 @@ import { initial } from 'lodash';
 import { Link } from 'react-router-dom';
 import { memo } from 'react';
 import ProductWhosaleIsCollectionHorizontalCard from '../../Views/ProductWhosaleHorizontalCard/ProductWhosaleIsCollectionHorizontalCard';
+import Settings from '../../#lifehack/Settings/Settings';
 
 const apiCart = api.cartApi;
 const initialCartData = {
@@ -64,7 +65,7 @@ const serializeCardDataToFormValueWoosale = (data) => {
   });
   return results;
 };
-const Cart = ({ role, checkout_slug, page_type_catalog, components }) => {
+const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin }) => {
 
   const { currenssies, dispatch } = useStoreon('currenssies'); //currenssies
   const { valueStock } = useStoreon('valueStock');
@@ -561,6 +562,7 @@ console.log('dataBalance',opt_minimum_price);
               {textConditionPayPart_1}{' '}
               {!!opt_minimum_price? opt_minimum_price.toFixed() : null}{' '}{currentCurrcensies}
               {textConditionPayPart_2}
+              {front_admin?<Settings nameComponent={'opt_minimum_price'} /> : null }
               </>
               : null
             }

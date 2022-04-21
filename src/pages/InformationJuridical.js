@@ -14,7 +14,7 @@ import { ROLE } from '../const';
 
 const InformationJuridical = (props) => {
   const { cabinet_menu, create_shop, cabinet_site_menu, profile, breadcrumbs = [], page_info, components } = props;
-  const { user = {}, shop = {}, role, passport, organization, links, balance } = profile;
+  const { user = {}, shop = {}, role, passport, organization, links, balance, front_admin } = profile;
 
   console.log('page_info',profile.role);
   console.log('components***',page_info.components);
@@ -71,6 +71,7 @@ const InformationJuridical = (props) => {
         <InformationViews.PaymentsConteiner>
           <Title variant={'information-payments__title'} type={'h1'}>
             {page_info?.title}
+            {front_admin?<Settings nameComponent={'howWorkSite'} /> : null }          
           </Title>
           <InformationViews.HowToWrapper>
             <InformationViews.BlockHowTo>
