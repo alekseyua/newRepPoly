@@ -55,7 +55,7 @@ if ( profile === undefined ){
     });
   };
 
-  const openModalFeedbackReedFile = (file) => {
+  const openModalFeedbackReedFile = (file) => { 
     dispatch('modal/update', {
       show: true,
       addClass: 'modal-file_views',
