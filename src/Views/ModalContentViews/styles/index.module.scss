@@ -253,15 +253,15 @@
         }
       }
       &-btnwrap {
+          margin-left: 20px;
         @include mobile-lg {
           display: flex;
           flex-direction: column;
         }
       }
       &-btndark {
-        @include mobile-lg {
-          margin-bottom: 15px;
-        }
+
+        
         &::part(base) {
           text-transform: uppercase;
           color: var(--gx-color-white);
@@ -276,12 +276,10 @@
           align-items: center;
           justify-content: space-evenly;
           margin-right: 10px;
+          margin-bottom: 10px;
         }
       }
       &-marginbtndark {
-        @include mobile-lg {
-          margin-bottom: 15px;
-        }
         &::part(base) {
           text-transform: uppercase;
           color: var(--gx-color-white);
@@ -296,6 +294,9 @@
           align-items: center;
           justify-content: space-evenly;
           margin-right: 190px;
+          @include mobile-lg {
+            margin-bottom: 15px;
+          }
         }
       }
       &-btnlage {

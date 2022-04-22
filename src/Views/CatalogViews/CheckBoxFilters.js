@@ -16,7 +16,7 @@ const CheckBoxFilters = ({ values, handleChangeFilters, fp_const, role }) => {
               checked={values.is_in_stock}
               onGx-change={(e) => handleChangeFilters(fp_const.is_in_stock, e)}
               variant="light"
-              label={Text({ text: 'inStock' })}
+              label={Text({ text: 'inStock' })} 
               data-cy={`inStockCheckBox`}
             ></CheckBox>
           </div>
@@ -75,7 +75,7 @@ const CheckBoxFilters = ({ values, handleChangeFilters, fp_const, role }) => {
       </div>
       <div className={style['catfilter-block']}>
         <div className={style['catfilter-block__content']}>
-          {role !== ROLE.RETAIL ? (
+          {role !== ROLE.RETAIL && role !== ROLE.UNREGISTRED ? (
             <React.Fragment>
               {role !== ROLE.WHOLESALE ? (
                 <div className={style['catfilter-item']}>

@@ -263,7 +263,7 @@
       min-height: 35px;
       color: rgb(0, 0, 0);
       font-weight: bold;
-      padding: 0 20px;
+      // padding: 0 20px;
       border: 2px solid $g;
       box-sizing: border-box;
       // background-color: $pi3;
@@ -298,6 +298,8 @@
       
     }
      &__itemPopupe {
+      min-width: 50px;
+      max-width: 50px;
       margin-right: 10px;
       margin-bottom: 10px;
       background-color: $w;     

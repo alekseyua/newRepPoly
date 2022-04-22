@@ -12,7 +12,7 @@ const apiContent = api.contentApi;
 const ModalAddReview = ({
   product,
   profile,
-  canselationCallback = () => {},//'в этой функции отменяем действия
+ // canselationCallback = () => {},//'в этой функции отменяем действия
   openModalFinalyAddReview = () => {},
 }) => {
   const [reviewState, setReviewState] = useState({
@@ -61,12 +61,16 @@ const ModalAddReview = ({
   return (
     <Formik enableReinitialize initialValues={reviewState} onSubmit={sendReview}>
       {({ handleSubmit, values, setFieldValue, handleChange }) => {
-        
-        return (
+        const canselationCallback = () => {
+          setFieldValue('content', null)
+          setFieldValue('stars', 0)
+          setFieldValue('uploadFiles', [])
+        }
+         return (
           <GxForm novalidate onGx-submit={handleSubmit}>
             <ModalContentViews.FormAddReview>
               <textarea
-                // value={!!values.content?values.content:''}
+                value={!!values.content?values.content:''}
                 onInput={handleChange}
                 className={style["productreviews__form-textarea"]}
                 placeholder="Текст отзыва"

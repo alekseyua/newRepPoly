@@ -30,10 +30,11 @@ const FormAddReviewController = ({ values, setFieldValue, canselationCallback })
         >
           <Text text={'send'} />
         </GxButton>
+
         <GxButton
           onClick={(e)=>{
             e.preventDefault();
-            canselationCallback
+            canselationCallback()
           }}
           className={style['productreviews__form-submit-btn']} data-cy={`cancel_form_review`}
         >
