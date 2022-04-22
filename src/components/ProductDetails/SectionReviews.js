@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ProductDetailsViews from '../../Views/ProductDetailsViews';
 import Container from '../../Views/Container';
 
@@ -7,7 +7,6 @@ const SectionReviews = ({
   profileId,
   reviews_statistic,
   productId,
-  canselationCallback,
   openModalFinalyAddReview,
 }) => {
   return (

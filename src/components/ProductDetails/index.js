@@ -111,7 +111,6 @@ const ProductPreview = ({
     } 
     return data;
   };
-  const canselationCallback = () => {};
 
   const openModalFinalyAddReview = (type, content) => {
     setModalStates({
@@ -229,7 +228,6 @@ const ProductPreview = ({
         reviews_count={reviews_statistic.all_count}
         productId={newProductId}
         profileId={profileId}
-        canselationCallback={canselationCallback}
         openModalFinalyAddReview={openModalFinalyAddReview}
       />
         <AsyncRecomendetProduct products={recommended} setCardIdproductFromSlider={setCardIdproductFromSlider}/>

@@ -268,7 +268,7 @@ const btnDelOrder = (data) => {
               <AddReview.ModalAddReview
                 openModalFinalyAddReview={openModalFinalyAddReview}
                 profile={profile}
-                canselationCallback={closeModal}
+                closeModal={closeModal}
               />
             </ModalContentViews.CenterPosition>
           </ModalContentViews.ContentBlock>

@@ -113,7 +113,7 @@ const ReviewsPageComponent = ({ breadcrumbs, title, location, profile, insta_lin
               <AddReview.ModalAddReview
                 openModalFinalyAddReview={openModalFinalyAddReview}
                 profile={profile}
-                canselationCallback={closeModal}
+                closeModal={closeModal}
               />
             {/* </ModalContentViews.CenterPosition> */}
           </ModalContentViews.ContentBlock>
@@ -173,7 +173,6 @@ const ReviewsPageComponent = ({ breadcrumbs, title, location, profile, insta_lin
               } = data;
 
               const resultsReversed = !filterParams?.checkFilter? results.reverse(): results;
-              console.log('filterParams', filterParams)
               return (
                 <>
                   <InformationViews.WrapperButtonReviews>

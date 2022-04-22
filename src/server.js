@@ -128,44 +128,44 @@ server
         }
       })
       .catch((error) => {
-//         console.log(`error.response`, error.response);
-//         if (error.response.status === 401) {
-//           return res.status(200).send( `<!doctype html>
-//             <html lang="${currentLang}">
-//               <head>
-//                   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-//                   <meta charset="utf-8" />       
-//               </head>
-//               <style>
-//                 .text__admin{
-//                   padding: 20px;
-//                   font-size:20px;
-//                   font-weight: 900;
-//                 }
-//               </style>
-//               <body>
-//                   <div id="root">
-//                   <div style="margin: 0 auto"; font-size:18px;>Continue ... 
+        console.log(`error.response`, error.response);
+        if (error.response.status === 401) {
+          return res.status(200).send( `<!doctype html>
+            <html lang="${currentLang}">
+              <head>
+                  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                  <meta charset="utf-8" />       
+              </head>
+              <style>
+                .text__admin{
+                  padding: 20px;
+                  font-size:20px;
+                  font-weight: 900;
+                }
+              </style>
+              <body>
+                  <div id="root">
+                  <div style="margin: 0 auto"; font-size:18px;>Continue ... 
                  
-// <div class="text__admin">Администратором сайта был удалён Ваш аккаунт для продолжения пользования необходимо заново зарегистрироваться </div>
-//                   </div><button onClick="CookiesDelete()">продолжить</button>
-//                   </div>
-//               </body>
-//               <script>
-//               var cookies = document.cookie.split(";");
-//               function CookiesDelete() {
-//                 for (var i = 0; i < cookies.length; i++) {
-//                   var cookie = cookies[i];
-//                   var eqPos = cookie.indexOf("=");
-//                   var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-//                   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;";
-//                   document.cookie = name + '=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-//                 window.location.reload();
-//               }
-//               </script>
-//             </html>`);
-//        }
-        // console.log(error.stack, 'ERROR SERVER.JS');
+              <div class="text__admin">Администратором сайта был удалён Ваш аккаунт для продолжения пользования необходимо заново зарегистрироваться </div>
+                  </div><button onClick="CookiesDelete()">продолжить</button>
+                  </div>
+              </body>
+              <script>
+              var cookies = document.cookie.split(";");
+              function CookiesDelete() {
+                for (var i = 0; i < cookies.length; i++) {
+                  var cookie = cookies[i];
+                  var eqPos = cookie.indexOf("=");
+                  var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                  document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;";
+                  document.cookie = name + '=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                window.location.reload();
+              }
+              </script>
+            </html>`);
+       }
+        console.log(error.stack, 'ERROR SERVER.JS');
         return res.status(500).send(`got error ${error.stack}, ${error}`);
       });
   });

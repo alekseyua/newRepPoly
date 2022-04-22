@@ -14,8 +14,14 @@ const FormAddReviewUploadImage = ({ values, setFieldValue }) => {
       <ImageUpload>
         {({ preview, onSelectFile, selectedFile, onSelectFiles, isDragActive, getRootProps }) => {
           if (!Array.isArray(preview)) {
+            
             preview = [preview];
           }
+  //         console.log('preview:', preview)
+  // console.log('values:', !!Array.from(values.uploadFiles).length)
+  //         if(Array.from(values.uploadFiles).length === 0){
+  //           preview.length = 0
+  //         }
           return (
             <>
               <ul className={style['productreviews__form-upload-list']}>

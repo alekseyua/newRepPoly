@@ -15,7 +15,7 @@ const ExportCatalog = (props) => {
     profile_data,
     profile,
     site_configuration,
-    multy_choise_filters,
+    multy_choise_filters, 
   } = props;
   const { user = {}, shop, role, passport, organization, links, id, balance } = profile;
   const { is_has_shop, shop_link } = shop;

@@ -6,10 +6,11 @@ import { Formik } from 'formik';
 import { Captcha } from '../Captha';
 import { ERROR_STATUS } from '../../const';
 import { Link } from 'react-router-dom';
+import style from '../AddReview/style.module.scss';
 
 const apiContent = api.contentApi;
 
-const ModalAddReview = ({ product, profile, canselationCallback, openModalFinalyAddReview }) => {
+const ModalAddReview = ({ product, profile, closeModal, openModalFinalyAddReview }) => {
   const [reviewState, setReviewState] = useState({
     content: null,
     product: null,
@@ -35,8 +36,8 @@ const ModalAddReview = ({ product, profile, canselationCallback, openModalFinaly
     apiContent
       .postReviews(params)
       .then((res) => {
-        canselationCallback();
         openModalFinalyAddReview(true);
+        closeModal();
       })
       .catch((err) => {
         if (err.response.status === ERROR_STATUS.NO_ACCESS) {
@@ -57,17 +58,30 @@ const ModalAddReview = ({ product, profile, canselationCallback, openModalFinaly
   return (
     <Formik enableReinitialize initialValues={reviewState} onSubmit={sendReview}>
       {({ handleSubmit, values, setFieldValue, handleChange }) => {
+        const canselationCallback = () => {
+          const arr = Array.from(values.uploadFiles);
+          console.log('values:222', values)
+         
+          setFieldValue('content', null)
+          setFieldValue('stars', 0)
+          setFieldValue('uploadFiles', arr.length=0)
+          closeModal();
+        }
+        console.log('values:222*****', values)
+
         return (
           <GxForm novalidate onGx-submit={handleSubmit}>
             <ModalContentViews.FormAddReview full>
-              <GxTextarea
-                value={values.content}
-                onGx-input={handleChange}
-                className="productreviews__form-textarea"
+              <textarea
+                //value={values.content}
+                value={!!values.content?values.content:''}
+
+                onInput={handleChange}
+                className={style["productreviews__form-textarea"]}
                 placeholder="Текст отзыва"
                 name={'content'}
-                data-cy={`productReviews_form-textarea`}
-              ></GxTextarea>
+                // data-cy={`productReviews_form-textarea`}
+              ></textarea>
               <ModalContentViews.FormAddReviewUploadImage
                 values={values}
                 setFieldValue={setFieldValue}

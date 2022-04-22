@@ -25,8 +25,6 @@ const ContentDropDownAccount = ({
   const { role, user = {}, shop = { is_has_shop: false }, status } = profile;
   const { first_name = 'Имя', last_name = 'Фамилия' } = user;
   const history = useHistory();
-  const { userPage, dispatch } = useStoreon('userPage')
-
 
   const logOut = () => {
     console.log('выход с аккаунта');

@@ -5,7 +5,7 @@ const ImageUpload = ({ children, setFieldValue = () => {}, intiPreview }) => {
   const [selectedFile, setSelectedFile] = useState();
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [preview, setPreview] = useState();
-
+  
   useEffect(() => {
     if (!selectedFile) {
       setPreview(undefined);
