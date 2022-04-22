@@ -143,7 +143,7 @@ const Popupe = ({
               let res = dataPopup[index].items.map(redeemed => redeemed.redeemed)
               let enableBtn = res.filter(item => item === false ? true : false)
               let colec = sortCollection(collections)
-              console.log(`collections?.items[0]?.size?.image`,collections?.items[0]?.size?.image)
+              console.log(`collections?.items[0]?.size?.image`,collections)
 
               return (
                 <li

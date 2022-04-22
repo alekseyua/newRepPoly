@@ -22,14 +22,15 @@ const TdStatusData = ({ status = 'default', statusTitle = 'Название ст
     work: statusWork,
     created: statusOrdered,
     sended: statusSend,
-    payment_waiting: statusSend,
-    in_process: statusWait,
+    payment_waiting: statusWait, 
+    in_process: statusWork,
     packaging: statusPackage,
     delivery_payment_waiting: statusWork,
     delivery_paid: statusPaid,
     closed: statusClosed,
     canceled: statusCancel,
     return: statusReturn,
+    redeemed: statusSend,
     default: statusWait,
   };
   return (

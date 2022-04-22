@@ -183,7 +183,14 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
     });
   };
 
-  const openModalFeedbackReedFile = (file) => {    
+  const openModalFeedbackReedFile = (file) => {  
+    const closeModal = () => { 
+      dispatch('modal/update', {
+        show: false,
+        content: null,
+        addClass: false,
+      });
+    };
     dispatch('modal/update', {
       show: true,
       addClass: 'modal-file_views',

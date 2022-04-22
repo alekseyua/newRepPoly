@@ -50,11 +50,11 @@ const tableHeaderData = [
       content: (
         <MyOrderViews.ThData>
           Статус
-          {/* <GxTooltip content="This is a tooltip"> */}
-            {/* <Link to="#" className="cabinet-table__thlink">
+          {/* <GxTooltip content="This is a tooltip">
+            <Link to="#" className="cabinet-table__thlink">
               <GxIcon src={infoWhite} alt="table__thlink" />
-            </Link> */}
-          {/* </GxTooltip> */}
+            </Link> 
+         </GxTooltip> */}
         </MyOrderViews.ThData>
       ),
     },

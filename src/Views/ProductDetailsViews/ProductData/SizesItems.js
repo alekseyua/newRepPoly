@@ -207,10 +207,15 @@ const SizesItems = ({
         <React.Fragment>
           {/* Условие покупки */}
           <div className={style['prodpage-range__box']}>
+          {role === ROLE.DROPSHIPPER && collections ? 
             <p className={style['prodpage-range__title']}>Общие условия выкупа*:</p>
-            
+            :null
+          }
             <p className={style['prodpage-range__condition']}>
+
               {role === ROLE.WHOLESALE? product_rc : null }            
+              {role === ROLE.DROPSHIPPER && collections ? product_rc : null }
+
               {role === ROLE.WHOLESALE && collections ?
                 <div className={style['prodpage-range__condition-price']}>
                   Стоимость ряда: {(pricesHook.price * product_rcAmount).toFixed(2)} {currenssies}
@@ -218,7 +223,6 @@ const SizesItems = ({
                 :null
               }
               
-              {role === ROLE.DROPSHIPPER && collections ? product_rc : null }
             </p>
 
             {role === ROLE.DROPSHIPPER?
@@ -235,9 +239,7 @@ const SizesItems = ({
             {role === ROLE.WHOLESALE?
               role === ROLE.WHOLESALE && collections?
                 <div className={style['prodpage-range__wrap']}>
-                  Данная модель реализуется производителем только размерным рядом. Для того, чтобы участвовать в сборе, необходимо выбрать нужный размер в одном из открытых сборов, добавить в корзину. Занятые размеры окрашены темно-серым цветом.
-                  Единовременно положить в корзину можно только одну единицу товара. Выбранный размер будет зарезервирован за Вами <span>после подтверждения оплаты</span>.
-                  Сбор завершён (и товары выкупаются на фирме) тогда, когда будут  заняты все размеры из ряда- об этом Вы получите уведомление в личном кабинете
+                  Данная модель реализуется производителем размерным рядом. В корзину положить можно только целый <span>размерный ряд</span>.
                 </div>              
                 :<div className={style['prodpage-range__wrap']}>
                   Заказать выкуп данной модели Вы можете согласно <span>Общим условиям выкупа.</span> Можно выбрать микс товаров этого бренда, любых моделей, в любых цветах, но не менее количества, указанного в условиях
