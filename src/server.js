@@ -13,6 +13,9 @@ import { storeonParams } from './store';
 import { determineUserLang, supportedLangs } from './i18n';
 import { removeCookie } from './utils';
 //import { NativeModules } from 'react-native';
+//import { pdfjs } from 'react-pdf';
+// pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+
 
 
 const cookieParser = require('cookie-parser');
@@ -36,8 +39,7 @@ server
   .disable('x-powered-by')
   .use(express.static(publicFolder))
   .use(express.static('public'))
-  .use('/static', express.static(__dirname + '/public'))
-  
+  .use('/static', express.static(__dirname + '/public'))  
   .use(cookieParser())
   .get('/*', (req, res, next) => {
   // .get('/*', (req, res) => {
@@ -69,10 +71,7 @@ server
         : Promise.resolve();
     promise
       .then((initData) => {
-        // console.log(initData);
-
         const context = { initData, query };
-
          const markup = ReactDOMServer.renderToString(
           <StoreContext.Provider value={store}>
             <Router location={url} query={query} context={context}>
@@ -88,8 +87,6 @@ server
          );
 
          const helmet = Helmet.renderStatic();
-
-         
          if (context.url) {
            res.redirect(context.url);
         } else {
@@ -128,8 +125,8 @@ server
         }
       })
       .catch((error) => {
-        console.log(`error.response`, error.response);
-        if (error.response.status === 401) {
+         console.log(`error.response`, error.response);
+        if (error?.response?.status === 401) {
           return res.status(200).send( `<!doctype html>
             <html lang="${currentLang}">
               <head>
@@ -143,6 +140,7 @@ server
                   font-weight: 900;
                 }
               </style>
+                         
               <body>
                   <div id="root">
                   <div style="margin: 0 auto"; font-size:18px;>Continue ... 
@@ -152,8 +150,8 @@ server
                   </div>
               </body>
               <script>
-              var cookies = document.cookie.split(";");
               function CookiesDelete() {
+                var cookies = document.cookie.split(";");
                 for (var i = 0; i < cookies.length; i++) {
                   var cookie = cookies[i];
                   var eqPos = cookie.indexOf("=");
@@ -161,11 +159,11 @@ server
                   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;";
                   document.cookie = name + '=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
                 window.location.reload();
+                }
               }
-              </script>
+              </script>  
             </html>`);
        }
-        console.log(error.stack, 'ERROR SERVER.JS');
         return res.status(500).send(`got error ${error.stack}, ${error}`);
       });
   });

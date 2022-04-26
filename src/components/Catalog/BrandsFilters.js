@@ -15,9 +15,6 @@ const BrandsFilters = ({
   role = { number: 2 },
 }) => {
   
-  console.log('brands:', brands)
-  
-  console.log('values:', values)
   const [sercheValue, setSercheValue] = useState(null);
   const [brandsRender, setBrandsRender] = useState([]);
   const [sertificate, setSertificate] = useState(false);

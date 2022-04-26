@@ -49,6 +49,7 @@ const Home = (props) => {
         banners={banners}
         front_admin = {props.profile.front_admin}
       />
+      {!!products.length?
       <HomeComponent.ProductsInStock
         profile={profile}
         front_admin = {props.profile.front_admin}
@@ -57,7 +58,8 @@ const Home = (props) => {
         products={products}
         catalog_url={page_type_catalog}
       /> 
-
+      :null
+      }
       <HomeComponent.Cooperation
         front_admin = {props.profile.front_admin}
         partner_banners={partner_banners} 

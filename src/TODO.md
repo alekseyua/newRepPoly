@@ -20,7 +20,7 @@ POST
 4) Better Comments
 5) Bracket Pair Colorizer 2
 6) Path Intellisense
-7) Wrap Console Log
+7) Wrap Console Log -> Turbo Console Log
 8) Import Cost
 9) 
 
@@ -54,7 +54,56 @@ POST
 Why Did You Render
 https://www.npmjs.com/package/@welldone-software/why-did-you-render
 
+`````REACT увидомления `````
+useEffect(()=>{
+    function notifyMe () {
+      console.log('увидомление отправлено')
+      var notification = new Notification ("Все еще работаешь?", {
+        tag : "ache-mail",
+        body : "Пора сделать паузу и отдохнуть",
+        icon : "https://itproger.com/img/notify.png"
+      });
+    }
+    
+    //function notifSet 
+    (() => {
+      if (!("Notification" in window))
+        alert ("Ваш браузер не поддерживает уведомления.");
+      else if (Notification.permission === "granted")
+        setTimeout(notifyMe, 2000);
+      else if (Notification.permission !== "denied") {
+        Notification.requestPermission (function (permission) {
+          if (!('permission' in Notification))
+            Notification.permission = permission;
+          if (permission === "granted")
+            setTimeout(notifyMe, 2000);
+        });
+      }
+    })()
 
+  }, [])
+
+
+`````удаление куки данных `````
+function removeCookie(name) {
+                function CookiesDelete() {
+                  var cookies = document.cookie.split(";");
+                  for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i];
+                    var eqPos = cookie.indexOf("=");
+                    var names = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                    if (cookie.substr(0, eqPos).trim() === name){
+                      // console.log({names, nnn : (names === name), tn: (typeof name), tv: (typeof cookie.substr(0, eqPos)) })
+                      //если нужно будет удалить конкретный куки
+                    }
+                    document.cookie = names + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;";
+                    document.cookie = names + '=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                    window.location.reload();
+                }
+              }
+                CookiesDelete()
+  // document.cookie = name + '=; Max-Age=-99999999;';
+}
 
 ```в линуксе чтобы обойти лимит ```
 When this limit is not enough to monitor all files inside a directory, the limit must be increased for Listen to work properly.

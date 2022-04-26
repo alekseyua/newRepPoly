@@ -48,8 +48,8 @@ const ModalAddReview = ({
             false,
             <div>
               <p>Вы&nbsp;не&nbsp;авторизованы!</p>
-              <Link target="_blank" to={'/auhorization'}>
-                Авторизоватся?
+              <Link target="_blank" to={'/authorization'}>
+                 Авторизоваться?
               </Link>
             </div>,
           );
@@ -63,8 +63,6 @@ const ModalAddReview = ({
       {({ handleSubmit, values, setFieldValue, handleChange }) => {
         const canselationCallback = () => {
           const arr = Array.from(values.uploadFiles);
-          console.log('values:', values)
-
           setFieldValue('content', null)
           setFieldValue('stars', 0)
           setFieldValue('uploadFiles', arr.length=0)

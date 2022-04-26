@@ -88,6 +88,7 @@
         font-size: 16px;
         position: relative;
         width: 100%;
+        word-wrap: initial;
         @include tablet-md {
           width: 33%;
         }

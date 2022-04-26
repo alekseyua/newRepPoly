@@ -21,7 +21,7 @@ const ProfileLevelData = ({
     });
   };
   const openModalFinalyAddReview = (data) => {
-    data ? reloadDataReview(): null
+    !!data ? reloadDataReview(): null
     return setModalStates({
       content: (
         <ModalContentViews.ModalWrapper>

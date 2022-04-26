@@ -45,6 +45,13 @@ export default class UserApi extends AbstractBaseApi {
     const res = await this.delete(`/user/${id}/`, params);
     return res;
   };
+// ***********************************************************************************************
+//user/check_key/
+  checkKey = async (params) => {
+    const res = await this.post(`/user/user/check_key/`, params);
+    return res;
+  };
+
 }
 
 // import { getCookie, setCookie } from '../../utils'

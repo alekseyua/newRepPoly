@@ -375,9 +375,11 @@ header {
       content: "";
       top: 2px;
       height: 32px;
-      width: 100%;
+      width: calc(100% - 241px);
       left: 241px;
+
       @media (max-width: 644px) {
+        width: calc(100% - 150px);
         left: 150px;
       }
       // @include adaptive-value('left',241,150, px,2);
@@ -402,8 +404,11 @@ header {
     padding: 40px 50px 50px;
     overflow-y: auto;
     max-height: 100vh;
+    position: relative;
+    z-index: 99999;
     @include mobile {
       padding: 40px 20px;
+      top:50px;
     }
   }
   &-midle_wrap {
@@ -416,6 +421,7 @@ header {
     padding-right: 58px;
     padding-bottom: 63px;
     @include mobile {
+      top: 50px;
       padding: 40px 20px;
     }
   }

@@ -129,7 +129,7 @@
         width: 100%;
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        // justify-content: space-between;
         padding-bottom: 0;
         margin-top: 15px;
       }
@@ -145,6 +145,7 @@
         font-size: 16px;
         position: relative;
         width: 100%;
+        word-wrap: initial;
         @include tablet-mmd {
           width: 33%;
         }

@@ -71,36 +71,43 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
   const {dispatch} = useStoreon();
   const registration = (newValues, setFieldError, step) => {
     let params = serializeDataRegistration(newValues, state.role);
+    //! нужно сделать попап для ключа
+    openModalFinallyRegistration()
     apiUser
-      .registration(params)
-      .then((res) => {
-        openModalFinallyRegistration(true, newValues);
-      })
-      .catch((err) => {
-        if (err.response) {
-          const data = err.response.data;
-          let error = false;
-          for (const key in data) {
-            const element = Array.isArray(data[key]) ? data[key][0] : data[key];
-            if (step === 1) {
-              if (initialValuesFirstStep.hasOwnProperty(key)) {
-                setFieldError(key, element);
-                error = true;
-              }
-            } else if (step === 2) {
-              if (initialValuesMiddleStep.hasOwnProperty(key)) {
-                setFieldError(key, element);
-                error = true;
-              }
-            } else {
-              setFieldError(key, element);
-              error = true;
-              openModalFinallyRegistration(false);
-            }
-          }
-          if (!error && step !== state.allSteps) setNextStep();
-        }
-      });
+        .checkKey()
+    // apiUser
+    //   .registration(params)
+    //   .then((res) => {
+    //     openModalFinallyRegistration(true, newValues);
+
+
+
+    //   })
+    //   .catch((err) => {
+    //     if (err.response) {
+    //       const data = err.response.data;
+    //       let error = false;
+    //       for (const key in data) {
+    //         const element = Array.isArray(data[key]) ? data[key][0] : data[key];
+    //         if (step === 1) {
+    //           if (initialValuesFirstStep.hasOwnProperty(key)) {
+    //             setFieldError(key, element);
+    //             error = true;
+    //           }
+    //         } else if (step === 2) {
+    //           if (initialValuesMiddleStep.hasOwnProperty(key)) {
+    //             setFieldError(key, element);
+    //             error = true;
+    //           }
+    //         } else {
+    //           setFieldError(key, element);
+    //           error = true;
+    //           openModalFinallyRegistration(false);
+    //         }
+    //       }
+    //       if (!error && step !== state.allSteps) setNextStep();
+    //     }
+    //   });
   };
 
   const nextStepOrSubmitRegData = (newValues, setFieldError) => {
@@ -137,6 +144,7 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
       show: false,
     });
     if (success) {
+      console.log('seccsess',seccess)
       apiUser
         .login(
           {
@@ -172,7 +180,12 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
               <ModalContentViews.SuccessOrError
                 closeModal={() => closeModal(data, userValues)}
                 success={data}
-                content={data ? 'Регистрация прошла успешна' : 'Ошибка при регистрации'}
+                content={data ? (
+                  <div>
+                  'Регистрация прошла успешна'
+                  
+                  </div>
+                  ) : 'Ошибка при регистрации'}
               />
             </ModalContentViews.CenterPosition>
           </ModalContentViews.ContentBlock>

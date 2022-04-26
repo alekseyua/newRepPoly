@@ -33,10 +33,10 @@ const ContentDropDownAccount = ({
 
       removeCookie(COOKIE_KEYS.AUTH);
     if (!!ft_token){
-      logOut()
+      //logOut()
     }else{
-      history.push('/ru')
-      window.location.reload()
+     // history.push('/ru')
+     // window.location.reload()
     }
   };
   const variantDropDown = {

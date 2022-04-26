@@ -40,7 +40,7 @@ const ModalRestorePassword = ({ initialValues, onSaveFormData, setNextStep }) =>
                 variant={'largeCustomLabel'}
                 autocomplete={'off'}
                 name={'email'}
-                label={'Введите ваш E-mail, указанный при регистрации'}
+                label={'Введите Ваш E-mail, указанный при регистрации'}
                 onGx-input={handleChange}
                 helpText={
                   errors.email && touched.email ? <ErrorField message={errors.email} /> : null

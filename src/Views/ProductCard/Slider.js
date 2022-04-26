@@ -1,19 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import Text from '../../components/Text';
 import Swiper from 'swiper';
 import style from './productCard.module.scss';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import { useStoreon } from 'storeon/react';
-import { useHistory } from 'react-router-dom';
-import { identity } from 'lodash';
-// import 'swiper/swiper.scss';
 
-const Slider = ({ images, sizes, product_rc, url, profile, id, setCardIdproductFromSlider}) => {
+const Slider = ({ images, url, id, setCardIdproductFromSlider}) => {
 
-
-  const { stateValuePoly,dispatch } = useStoreon('stateValuePoly');
-  const history = useHistory();
+  const { dispatch } = useStoreon('stateValuePoly');
   const swiperRef = useRef(null);
   const paginationRef = useRef(null);
   const [ clickDisables, setClickDisables] = useState(true)
@@ -77,6 +71,7 @@ const Slider = ({ images, sizes, product_rc, url, profile, id, setCardIdproductF
           );
         })}
       </div>
+      
       <div
         ref={paginationRef}
         className={classNames({

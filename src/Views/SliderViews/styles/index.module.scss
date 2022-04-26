@@ -28,10 +28,10 @@
       }
     }
   }
-  &-swiper__gallery {
-    max-width: 566px;
+  &-swiper__gallery {//slide__item
+    max-width: 70vw;
     @include mobile {
-      max-width: 100%;
+      // max-width: 100%;
     }
     &--image {
       background-color: var(--gx-color-primary);

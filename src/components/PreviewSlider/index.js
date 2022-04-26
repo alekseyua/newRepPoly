@@ -48,7 +48,7 @@ const PreviewSlider = ({
           slidesPerView={1}
           freeMode={false}
           longSwipesRatio={0.1}
-          size={100}
+          // size={100}
           className={'swipper_container-vertical'}
         >
           {!imageOrVideoSet.length && defaultImage ? (

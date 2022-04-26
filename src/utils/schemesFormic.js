@@ -348,8 +348,8 @@ export const FaqSchema = () => {
       .max(100, 'Слишком длинное ФИО!')
       .required('Обязательное поле!'),
     email: Yup.string().nullable().email('Не валидный Email').required('Обязательное поле!'),
-    category: Yup.string().required('Обязательное поле!'),
-    question: Yup.string()
+    category: Yup.string().nullable().required('Обязательное поле!'),
+    question: Yup.string().nullable()
       .min(5, 'Слишком короткий вопрос!')
       .max(200, 'Слишком длинный вопрос!')
       .required('Обязательное поле!'),

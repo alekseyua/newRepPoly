@@ -29,7 +29,6 @@ const NotificationsComponent = ({ }) => {
   // отправляем массив выделеных элементов для удаления
   const heandlerDel = () => {
     updateArrForm(setAllCheckEnableChange)
-    console.log(`allCheckEnableChange`,allCheckEnableChange)
     apiProfile
       .postNotificationsDel({
         'ids': allCheckEnableChange
@@ -50,6 +49,8 @@ const NotificationsComponent = ({ }) => {
     setCheckEnable(!checkEnable)
     updateArrForm(setAllCheckEnableChange)
   }
+
+
 
 
   return (

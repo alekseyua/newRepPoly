@@ -8,9 +8,12 @@
     margin-bottom: 20px;
     color: #8f8c98;
   }
+  //.footer-menu__list{}
   &__list {
     @include ul;
+    @include mobile{
 
+    }
     &-item {
       font-size: 16px;
       // margin-bottom: 20px;
@@ -33,18 +36,24 @@
       // justify-content: space-around;
          display: grid;
           grid-template-columns: repeat(4, 1fr);
-          text-align: center;
+          text-align: left;
+          margin-left: calc(57px + 40 * ((100vw - 320px) / 992));
+        }
+    @media screen and (max-width: 642px) {
+      margin-left: calc(12px + 40 * ((100vw - 320px) / 642));
     }
-    @media screen and (max-width: 492px) {
-     display: grid;
+
+    @media screen and (max-width: 561px) {
+      flex-direction: column;
+      display: grid;
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(2, 1fr);
-      text-align: center;
-}
+      text-align: left;
+      margin-left: calc(18px + 187 * ((100vw - 320px) / 560));
+    }
     
     @include mobile {
-      flex-direction: column;
-      align-items: center;
+      // align-items: center;
     }
   }
 }

@@ -92,8 +92,10 @@
       flex-direction: column;
       margin-bottom: 20px;
       @media (max-width:680px) {
-        align-items: center;
-        padding: 0;
+        // align-items: center;
+        & > div > ul {
+          padding: 0px;
+        }
       }
       #table_wrapper {
         overflow: scroll;

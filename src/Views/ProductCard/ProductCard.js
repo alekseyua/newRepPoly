@@ -1,4 +1,4 @@
-import React, { createRef, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Text from '../../components/Text';
 import { Link } from 'react-router-dom';
 import AsyncComponent from '../../components/AsyncComponent';
@@ -67,17 +67,12 @@ const ProductCard = (props) => {
   const [addHeart4, setAddHeart4] = useState({})
   const [addHeart5, setAddHeart5] = useState({})
   
-
-
 // ---------------------------------------------------------------------------------------------------------------------------
 
 
   return (
-    <motion.div 
- 
-      
+    <motion.div       
       className={customClassGridModificator}
-
     >
         <div className={customClassNameWrapper}>
         <div className={style['product-card__top']}>
@@ -126,10 +121,7 @@ const ProductCard = (props) => {
           ) : (
             <AsyncSlider 
               url={url} 
-              product_rc={product_rc} 
-              sizes={sizes} 
               images={images} 
-              profile={profile}
               id={id}
               setCardIdproductFromSlider={setCardIdproductFromSlider}
              />
@@ -172,6 +164,7 @@ const ProductCard = (props) => {
             ) : null}
           </div>
         </div>
+
         <div className={style['product-card__bottom']}>
           <ul className={style['product-card__colors']}>
             {colors.map((el, i) => {
@@ -188,6 +181,20 @@ const ProductCard = (props) => {
             <Text text={'quickView'} />
           </span>
         </div>
+
+        <div className={style['product-card__bottom-sizes']}>
+          <ul className={style['product-card__sizes']}>
+            {sizes.map((el, i) => {
+              return (
+                <li
+                  key={i}
+                  className={style['product-card__sizes-item']}
+                >{el.title}</li>
+              );
+            })}
+          </ul>
+        </div>
+        
       </div>
     </motion.div>
   );

@@ -21,13 +21,13 @@ const Menu = ({ cabinet_menu = [] }) => {
           return (
             <GxMenuItem key={el.id}>
               
-              {notif && el.id === 30?
+            {notif && el.id === 30?
               <div className={style['inner-notif']}>
-           <Link className={style['test']} data-cy={`menu-${el.title}`} to={el.url}>{el.title}</Link>
-           <div className={style['notif']}>
-             <Icon icon="drawer" size={20} color="orange" className={style["icomoon"]} />
-           </div>
-         </div>
+                <Link className={style['test']} data-cy={`menu-${el.title}`} to={el.url}>{el.title}</Link>
+                <div className={style['notif']}>
+                  <Icon icon="drawer" size={20} color="orange" className={style["icomoon"]} />
+                </div>
+              </div>
 
               :<Link className={style['test']} data-cy={`menu-${el.title}`} to={el.url}>{el.title}</Link>
              }

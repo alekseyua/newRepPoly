@@ -60,15 +60,11 @@ const ModalAddReview = ({ product, profile, closeModal, openModalFinalyAddReview
       {({ handleSubmit, values, setFieldValue, handleChange }) => {
         const canselationCallback = () => {
           const arr = Array.from(values.uploadFiles);
-          console.log('values:222', values)
-         
           setFieldValue('content', null)
           setFieldValue('stars', 0)
           setFieldValue('uploadFiles', arr.length=0)
           closeModal();
         }
-        console.log('values:222*****', values)
-
         return (
           <GxForm novalidate onGx-submit={handleSubmit}>
             <ModalContentViews.FormAddReview full>

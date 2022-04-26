@@ -102,6 +102,10 @@ p {
     padding-right: 30px;
     padding-left: 30px;
     margin-bottom: 56px;
+    @include mobile{
+      padding-right: 0px;
+      padding-left: 0px; 
+    }
   }
   &__wrapper {
     position: relative;
@@ -269,6 +273,7 @@ p {
     align-items: center;
     margin-bottom: 20px;
     margin-right: 20px;
+    flex-wrap: wrap;
   }
   &__paystatus {
     color: $a;
@@ -386,6 +391,8 @@ p {
     margin-bottom: 10px;
     position: sticky;
     max-width: 370px;
+    min-width: 320px;
+    width: 100%; 
     &_head {
       @include h(3);
       display: flex;

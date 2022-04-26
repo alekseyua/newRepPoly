@@ -4,7 +4,6 @@ import { NavLink } from 'react-router-dom';
 import { ROLE } from '../../const';
 
 const RightSide = ({ children, role, openModalFeedbackReedFile, site_configuration }) => {
-  console.log('site_configuration',site_configuration);
   const privacyPolicy = () => {
     openModalFeedbackReedFile(site_configuration.policy);
   }

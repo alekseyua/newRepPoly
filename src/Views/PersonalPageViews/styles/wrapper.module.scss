@@ -38,8 +38,9 @@
   &-rightcol {
     @include col(8, 15);
     @include tablet-md {
-      // margin-right: 10px;
-      // margin-left: 10px;
+      margin-right: 0px;
+      margin-left: 0px;
+      padding: 0 10px;
     }
     @include tablet-mmd {
       width: 100%;

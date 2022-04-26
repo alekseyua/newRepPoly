@@ -216,6 +216,7 @@ const ProductCard = ({
 
 
   // *************************************************************************************
+  // console.log('colors',colors)
   return (
     <React.Fragment>
       <GxModal
