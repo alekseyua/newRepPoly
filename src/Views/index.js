@@ -9,8 +9,9 @@ import { useStoreon } from 'storeon/react';
 import Modal from '../Views/ModalCreator';
 import ModalPreviewFile from './ModalContentViews/ModalPreviewFile';
 import Cookie from './Cookie/Cookie';
-import { Document, Page } from 'react-pdf';
+// import { Document, Page } from 'react-pdf';
 
+import api from '../api';
 
 const Layout = ({
   headerModClosed = false,
@@ -71,27 +72,39 @@ if ( profile === undefined ){
       addClass: 'modal-file_views',
       content: (
               <ModalPreviewFile closeModal={closeModal}>
-                    <Document file={file1} onLoadSuccess={onDocumentLoadSuccess}>
+                    {/* <Document file={file1} onLoadSuccess={onDocumentLoadSuccess}>
                       <Page pageNumber={pageNumber} />
                     </Document>
                     <p>
                       Page {pageNumber} of {numPages}
-                    </p>
+                    </p> */}
                     
-                    {/* {<iframe src={file}
+                    {<iframe src={file}
                       className='noselect'
                       style={{
                         width: '100%',
                         height: '95vh',                    
                       }}
                     >              
-                    </iframe>} */}
+                    </iframe>}
               </ModalPreviewFile>
         )
     })
   }
 
-
+const heandlerKey = () => {
+  console.log('work click')
+  const params = {
+  }
+  api
+    .userApi
+    .resetUserPassword(params)
+    //.resendUserKey()
+    .then(res=>{
+      console.log('response', res)
+    })
+    .catch(err=>console.log(`ERROR ${err}`))
+}
 
   return (
     <>
@@ -106,7 +119,15 @@ if ( profile === undefined ){
         cabinet_menu={cabinet_menu}
         currencies={currencies}
       />
-         
+         <button
+          onClick={heandlerKey}
+          style={{
+            border: '1px solid red',
+            padding: '5px',
+            margin: '10px',
+            cursor: 'pointer',
+          }}
+         >get key</button>
       <Helmet>
         <title>{title}</title>
         {/* <link rel="icon" href="/favicon.ico" type="image/x-icon" />

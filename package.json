@@ -57,6 +57,7 @@
     "react-icomoon": "^2.4.3",
     "react-id-swiper": "^4.0.0",
     "react-intl": "^5.6.8",
+    "react-notifications-component": "^3.4.1",
     "react-paginating": "^1.4.0",
     "react-pdf": "^5.7.2",
     "react-redux": "^7.2.6",

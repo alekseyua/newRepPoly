@@ -14,10 +14,12 @@ import '@garpix/garpix-web-components/dist/garpix-web-components/garpix-web-comp
 import './styles/index.scss';
 import { array } from 'yup';
 import { fakeServer } from 'cypress/types/sinon';
+import { ReactNotifications, Store } from 'react-notifications-component';
+import "react-notifications-component/dist/theme.css";
+
 
 const App = ({ lang, pageServer, ...props }) => {
   const notifications = pageServer?.notifications;
-  console.log('notifications:', notifications)
   const { dispatch } = useStoreon();
   const { stateCountRestart } = useStoreon('stateCountRestart');
   const { updateCurrenssies } = useStoreon('updateCurrenssies');
@@ -39,17 +41,102 @@ const App = ({ lang, pageServer, ...props }) => {
   let currency = getCookie(COOKIE_KEYS.CURRENCIES);
   let token = getCookie('ft_token');
 
-  { if ( notifications !== undefined){
-     apiProfile
-          .getNotifications()
-          //.postNotificationsReed()
-          .then(res=>{
-           // console.log('res:', res)          
-          setListNotification(res.results)
-          })
-    }
-  }
+  const pushNotification = () =>{
+    const countCookieNotification = +getCookie('notifications');
 
+    //`************браузерные функции увидомления********************
+    const deleteTag = (data) => data.replace(/<a>|<\/a>/isg, '');
+    const notifSet = (message) => {
+      if (!("Notification" in window))
+        alert ("Ваш браузер не поддерживает уведомления.");
+      else if (Notification.permission === "granted")
+        setTimeout(notifyMe(message), 2000);
+      else if (Notification.permission !== "denied") {
+        Notification.requestPermission (function (permission) {
+          if (!('permission' in Notification))
+            Notification.permission = permission;
+          if (permission === "granted")
+            setTimeout(notifyMe(message), 2000);
+        });
+      }
+      setCookie('notifications',notifications);
+    }    
+    const notifyMe = (message) => {  
+      var notification = new Notification ("Увидомление", {
+        // tag : "ache-mail",
+        body : message,
+        icon : "./images/logo/logo.svg"
+      });
+    }
+    //`**************реакт функции увидомления********************
+    const myNotification = (message) => {
+      return (
+        <div style={{
+          // display: 'flex',
+          // backgroundColor: '#c3c3c3',
+          // borderRadius: 5,
+          // position: 'absolute',
+           zIndex: 9999,
+        }}>
+          {/* <AlligatorAvatar/> */}
+          <div>
+            <h4>Увидомление!!!</h4>
+            <p>{message}</p>
+          </div>
+        </div>
+      )
+    }
+
+    //`*****************************************************************
+
+    apiProfile
+    .getNotifications()
+    .then(res=>{
+      const newRes = res.results.map(el=>({
+        ...el, message: deleteTag(el.message)
+      })) 
+      console.log('res:', newRes) 
+      if (countCookieNotification !== res.count){
+        //notifSet(message.message) // браузерные увидомления
+        newRes.map(message=>{
+           //const timer = setInterval(() => {
+             const textMessage = message.message;
+             console.log({textMessage})
+
+              Store.addNotification({
+                // content: ()=>myNotification(message.message),
+                title: "Увидомление",
+                id: message.id,
+                message: 'ddddd',
+                // message: newRes.map(message=>{message.message}),
+                type: "success",
+                insert: "top",
+                container: "top-right",
+                animationIn: ["animated", "fadeIn"],
+                animationOut: ["animated", "fadeOut"],
+                dismiss: { duration: 5000 },
+                dismissable: { 
+                  click: true, 
+                  onScreen: true,
+                },
+                slidingExit: {
+                  duration: 800,
+                  timingFunction: 'ease-out',
+                  delay: 0
+                }
+              })
+              // return ()=>clearInterval(timer);
+            // },2000)
+          })      
+      }
+    })
+    console.log({
+      countCookieNotification,
+      notifications
+    })
+
+    return console.log('not new notification ')
+  }
 
 
   if (!!token){
@@ -60,7 +147,7 @@ const App = ({ lang, pageServer, ...props }) => {
         console.log('notifications:', notifications)
         if(prev !== notifications) return notifications;
       })
-    },[notifications])
+    },[])
 
     //********************************************************************************* */ 
     useEffect(() => {
@@ -124,46 +211,31 @@ const App = ({ lang, pageServer, ...props }) => {
     }, [statusRequstOrderCountryPayment])
 
     //********************************************************************************* */ 
+    //const [ arrNotifications, setArrNotifications ] = useState([]);
     useEffect(()=>{
-      const countCookieNotification = getCookie('notifications');
-      console.log('countCookieNotification:', countCookieNotification)
-      
-      function notifyMe () {
-        // console.log('увидомление отправлено',listNotification.length)
-        var notification = new Notification ("Все еще работаешь?", {
-          tag : "ache-mail",
-          body : "Пора сделать паузу и отдохнуть",
-          icon : "https://itproger.com/img/notify.png"
-        });
-      }
-      
-      //function notifSet 
-
-      (() => {
-        if (!("Notification" in window))
-          alert ("Ваш браузер не поддерживает уведомления.");
-        else if (Notification.permission === "granted")
-          setTimeout(notifyMe, 2000);
-        else if (Notification.permission !== "denied") {
-          Notification.requestPermission (function (permission) {
-            if (!('permission' in Notification))
-              Notification.permission = permission;
-            if (permission === "granted")
-              setTimeout(notifyMe, 2000);
-          });
-        }
-        setCookie('notifications',notifications);
-      })()
+     return pushNotification();
   
-    }, [notifications])
+    }, [])
 
+    //********************************************************************************* */ 
+    useEffect(()=>{    
+      const eventBlur = () => pushNotification();
+      window.addEventListener('blur', eventBlur);
+      return () => window.removeEventListener('blur',eventBlur);
+    },[])
+  
+    useEffect(()=>{    
+      const eventBlur = () => pushNotification();
+      window.addEventListener('focus', eventBlur);
+      return () => window.removeEventListener('focus',eventBlur);
+    },[])
     //********************************************************************************* */ 
 
     //********************************************************************************* */ 
 
     //********************************************************************************* */ 
+  console.log('notifications:', notifications)
 
-    //********************************************************************************* */ 
   }
   useEffect(() => {
     if (!currency) {
@@ -184,6 +256,7 @@ const App = ({ lang, pageServer, ...props }) => {
       messages={locales[lang]}
       defaultLocale="ru"
     >
+      <ReactNotifications />
       <Switch>
         <Route
           path={PATHS.ALL.path}

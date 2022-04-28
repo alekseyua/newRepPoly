@@ -228,7 +228,6 @@ const ContentEntryPersonalPage = ({
                             errors.firstname ? <ErrorField message={errors.firstname} /> : null
                           }
                           label={Text({ text: 'firstname' })}
-                          label={'Имя'}
                           placeholder={'Укажите имя'}
                         ></Input>
                       </PersonalPageViews.FormGroup>

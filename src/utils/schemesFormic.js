@@ -7,6 +7,16 @@ const innRegExp = /\d{12}|\d{10}/;
 const postcodeRegExp = /\d*/;
 const passport_data = /^\d*\s\d*$/;
 
+export const signInSchemaByKey = (errorsMessenge) => {
+  return Yup.object().shape({
+    submitCode : Yup.string()
+      .nullable()
+      .min(4, errorsMessenge.shortKey)
+      .max(6, errorsMessenge.longKey)
+      .required(errorsMessenge.submitCode)
+  })
+}
+
 export const signInSchemaByPhone = (errorsMessenge) => {
   return Yup.object().shape({
     phone: Yup.string()

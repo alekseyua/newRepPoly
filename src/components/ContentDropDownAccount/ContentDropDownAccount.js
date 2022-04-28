@@ -9,6 +9,8 @@ import Dropshipper from './Dropshipper';
 import Wholesale from './Wholesale';
 import { useHistory} from 'react-router-dom'
 import { useStoreon } from 'storeon/react';
+import ModalContentViews from '../../Views/ModalContentViews';
+import ModalSubmitCode from '../Auth/ModalSubmitCode';
 
 /**
  * на основе роли выберет нужный контент
@@ -25,19 +27,35 @@ const ContentDropDownAccount = ({
   const { role, user = {}, shop = { is_has_shop: false }, status } = profile;
   const { first_name = 'Имя', last_name = 'Фамилия' } = user;
   const history = useHistory();
-
+  const {dispatch} = useStoreon();
   const logOut = () => {
-    console.log('выход с аккаунта');
-    const ft_token = getCookie('ft_token');
-    console.log('выход с аккаунта',ft_token);
+    removeCookie(COOKIE_KEYS.AUTH);
+  };
 
-      removeCookie(COOKIE_KEYS.AUTH);
-    if (!!ft_token){
-      //logOut()
-    }else{
-     // history.push('/ru')
-     // window.location.reload()
-    }
+  const openModalKeyRegistration = () => {
+    const initialValues = {}
+
+    const closeModal = () => { 
+      dispatch('modal/update', {
+        show: false,
+        content: null,
+        addClass: false,
+      });
+    };
+    return  dispatch('modal/update', {
+      content: (
+        <ModalContentViews.ModalWrapper>
+        <ModalContentViews.CloseBtn closeModal={closeModal} />
+        <ModalContentViews.CenterPosition>
+          <ModalContentViews.ContentBlock>
+                <ModalSubmitCode initialValues={initialValues} />
+          </ModalContentViews.ContentBlock>
+        </ModalContentViews.CenterPosition>
+      </ModalContentViews.ModalWrapper>
+      ),
+      show: true,
+      addClass: 'modal-success_error',
+    });
   };
   const variantDropDown = {
     accessCheck: (
@@ -46,6 +64,8 @@ const ContentDropDownAccount = ({
         last_name={last_name}
         logOut={logOut}
         page_type_auth={page_type_auth}
+        role={role}
+        openModalKeyRegistration={openModalKeyRegistration}
       />
     ),
     rejectedAccount: (

@@ -35,7 +35,7 @@ const NotificationsComponent = ({ }) => {
       })
       .then((res) => {
         updateDataForm()
-        dispatch('notificationCount/update',notificationCount-allCheckEnableChange.length)
+        dispatch('notificationCount/update',(notificationCount-allCheckEnableChange.length)?notificationCount-allCheckEnableChange.length:null)
         setCheckEnable(!checkEnable)
         setAllCheckEnableChange([])
       })
@@ -50,8 +50,18 @@ const NotificationsComponent = ({ }) => {
     updateArrForm(setAllCheckEnableChange)
   }
 
+  useEffect(()=>{    
+    const eventBlur = () => updateDataForm();
+    window.addEventListener('blur', eventBlur);
+    return () => window.removeEventListener('blur',eventBlur);
+  },[])
 
-
+  useEffect(()=>{    
+    const eventBlur = () => updateDataForm();
+    window.addEventListener('focus', eventBlur);
+    return () => window.removeEventListener('focus',eventBlur);
+  },[])
+  
 
   return (
     <>
@@ -92,9 +102,10 @@ const NotificationsComponent = ({ }) => {
             }
            setAllCheckEnableChange(checkAllId)
           }
-
+          console.log(count)
           // обновляем форму с данными
           updateDataForm = () => {
+            console.log('update')
             data.reload()
           }
 

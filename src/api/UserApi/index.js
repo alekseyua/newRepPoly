@@ -3,7 +3,7 @@ export default class UserApi extends AbstractBaseApi {
   login = async (params, remember) => {
     const res = await this.post('/user/login_by_phone/', params);
     const data = res.data;
-    if (remember) remember = 2592e3;
+    if (remember) remember = 2592e3; 
     this.setAuthToken(data.token, remember);
     return data;
   };
@@ -48,10 +48,26 @@ export default class UserApi extends AbstractBaseApi {
 // ***********************************************************************************************
 //user/check_key/
   checkKey = async (params) => {
-    const res = await this.post(`/user/user/check_key/`, params);
+    console.log({params})
+    const res = await this.post(`/user/check_key/`, params);
+    return res;
+  };
+  
+  // /user/resend_user_key/
+  resendUserKey = async (params) => {
+    console.log({params})
+    const res = await this.get(`/user/resend_user_key/`, params);
     return res;
   };
 
+  // reset_user_password
+  resetUserPassword = async (params) => {
+    console.log({params})
+    const res = await this.post(`/user/reset_user_password/`, params);
+    return res;
+  };
+
+  // ***********************************************************************************************
 }
 
 // import { getCookie, setCookie } from '../../utils'

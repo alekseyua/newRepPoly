@@ -11,6 +11,7 @@ const ModalSubmitCodeView = ({ getNewSubmitCode }) => {
   };
   const handleClickGetNewSubmitCode = () => {
     setTimerDone(false);
+    getNewSubmitCode();
   };
   return (
     <div className={style['restore-password__submit-code']}>
@@ -26,7 +27,7 @@ const ModalSubmitCodeView = ({ getNewSubmitCode }) => {
       ) : (
         <ModalRestorePasswordDesc mb={'15px'}>
           Получить код повторно можно через:
-          <Timer timeInSeconds={5} onTimerDone={handleTimerDone} />
+          <Timer timeInSeconds={60} onTimerDone={handleTimerDone} />
         </ModalRestorePasswordDesc>
       )}
     </div>
