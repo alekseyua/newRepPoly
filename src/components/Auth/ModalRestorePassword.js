@@ -20,7 +20,24 @@ const ModalRestorePassword = ({ initialValues, onSaveFormData, setNextStep }) =>
   const handleSubmit = (params, { setFieldError }) => {
     //todo: Проверять есть ли пользователь с такой почтой
     //todo: обращение к апи с целью отправить код смены пароля
-    setNextStep();
+    console.log('work click reset password',params)
+    const param = {
+      email: params.email,
+    }
+    apiUser
+      .resetUserPassword(param)
+      .then(res=>{
+        console.log('reset password', res);
+        setNextStep();
+      })
+      .catch(err=>{          
+        console.log(`ERROR `,err.response.data)
+        if (!!err.response){
+          setFieldError({email : err.response.data.detail});
+        }
+      }
+      ) 
+    
   };
   return (
     <>

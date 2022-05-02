@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -9,9 +9,8 @@ import { useStoreon } from 'storeon/react';
 import Modal from '../Views/ModalCreator';
 import ModalPreviewFile from './ModalContentViews/ModalPreviewFile';
 import Cookie from './Cookie/Cookie';
-// import { Document, Page } from 'react-pdf';
 
-import api from '../api';
+import { Document, Page } from 'react-pdf';
 
 const Layout = ({
   headerModClosed = false,
@@ -35,15 +34,21 @@ const Layout = ({
 const { userPage, dispatch } = useStoreon('userPage');
 let { profile } = userPage;
 const [modalStates, setModalStates] = useState(Modal.defaultModalStates);
-const [numPages, setNumPages] = useState(null);
+  const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
+  const [filePdf, setFilePdf] = useState(null);
 
-  //const resumeLink ='https://raw.githubusercontent.com/prajeshy/Awesome-Profile-README-templates/master/CV.pdf';
-  //const resumeLink = 'https://back.ftownpl.com//media/uploads/2022/4/1-dogovor-okazaniia-uslug-oferta.pdf';
-  const file1 = '../files/1_ДОГОВОР_оказания_услуг_оферта_.docx';
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
   }
+
+  //const resumeLink ='https://raw.githubusercontent.com/prajeshy/Awesome-Profile-README-templates/master/CV.pdf';
+  //const resumeLink = 'https://back.ftownpl.com//media/uploads/2022/4/1-dogovor-okazaniia-uslug-oferta.pdf';
+  const file1 = '../files/document.pdf';
+
+  useEffect(()=>{
+    setFilePdf(file1)
+  },[])
 
 
 if ( profile === undefined ){
@@ -72,21 +77,22 @@ if ( profile === undefined ){
       addClass: 'modal-file_views',
       content: (
               <ModalPreviewFile closeModal={closeModal}>
-                    {/* <Document file={file1} onLoadSuccess={onDocumentLoadSuccess}>
-                      <Page pageNumber={pageNumber} />
-                    </Document>
-                    <p>
-                      Page {pageNumber} of {numPages}
-                    </p> */}
-                    
-                    {<iframe src={file}
+                 <div>
+                  <Document file={filePdf} onLoadSuccess={onDocumentLoadSuccess}>
+                    {/* <Page pageNumber={pageNumber} /> */}
+                  </Document>
+                  {/* <p>
+                    Page {pageNumber} of {numPages}
+                  </p> */}
+                </div>
+                    {/* {<iframe src={file}
                       className='noselect'
                       style={{
                         width: '100%',
                         height: '95vh',                    
                       }}
                     >              
-                    </iframe>}
+                    </iframe>} */}
               </ModalPreviewFile>
         )
     })

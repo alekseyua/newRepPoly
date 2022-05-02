@@ -113,6 +113,8 @@ You can set a new limit temporary with:
 $ sudo sysctl fs.inotify.max_user_watches=524288
 $ sudo sysctl -p
 
+```для windows чтобы обойти лимит```
+ $env:NODE_OPTIONS="--max-old-space-size=8192"
 
 ```` component for admin ````
 
@@ -121,6 +123,21 @@ $ sudo sysctl -p
 
 condition_pay
 https://back.ftownpl.com/admin/garpix_page/component/27/change/
+
+
+```библиотеки которые не использовались```
+ignore-styles
+md5-file
+react-datepicker
+react-fast-compare
+react-favicon
+react-redux
+react-scripts
+redux
+redux-logger
+slick-carousel
+css-loader
+
 
 
 ```` избовляемся от тегов  ````

@@ -7,7 +7,6 @@ import api from '../../api';
 import Text from '../Text';
 // import Errors from '../Views/Errors';
 import { useIntl } from "react-intl";
-// import DatePicker from "react-datepicker";
 
 
 const AccountSchema = Yup.object().shape({

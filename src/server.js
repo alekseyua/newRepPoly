@@ -12,11 +12,6 @@ import api from './api';
 import { storeonParams } from './store';
 import { determineUserLang, supportedLangs } from './i18n';
 import { removeCookie } from './utils';
-//import { NativeModules } from 'react-native';
-//import { pdfjs } from 'react-pdf';
-// pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
-
-
 
 const cookieParser = require('cookie-parser');
 

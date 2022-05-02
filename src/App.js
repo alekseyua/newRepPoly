@@ -19,6 +19,8 @@ import "react-notifications-component/dist/theme.css";
 
 
 const App = ({ lang, pageServer, ...props }) => {
+
+
   const notifications = pageServer?.notifications;
   const { dispatch } = useStoreon();
   const { stateCountRestart } = useStoreon('stateCountRestart');
@@ -125,8 +127,6 @@ const App = ({ lang, pageServer, ...props }) => {
                   delay: 0
                 }
               })
-              // return ()=>clearInterval(timer);
-            // },2000)
           })      
       }
     })
