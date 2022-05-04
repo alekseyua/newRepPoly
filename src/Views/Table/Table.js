@@ -6,16 +6,15 @@ import style from './styles/table.module.scss';
 const Table = ({ classNameTable, tableHeaderData, tableBodyData, statusLoad}) => {
 
   return (
-    <table className={style[classNameTable]}>
+    <table className={style[classNameTable]}> 
       <thead> 
         {tableHeaderData.map((trElData, i) => {
           return (
             <tr key={v4()}>
               {trElData.map((th, thI) => {
                 return (
-                  <th key={thI} {...th?.attr}>
+                  <th key={v4()} {...th?.attr}>
                     {th?.content}
-
                   </th>
                 );
               })}
@@ -38,7 +37,7 @@ const Table = ({ classNameTable, tableHeaderData, tableBodyData, statusLoad}) =>
               {trElData.map((td, tdI) => {
                  
                 return (
-                  <td key={tdI} {...td?.attr}>
+                  <td key={v4()} {...td?.attr}>
                     {td?.content}
                   </td>   
                 );

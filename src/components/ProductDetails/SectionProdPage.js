@@ -129,11 +129,6 @@ const SectionProdPage = ({
     return () => document.removeEventListener('click', clickOut);
   }, []);
 
-  // цвет
-  useEffect(() => {
-    let color = colors.filter(el => el.selected)
-    colors.length ? setColorsn(color[0]) : null
-  }, [colors.length])
   // размер
   useEffect(() => {
     let size = sizes.filter(el => el.selected)
@@ -197,7 +192,24 @@ const SectionProdPage = ({
   }, [review])
   // фото товара Media
   useEffect(() => {
-    media.length ? setMediaHook(media) : null
+    let newSku = [];
+    let color = colors.filter(el => el.selected)
+    colors.length ? setColorsn(color[0]) : null;
+
+    !!product_sku?(
+    newSku =  product_sku.map(item=>({
+      image: item.image,
+      image_thumb: item.image_thumb,
+      type: item?.type? item.type : 'image',
+      color: item.color,
+    }))
+    ):null
+    const allNewSku = newSku;
+
+    newSku = newSku.filter(item=>item.color === color[0].id);
+    media = [...newSku, ...media, ...allNewSku];
+    !!media.length ? 
+      setMediaHook(media) : null
   }, [media.length])
 
   useEffect(() => {
@@ -322,18 +334,11 @@ const SectionProdPage = ({
 
   // ******************************************************************************************************
   newProduct_sku = mediaHook;
-  {
-    media = media.filter(item => item);
-  }
   const getColorForMedia = (colorData) => {
-
     setMediaFirstHook(media)
-    console.log('arr',product_sku);
-    console.log('colorData',colorData);
-
     let arr = Array.from(product_sku);
     let filterArr = arr.filter(item => item.color === colorData);
-    filterArr = [...filterArr, ...arr]
+    filterArr = [...filterArr, ...media]
     filterArr = Array.from(new Set(filterArr))
     setMediaHook(filterArr);
   }
@@ -461,7 +466,6 @@ const SectionProdPage = ({
       {({ handleSubmit, setFieldValue, handleChange, values, errors }) => {
         return (
           <GxForm noValidate onGx-submit={handleSubmit}>
-
             <ProductDetailsViews.SectionProdPage modalView={modalView}>
               <GxModal
                 onGx-after-hide={closeCustomModal}

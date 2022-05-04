@@ -31,7 +31,7 @@ const RegistrationFormFirst = ({ onSaveFormData, initialValues, setNextStep }) =
       initialValues={initialValues}
       onSubmit={onSaveFormData}
     >
-      {({ handleSubmit, handleChange, setFieldValue, values, errors, touched }) => {
+      {({ handleSubmit, handleChange, handleBlur, setFieldValue, values, errors, touched }) => {
         return (
           <GxForm noValidate onGx-submit={handleSubmit}>
             <Input
@@ -41,10 +41,11 @@ const RegistrationFormFirst = ({ onSaveFormData, initialValues, setNextStep }) =
               name={'lastname'}
               data-cy={'registration_last_name'}
               autocomplete={'off'}
+              onBlur={handleBlur}
               onGx-input={(e) => setFieldValue('lastname', e.target.value.trim())}
               placeholder={Text({ text: 'enterLastName' })}
               label={Text({ text: 'lastname' })}
-              helpText={errors.lastname ? <ErrorField message={errors.lastname} /> : null}
+              helpText={errors.lastname && touched.lastname ? <ErrorField message={errors.lastname} /> : null}
             />
             <Input
               className={'input-mt_20'}
@@ -53,10 +54,11 @@ const RegistrationFormFirst = ({ onSaveFormData, initialValues, setNextStep }) =
               name={'firstname'}
               data-cy={'registration_first_name'}
               autocomplete={'off'}
+              onBlur={handleBlur}
               label={Text({ text: 'firstname' })}
               placeholder={Text({ text: 'enterFirstName' })}
               onGx-input={(e) => setFieldValue('firstname', e.target.value.trim())}
-              helpText={errors.firstname ? <ErrorField message={errors.firstname} /> : null}
+              helpText={errors.firstname && touched.firstname ? <ErrorField message={errors.firstname} /> : null}
             />
             <Input
               className={'input-mt_20'}
@@ -64,11 +66,12 @@ const RegistrationFormFirst = ({ onSaveFormData, initialValues, setNextStep }) =
               variant={'largeCustomLabel'}
               placeholder={Text({ text: 'enterPatronymic' })}
               name={'patronymic'}
+              onBlur={handleBlur}
               data-cy={'registration_middle_name'}
               autocomplete={'off'}
               label={Text({ text: 'patronymic' })}
               onGx-input={(e) => setFieldValue('patronymic', e.target.value.trim())}
-              helpText={errors.patronymic ? <ErrorField message={errors.patronymic} /> : null}
+              helpText={errors.patronymic && touched.patronymic ? <ErrorField message={errors.patronymic} /> : null}
             />
             <AuthorizationAndRegViews.WrapperInputForTooltip
               content={Text({ text: 'tooltipDatausername' })}
@@ -80,11 +83,12 @@ const RegistrationFormFirst = ({ onSaveFormData, initialValues, setNextStep }) =
                 variant={'largeCustomLabel'}
                 placeholder={Text({ text: 'enterusername' })}
                 name={'username'}
+                onBlur={handleBlur}
                 data-cy={'registration_nick_name'}
                 autocomplete={'off'}
                 label={Text({ text: 'username' })}
                 onGx-input={(e) => setFieldValue('username', e.target.value.trim())}
-                helpText={errors.username ? <ErrorField message={errors.username} /> : null}
+                helpText={errors.username && touched.username ? <ErrorField message={errors.username} /> : null}
               >
                 <GxIcon slot={'suffix'} src={toolTipIcon} />
               </Input>

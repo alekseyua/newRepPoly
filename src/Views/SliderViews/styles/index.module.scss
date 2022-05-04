@@ -28,10 +28,15 @@
       }
     }
   }
+  //.wrapper-swiper__gallery{}
   &-swiper__gallery {//slide__item
-    max-width: 70vw;
+    // max-width: 23vw;
+    @include adaptive-value('max-width',50,40,vw,2);
+    @include tablet-lg {
+      max-width: 70vw;
+    }
     @include mobile {
-      // max-width: 100%;
+      max-width: 100%;
     }
     &--image {
       background-color: var(--gx-color-primary);

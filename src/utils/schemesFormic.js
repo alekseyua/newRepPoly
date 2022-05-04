@@ -2,7 +2,9 @@ import { ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 const phoneRegExp = /(7|8|1)((\D)[\-]?)?(^\s)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,12}$/;
-const symbolReject = /^\D*\S\D$/;
+const symbolReject = /^[aA-zZ\sаА-яЯ]+$/u;
+// /^[^\%/\\&\?\,\'\;:!-+.`-,!@#\$\^*)(0-9]{1,50}$/ 
+// /^\D*\S\D$/; 
 const innRegExp = /\d{12}|\d{10}/;
 const postcodeRegExp = /\d*/;
 const passport_data = /^\d*\s\d*$/;
@@ -67,19 +69,19 @@ export const signUpFirstFormSchema = (errorsMessenge) => {
     lastname: Yup.string()
       .nullable()
       .matches(symbolReject, errorsMessenge.symbol)
-      .min(2, errorsMessenge.shortLastName)
+      // .min(0, errorsMessenge.shortLastName)
       .max(20, errorsMessenge.longLastName)
       .required(errorsMessenge.requiredField),
     firstname: Yup.string()
       .nullable()
       .matches(symbolReject, errorsMessenge.symbol)
-      .min(2, errorsMessenge.shortFirstname)
+      // .min(0, errorsMessenge.shortFirstname)
       .max(20, errorsMessenge.longFirstname)
       .required(errorsMessenge.requiredField),
     patronymic: Yup.string()
-      .nullable()
+      // .nullable()
       .matches(symbolReject, errorsMessenge.symbol)
-      .min(2, errorsMessenge.shortPatronymic)
+      // .min(0, errorsMessenge.shortPatronymic)
       .max(20, errorsMessenge.longPatronymic),
     username: Yup.string()
       .nullable()

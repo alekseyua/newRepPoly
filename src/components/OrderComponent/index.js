@@ -88,7 +88,6 @@ const OrderComponent = ({
   //************************************** */
   const { cart_slug, page_type_cart } = site_configuration;
   const orderApi = api.orderApi;
-  const profileApi = api.profileApi;
   const { role } = userPage.profile;
   //************************************** */
 
@@ -611,11 +610,14 @@ const OrderComponent = ({
                       />
 
                       {!statusFildValue ? (
-                        <>
+                        <> 
                           <OrderingPay
                             setFieldValue={setFieldValue}
                             values={values.payment_methods}
                             payment_methods={payment_methods}
+                            role={role}
+                            dataBalance={dataBalance.balance}
+                            total_cost={cart_contentOrder.price}
                           />
 
                           <OrderingDelivery

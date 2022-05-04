@@ -3,8 +3,6 @@ import Layout from '../Views';
 import { GxRow } from '@garpix/garpix-web-components-react';
 import Container from '../Views/Container';
 import OrderComponent from '../components/OrderComponent';
-import { ROLE } from '../const';
-import { useStoreon } from 'storeon/react';
 import Modal from '../Views/ModalCreator';
 
 

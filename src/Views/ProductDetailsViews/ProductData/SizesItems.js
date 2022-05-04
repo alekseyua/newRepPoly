@@ -217,9 +217,9 @@ const SizesItems = ({
               {role === ROLE.DROPSHIPPER && collections ? product_rc : null }
 
               {role === ROLE.WHOLESALE && collections ?
-                <div className={style['prodpage-range__condition-price']}>
+                <span className={style['prodpage-range__condition-price']}>
                   Стоимость ряда: {(pricesHook.price * product_rcAmount).toFixed(2)} {currenssies}
-                </div>
+                </span>
                 :null
               }
               
@@ -227,23 +227,23 @@ const SizesItems = ({
 
             {role === ROLE.DROPSHIPPER?
               (role === ROLE.DROPSHIPPER && (collections)?
-                <div className={style['prodpage-range__wrap']}>
+                <span className={style['prodpage-range__wrap']}>
                   Данная модель реализуется производителем только размерным рядом. Для того, чтобы участвовать в сборе, необходимо выбрать нужный размер в одном из открытых сборов, добавить в корзину. Занятые размеры окрашены темно-серым цветом.
                   Единовременно положить в корзину можно только одну единицу товара. Выбранный размер будет зарезервирован за Вами <span>после подтверждения оплаты</span>.
                   Сбор завершён (и товары выкупаются на фирме) тогда, когда будут  заняты все размеры из ряда- об этом Вы получите уведомление в личном кабинете
-                </div>
+                </span>
                 :null)
             :null
             }
 
             {role === ROLE.WHOLESALE?
               role === ROLE.WHOLESALE && collections?
-                <div className={style['prodpage-range__wrap']}>
+                <span className={style['prodpage-range__wrap']}>
                   Данная модель реализуется производителем размерным рядом. В корзину положить можно только целый <span>размерный ряд</span>.
-                </div>              
-                :<div className={style['prodpage-range__wrap']}>
+                </span>              
+                :<span className={style['prodpage-range__wrap']}>
                   Заказать выкуп данной модели Вы можете согласно <span>Общим условиям выкупа.</span> Можно выбрать микс товаров этого бренда, любых моделей, в любых цветах, но не менее количества, указанного в условиях
-                </div>
+                </span>
               :null
             }
 

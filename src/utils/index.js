@@ -33,7 +33,7 @@ function removeCookie(name) {
       document.cookie = names + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;";
       document.cookie = names + '=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
-    window.location.reload();
+    window.location.href='/';//reload();
   }
   CookiesDelete()
 }

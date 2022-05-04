@@ -209,10 +209,13 @@
     &-min {
       --gx-transition-fast: 0.2s;
       --gx-input-height-medium: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
       &::part(base) {
         @include flex('cc');
-        padding: 20px 32px;
+        // padding: 20px 32px;
         height: 44px;
         width: 225px;
         outline: none;

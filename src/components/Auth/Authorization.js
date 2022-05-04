@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { GxRow, GxForm } from '@garpix/garpix-web-components-react';
 import AuthorizationAndRegViews from '../../Views/AuthorizationAndRegViews';
 import ModalContentViews from '../../Views/ModalContentViews';
-import { Formik, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
 import Grid from '../../Views/Grid';
 import Coll from '../../Views/Coll';
 import api from '../../api';
@@ -13,11 +13,11 @@ import CheckBox from '../../Views/CheckBox';
 import Text from '../Text';
 import { withRouter } from 'react-router-dom';
 import { signInSchemaByUsername } from '../../utils/schemesFormic';
-import { serializeErrorResponse } from '../../utils/serializers';
 import RestorePasswordSetPassword from './RestorePasswordSetPassword';
 import ModalRestorePassword from './ModalRestorePassword';
 import ModalNewPassword from './ModalNewPassword';
 import ModalSubmitCode from './ModalSubmitCode';
+import { encrypt, decrypt } from "ncrypt-js"
 
 const apiUser = api.userApi;
 const initialState = {
@@ -140,6 +140,11 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
     if (state.step === 0) return;
     openModalRestorePassword();
   }, [state.step]);
+
+
+  console.log({localStorage})
+
+
   return (
     <Grid>
       <GxRow>
@@ -155,7 +160,20 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
                 initialValues={{ username: '', password: '', remember: false }}
                 onSubmit={onSubmit}
               >
-                {({ handleSubmit, handleChange, values, errors, setFieldValue }) => {
+                {({ handleSubmit, handleChange, values, errors, setFieldValue, handleBlur, touched }) => {
+                    console.log({values})
+                    const serializerUserData = data => {
+                      console.log(data.encrypt())
+                      return 
+                    }
+                    if (values.remember){
+                      localStorage.setItem('u', serializerUserData(values.username));                      
+                      localStorage.setItem('p',values.password);
+                    }
+                    // setFieldValue({
+                    //   username: localStorage.getItem('username'),
+                    //   password: localStorage.getItem('password'),
+                    // })
                   return (
                     <GxForm noValidate onGx-submit={handleSubmit}>
                       <Input
@@ -163,23 +181,25 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
                         variant={'largeCustomLabel'}
                         className={'input-mt_20'}
                         name={'username'}
-                        autocomplete={'off'}
+                        autocomplete={'on'}
                         onGx-input={handleChange}
                         data-cy={'authorization_username'}
                         label={Text({ text: 'username' })}
-                        helpText={errors.username ? <ErrorField message={errors.username} /> : null}
+                        onBlur={handleBlur}
+                        helpText={errors.username && touched.username ? <ErrorField message={errors.username} /> : null}
                       />
                       <Input
                         type={'password'}
                         className={'input-mt_20'}
                         value={values.password}
                         variant={'largeCustomLabel'}
-                        autocomplete={'off'}
+                        autocomplete={'on'}
                         name={'password'}
                         label={Text({ text: 'password' })}
                         data-cy={'authorization_password'}
                         onGx-input={handleChange}
-                        helpText={errors.password ? <ErrorField message={errors.password} /> : null}
+                        onBlur={handleBlur}
+                        helpText={errors.password && touched.password ? <ErrorField message={errors.password} /> : null}
                       />
                       <AuthorizationAndRegViews.GroupBlock>
                         <CheckBox

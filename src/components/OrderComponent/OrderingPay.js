@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import OrderingViews from '../../Views/OrderingViews';
 
-const OrderingPay = ({ payment_methods, setFieldValue }) => {
+const OrderingPay = ({ payment_methods, setFieldValue, role, dataBalance, total_cost }) => {
+
   const [paymentsVariant, setpaymentsVariant] = useState(payment_methods);
   const setActiveVariantPayments = (event) => {
     const id = Number(event.target.id);
@@ -29,6 +30,9 @@ const OrderingPay = ({ payment_methods, setFieldValue }) => {
       <OrderingViews.OrderingPayButtons
         payment_methods={paymentsVariant}
         setActiveVariantPayments={setActiveVariantPayments}
+        role={role}
+        dataBalance={dataBalance}
+        total_cost={total_cost}
       />
     </OrderingViews.OrderingPaySection>
   );

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Layout from '../Views';
-import Text from '../components/Text';
 import InformationViews from '../Views/InformationViews';
 import Title from '../Views/Title';
 import Breadcrumbs from '../Views/Breadcrumbs';
@@ -9,7 +8,8 @@ import Modal from '../Views/ModalCreator';
 import Settings from '../#lifehack/Settings';
 import { useStoreon } from 'storeon/react';
 import ModalPreviewFile from '../Views/ModalContentViews/ModalPreviewFile';
-
+import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
+import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
 import { ROLE } from '../const';
 
 const InformationJuridical = (props) => {
@@ -31,25 +31,46 @@ const InformationJuridical = (props) => {
       addClass: false,
     });
   };
-  const openModalFeedbackReedFile = (file) => {
-    console.log('file pdf',file);
-        dispatch('modal/update', {
-          show: true,
-          addClass: 'modal-file_views',
-          content: (
-                  <ModalPreviewFile closeModal={closeModal}>
-                        {<iframe src={file}
-                          className='noselect'
-                          style={{
-                            width: '100%',
-                            height: '95vh',                    
-                          }}
-                        >              
-                        </iframe>}
-                  </ModalPreviewFile>
-            )
-        })
-      }
+
+  const openModalFeedbackReedFile = (file) => { 
+   
+    const renderPage = (props) => {
+        console.log('props:', props)
+        return (
+            <>
+                {props.canvasLayer.children}
+                <div style={{ userSelect: 'none' }}>{props.textLayer.children}</div>
+                {props.annotationLayer.children}
+            </>
+        );
+    };
+
+    dispatch('modal/update', {
+      show: true,
+      addClass: 'modal-file_views',
+      content: (
+              <ModalPreviewFile closeModal={closeModal}>
+                <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456 /build/pdf.worker.min.js">
+                    <div id="pdfviewer">
+                      <Viewer 
+                        fileUrl={`https://cors-anywhere.herokuapp.com/${file}`}
+                        renderPage={renderPage}
+                        theme={{
+                          theme: 'dark',
+                        }}
+                        // httpHeaders={{
+                        //     key: value,
+                        // }}
+                        // withCredentials={true}
+                      />
+                    </div>
+                </Worker>
+
+              </ModalPreviewFile>
+        )
+    })
+  }
+
     
 
   const heandlerPolicy = (e) => {

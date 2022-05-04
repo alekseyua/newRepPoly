@@ -63,7 +63,7 @@ const RegistrationFormBaseInfo = ({
       initialValues={initialValues}
       onSubmit={onSaveFormData}
     >
-      {({ handleSubmit, setFieldValue, handleChange, values, errors }) => {
+      {({ handleSubmit, setFieldValue, handleBlur, handleChange, values, errors, touched }) => {
 
         return (
           <GxForm noValidate onGx-submit={handleSubmit}>
@@ -76,7 +76,8 @@ const RegistrationFormBaseInfo = ({
               autocomplete={'off'}
               onGx-input={(e) => setFieldValue('email', e.target.value.trim())}
               label={Text({ text: 'email_address' })}
-              helpText={errors.email ? <ErrorField message={errors.email} /> : null}
+              onBlur={handleBlur}
+              helpText={errors.email && touched.email ? <ErrorField message={errors.email} /> : null}
               data-cy={'registration_email'}
             />
             <PhoneField
@@ -85,11 +86,12 @@ const RegistrationFormBaseInfo = ({
               name={'phone'}
               placeholder={Text({ text: 'enterPhone' })}
               autocomplete={'off'}
+              onBlur={handleBlur}
               label={Text({ text: 'mobPhone' })}
               onGx-change={(e) => {
                 setFieldValue('phone', e.detail.formattedValue);
               }}
-              helpText={errors.phone ? <ErrorField message={errors.phone} /> : null}
+              helpText={errors.phone && touched.phone ? <ErrorField message={errors.phone} /> : null}
               data-cy={'registration_phone'}
             />
             <AuthorizationAndRegViews.WrapperInputForTooltip
@@ -106,7 +108,8 @@ const RegistrationFormBaseInfo = ({
                 label={Text({ text: 'password' })}
                 type={'password'}
                 onGx-input={handleChange}
-                helpText={errors.password ? <ErrorField message={errors.password} /> : null}
+                onBlur={handleBlur}
+                helpText={errors.password && touched.password ? <ErrorField message={errors.password} /> : null}
                 data-cy={'registration_password'}
               >
                 <GxIcon slot={'suffix'} src={getIconSuccess(errors.password, values.password)} />
@@ -122,8 +125,9 @@ const RegistrationFormBaseInfo = ({
               label={Text({ text: 'confirm_password' })}
               type={'password'}
               onGx-input={handleChange}
+              onBlur={handleBlur}
               helpText={
-                errors.confirm_password ? <ErrorField message={errors.confirm_password} /> : null
+                errors.confirm_password && touched.confirm_password? <ErrorField message={errors.confirm_password} /> : null
               }
               data-cy={'registration_confirm_password'}
             />
@@ -153,8 +157,9 @@ const RegistrationFormBaseInfo = ({
                 autocomplete={'off'}
                 onGx-input={(e) => setFieldValue('otherWhereDidHearAbout', e.target.value.trim())}
                 label={Text({ text: 'other' })}
+                onBlur={handleBlur}
                 helpText={
-                  errors.otherWhereDidHearAbout ? (
+                  errors.otherWhereDidHearAbout && touched.otherWhereDidHearAbout ? (
                     <ErrorField message={errors.otherWhereDidHearAbout} />
                   ) : null
                 }

@@ -10,7 +10,14 @@ import Modal from '../Views/ModalCreator';
 import ModalPreviewFile from './ModalContentViews/ModalPreviewFile';
 import Cookie from './Cookie/Cookie';
 
-import { Document, Page } from 'react-pdf';
+// import { Document, Page } from 'react-pdf/dist/esm/entry.parcel';
+//import { Document, Page } from 'react-pdf';
+//  import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
+
+import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
+import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
+
+
 
 const Layout = ({
   headerModClosed = false,
@@ -34,21 +41,6 @@ const Layout = ({
 const { userPage, dispatch } = useStoreon('userPage');
 let { profile } = userPage;
 const [modalStates, setModalStates] = useState(Modal.defaultModalStates);
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [filePdf, setFilePdf] = useState(null);
-
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-  }
-
-  //const resumeLink ='https://raw.githubusercontent.com/prajeshy/Awesome-Profile-README-templates/master/CV.pdf';
-  //const resumeLink = 'https://back.ftownpl.com//media/uploads/2022/4/1-dogovor-okazaniia-uslug-oferta.pdf';
-  const file1 = '../files/document.pdf';
-
-  useEffect(()=>{
-    setFilePdf(file1)
-  },[])
 
 
 if ( profile === undefined ){
@@ -71,28 +63,41 @@ if ( profile === undefined ){
     });
   };
 
+  
   const openModalFeedbackReedFile = (file) => { 
+   
+    const renderPage = (props) => {
+        console.log('props:', props)
+        return (
+            <>
+                {props.canvasLayer.children}
+                <div style={{ userSelect: 'none' }}>{props.textLayer.children}</div>
+                {props.annotationLayer.children}
+            </>
+        );
+    };
+
     dispatch('modal/update', {
       show: true,
       addClass: 'modal-file_views',
       content: (
               <ModalPreviewFile closeModal={closeModal}>
-                 <div>
-                  <Document file={filePdf} onLoadSuccess={onDocumentLoadSuccess}>
-                    {/* <Page pageNumber={pageNumber} /> */}
-                  </Document>
-                  {/* <p>
-                    Page {pageNumber} of {numPages}
-                  </p> */}
-                </div>
-                    {/* {<iframe src={file}
-                      className='noselect'
-                      style={{
-                        width: '100%',
-                        height: '95vh',                    
-                      }}
-                    >              
-                    </iframe>} */}
+                <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456 /build/pdf.worker.min.js">
+                    <div id="pdfviewer">
+                      <Viewer 
+                        fileUrl={`https://cors-anywhere.herokuapp.com/${file}`}
+                        renderPage={renderPage}
+                        theme={{
+                          theme: 'dark',
+                        }}
+                        // httpHeaders={{
+                        //     key: value,
+                        // }}
+                        // withCredentials={true}
+                      />
+                    </div>
+                </Worker>
+
               </ModalPreviewFile>
         )
     })
@@ -125,7 +130,7 @@ const heandlerKey = () => {
         cabinet_menu={cabinet_menu}
         currencies={currencies}
       />
-         <button
+         {/* <button
           onClick={heandlerKey}
           style={{
             border: '1px solid red',
@@ -133,7 +138,7 @@ const heandlerKey = () => {
             margin: '10px',
             cursor: 'pointer',
           }}
-         >get key</button>
+         >get key</button> */}
       <Helmet>
         <title>{title}</title>
         {/* <link rel="icon" href="/favicon.ico" type="image/x-icon" />

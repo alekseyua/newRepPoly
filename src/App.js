@@ -130,12 +130,7 @@ const App = ({ lang, pageServer, ...props }) => {
           })      
       }
     })
-    console.log({
-      countCookieNotification,
-      notifications
-    })
-
-    return console.log('not new notification ')
+    .catch(err=>console.log('ERROR',err));    
   }
 
 
@@ -212,29 +207,28 @@ const App = ({ lang, pageServer, ...props }) => {
 
     //********************************************************************************* */ 
     //const [ arrNotifications, setArrNotifications ] = useState([]);
-    useEffect(()=>{
-     return pushNotification();
+    // useEffect(()=>{
+    //  return pushNotification();
   
-    }, [])
+    // }, [])
 
     //********************************************************************************* */ 
-    useEffect(()=>{    
-      const eventBlur = () => pushNotification();
-      window.addEventListener('blur', eventBlur);
-      return () => window.removeEventListener('blur',eventBlur);
-    },[])
+    // useEffect(()=>{    
+    //   const eventBlur = () => pushNotification();
+    //   window.addEventListener('blur', eventBlur);
+    //   return () => window.removeEventListener('blur',eventBlur);
+    // },[])
   
-    useEffect(()=>{    
-      const eventBlur = () => pushNotification();
-      window.addEventListener('focus', eventBlur);
-      return () => window.removeEventListener('focus',eventBlur);
-    },[])
+    // useEffect(()=>{    
+    //   const eventBlur = () => pushNotification();
+    //   window.addEventListener('focus', eventBlur);
+    //   return () => window.removeEventListener('focus',eventBlur);
+    // },[])
     //********************************************************************************* */ 
 
     //********************************************************************************* */ 
 
     //********************************************************************************* */ 
-  console.log('notifications:', notifications)
 
   }
   useEffect(() => {

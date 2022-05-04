@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { GxForm, GxRow } from '@garpix/garpix-web-components-react';
+import { GxRow } from '@garpix/garpix-web-components-react';
 import AuthorizationAndRegViews from '../../Views/AuthorizationAndRegViews';
 import RegistrationFormFirst from './RegistrationFormFirst';
 import RegistrationFormBaseInfo from './RegistrationFormBaseInfo';
@@ -8,17 +8,15 @@ import ModalContentViews from '../../Views/ModalContentViews';
 import ModalPreviewFile from '../../Views/ModalContentViews/ModalPreviewFile';
 import { ROLE } from '../../const';
 import { withRouter } from 'react-router-dom';
-import { serializeDataRegistration, serializeErrorResponse } from '../../utils/serializers';
+import { serializeDataRegistration} from '../../utils/serializers';
 import api from '../../api';
 import Grid from '../../Views/Grid';
 import Coll from '../../Views/Coll';
 import Text from '../Text';
 import { useStoreon } from 'storeon/react';
-import Input from '../../Views/Input';
-import Button from '../../Views/Button';
-import ErrorField from '../../Views/ErrorField';
 import ModalSubmitCode from './ModalSubmitCode';
-
+import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
+import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
 
 const apiUser = api.userApi;
 const initialState = {
@@ -224,7 +222,7 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
                 success={data}
                 content={!!data? (
                   <div>
-                    Регистрация прошла успешна                  
+                    Регистрация прошла успешно                  
                   </div>
                   ) : 'Ошибка при регистрации'}
               />
@@ -237,34 +235,55 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
     });
   };
 
-  const openModalFeedbackReedFile = (file) => {  
-    const closeModal = () => { 
-      dispatch('modal/update', {
-        show: false,
-        content: null,
-        addClass: false,
-      });
-    history.push('catalog');
-    };
-    dispatch('modal/update', {
-      show: true,
-      addClass: 'modal-file_views',
-      content: (
-              <ModalPreviewFile closeModal={closeModal}>
-                    {<iframe src={`${file}`}
-                      className='noselect' 
-                      style={{
-                        width: '100%',
-                        height: '95vh',
-                        'user-select': 'none',
-                      }}
-                    >              
-                    </iframe>}
-              </ModalPreviewFile>
-        )
-    })
-  }
 
+
+
+      const openModalFeedbackReedFile = (file) => { 
+        const closeModal = () => { 
+          dispatch('modal/update', {
+            show: false,
+            content: null,
+            addClass: false,
+          });
+        history.push('catalog');
+        };
+        const renderPage = (props) => {
+            console.log('props:', props)
+            return (
+                <>
+                    {props.canvasLayer.children}
+                    <div style={{ userSelect: 'none' }}>{props.textLayer.children}</div>
+                    {props.annotationLayer.children}
+                </>
+            );
+        };
+    
+        dispatch('modal/update', {
+          show: true,
+          addClass: 'modal-file_views',
+          content: (
+                  <ModalPreviewFile closeModal={closeModal}>
+                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456 /build/pdf.worker.min.js">
+                        <div id="pdfviewer">
+                          <Viewer 
+                            fileUrl={`https://cors-anywhere.herokuapp.com/${file}`}
+                            renderPage={renderPage}
+                            theme={{
+                              theme: 'dark',
+                            }}
+                            // httpHeaders={{
+                            //     key: value,
+                            // }}
+                            // withCredentials={true}
+                          />
+                        </div>
+                    </Worker>
+    
+                  </ModalPreviewFile>
+            )
+        })
+      }
+    
 
   useEffect(() => {
     if (role === ROLE.RETAIL) {
