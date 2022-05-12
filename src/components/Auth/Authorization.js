@@ -17,7 +17,11 @@ import RestorePasswordSetPassword from './RestorePasswordSetPassword';
 import ModalRestorePassword from './ModalRestorePassword';
 import ModalNewPassword from './ModalNewPassword';
 import ModalSubmitCode from './ModalSubmitCode';
-import { encrypt, decrypt } from "ncrypt-js"
+import { secretWordEncoding, serializerUserDataDencrypt, serializerUserDataEncript } from '../../utils/encrypt';
+import { useStoreon } from 'storeon/react';
+
+
+
 
 const apiUser = api.userApi;
 const initialState = {
@@ -39,10 +43,11 @@ const initialValues = {
 };
 
 const Authorization = ({ history, site_configuration, setModalStates }) => {
-  const [serverError, setServerError] = useState('');
+  const [email, setEmail] = useState('');
   const [state, setState] = useState(initialState);
-  const [values, setValues] = useState(initialValues);
+  const [values, setValues] = useState(null);
   const { page_type_reg, page_type_catalog } = site_configuration;
+  const { dispatch } = useStoreon();
 
   const errorsMessenge = {
     longUsername: 'Слишком длинный никнейм',
@@ -52,6 +57,9 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
     requiredField: Text({ text: 'requiredField' }),
     invalidAuthData: Text({ text: 'invalid.auth.data' }),
   };
+  useEffect(()=>{
+    setValues(initialValues);
+  },[])
   const onSaveFormData = (data, callbacks = {}) => {
     setValues(data);
     setNextStep();
@@ -60,12 +68,71 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
     setState((prevState) => ({ ...prevState, step: prevState.step + 1 }));
   };
   const closeModal = () => {
+    console.log('Authorization:')
     setState(initialState);
     setModalStates({
       content: null,
       show: false,
     });
   };
+ 
+  const resetUserPassword = (params, setFieldError) =>{
+  
+    setValues( prev => {
+      console.log('prev:', prev)      
+      console.log('params:', params)
+
+      return { ...prev, ...params }      
+    })
+    console.log('work request1',params)
+
+    if(state.step === 0){
+      apiUser
+        .resendUserKey(params)
+        .then(res=>{
+            if (res.data.status === 'Send') setNextStep();
+        })
+        .catch(err=>{          
+            console.log(`ERROR `,err)
+            let errMessage = {
+                success: '',
+                fail : 'Неверно указана почта',
+                };
+                setFieldError('email', 'Неверно указана почта')
+        }
+      )
+    }else if(state.step === 2){
+
+    console.log('values inner:', values)
+    console.log('work request2',params)
+
+      let param = {
+        key: sessionStorage.getItem('submit_code'),
+        password: sessionStorage.getItem('password'),
+        email: sessionStorage.getItem('email'),
+      }
+      console.log('param: reset password', param)
+      apiUser
+        .resetUserPassword(param)
+        .then(res=>{
+          console.log('reset password', res);
+          openModalFinallyRestorePassword(true);
+        })
+        .catch(err=>{          
+          console.log(`ERROR `,err.response.data)
+          if (!!err.response){
+            if(err.response.data.status === "Неправильный код"){
+              // ???? getNewSubmitCode(param)                        
+            }
+            setFieldError({email : err.response.data?.status});
+          }
+          openModalFinallyRestorePassword(false);
+        }
+        ) 
+    }
+    return;
+  }
+
   const openModalFinallyRestorePassword = (data) => {
     return setModalStates({
       content: (
@@ -86,8 +153,11 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
       addClass: 'modal-success_error',
     });
   };
+// debugger
 
   const openModalRestorePassword = () => {
+    console.log('state.step open', state.step)
+    console.log('values openModalRestorePassword:', values)
     setModalStates({
       content: (
         <ModalContentViews.ModalWrapper>
@@ -97,18 +167,30 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
               {
                 {
                   0: (
-                    <ModalRestorePassword setNextStep={setNextStep} initialValues={initialValues} />
+                    <ModalRestorePassword 
+                      setNextStep={setNextStep} 
+                      initialValues={values} 
+                      resetUserPassword={resetUserPassword}                      
+                    />
                   ),
-                  1: <ModalSubmitCode setNextStep={setNextStep} initialValues={initialValues} />,
                   2: (
                     <ModalNewPassword
                       onSaveFormData={onSaveFormData}
-                      initialValues={initialValues}
+                      initialValues={values}
                       openModalFinallyRestorePassword={openModalFinallyRestorePassword}
+                      resetUserPassword={resetUserPassword}
+                      setValues={setValues}
                     />
                   ),
+                  1: <ModalSubmitCode 
+                        setNextStep={setNextStep} 
+                        initialValues={values}
+                        setValues={setValues}                 
+                        resetUserPassword={resetUserPassword}
+                      />,
                 }[state.step]
               }
+
             </ModalContentViews.ContentBlock>
           </ModalContentViews.CenterPosition>
         </ModalContentViews.ModalWrapper>
@@ -118,6 +200,7 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
     });
   };
 
+  
   const onSubmit = (data, { setFieldError }) => {
     apiUser
       .loginByUsername(
@@ -141,9 +224,25 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
     openModalRestorePassword();
   }, [state.step]);
 
+  const checkLocalStorage = (key) => {
+    for(let index = 0; index < localStorage.length; index++){
+      if (localStorage.key(index) === key){
+        return true;
+      }
+    }
+    return false;
+  };
+  // username: checkLocalStorage('username')? serializerUserDataDencrypt(localStorage.getItem('username')) : '', 
+  // password: checkLocalStorage('password')? serializerUserDataDencrypt(localStorage.getItem('password')) : '',  
+  // remember: checkLocalStorage('remember')? localStorage.getItem('remember') : false
+  const initialValuesUserData = { 
+    username: checkLocalStorage(secretWordEncoding('username'))? serializerUserDataDencrypt(localStorage.getItem(secretWordEncoding('username'))) : '', 
+    password: checkLocalStorage(secretWordEncoding('password'))? serializerUserDataDencrypt(localStorage.getItem(secretWordEncoding('password'))) : '',  
+    remember: checkLocalStorage(secretWordEncoding('remember'))? localStorage.getItem(secretWordEncoding('remember')) : false
+  };
 
-  console.log({localStorage})
-
+  // secretWordEncoding('user')
+  // secretWordDecoding('user')
 
   return (
     <Grid>
@@ -157,23 +256,34 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
             <AuthorizationAndRegViews.FormSingnIn>
               <Formik
                 validationSchema={signInSchemaByUsername(errorsMessenge)}
-                initialValues={{ username: '', password: '', remember: false }}
+                initialValues={initialValuesUserData}
                 onSubmit={onSubmit}
               >
                 {({ handleSubmit, handleChange, values, errors, setFieldValue, handleBlur, touched }) => {
-                    console.log({values})
-                    const serializerUserData = data => {
-                      console.log(data.encrypt())
-                      return 
-                    }
                     if (values.remember){
-                      localStorage.setItem('u', serializerUserData(values.username));                      
-                      localStorage.setItem('p',values.password);
+                        localStorage.setItem(secretWordEncoding('username'), serializerUserDataEncript(values.username));                      
+                        localStorage.setItem(secretWordEncoding('password'), serializerUserDataEncript(values.password));
                     }
-                    // setFieldValue({
-                    //   username: localStorage.getItem('username'),
-                    //   password: localStorage.getItem('password'),
-                    // })
+                    
+                    const onHandleChangeRemember = (e) => {
+                      let checked = e.target.checked;
+                      setFieldValue('remember', checked);
+                      if (checked){
+                        localStorage.setItem(secretWordEncoding('username'), serializerUserDataEncript(values.username));                      
+                        localStorage.setItem(secretWordEncoding('password'), serializerUserDataEncript(values.password));
+                        localStorage.setItem(secretWordEncoding('remember'), checked);
+                      }else{
+                        if (checkLocalStorage(secretWordEncoding('username'))){
+                          localStorage.removeItem(secretWordEncoding('username'));
+                        }                        
+                        if  (checkLocalStorage(secretWordEncoding('password'))){
+                          localStorage.removeItem(secretWordEncoding('password'));
+                        }
+                        if  (checkLocalStorage(secretWordEncoding('remember'))){
+                          localStorage.removeItem(secretWordEncoding('remember')); 
+                        }
+                      }
+                    }
                   return (
                     <GxForm noValidate onGx-submit={handleSubmit}>
                       <Input
@@ -181,7 +291,7 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
                         variant={'largeCustomLabel'}
                         className={'input-mt_20'}
                         name={'username'}
-                        autocomplete={'on'}
+                        autocomplete={'off'}
                         onGx-input={handleChange}
                         data-cy={'authorization_username'}
                         label={Text({ text: 'username' })}
@@ -193,7 +303,7 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
                         className={'input-mt_20'}
                         value={values.password}
                         variant={'largeCustomLabel'}
-                        autocomplete={'on'}
+                        autocomplete={'off'}
                         name={'password'}
                         label={Text({ text: 'password' })}
                         data-cy={'authorization_password'}
@@ -205,7 +315,7 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
                         <CheckBox
                           checked={values.remember}
                           name={'remember'}
-                          onGx-change={(e) => setFieldValue('remember', e.target.checked)}
+                          onGx-change={onHandleChangeRemember}
                           label={Text({ text: 'remember' })}
                           data-cy={'authorization_check_box_remember'}
                         />

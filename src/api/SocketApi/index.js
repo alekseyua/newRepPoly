@@ -1,12 +1,13 @@
 import BaseApiForSocket from './BaseApiForSocket';
 
 class SocketApi extends BaseApiForSocket {
+  debugger
   constructor(BASE_URI_FOR_SOCKET) {
     super(BASE_URI_FOR_SOCKET);
   }
 
-  init = (hash_id = '', api) => {
-    this.init(true, BASE_URI_FOR_SOCKET, api, hash_id);
+  init = (hash_id = '') => {
+    this.init(true, hash_id);
   };
 
   addEvent = (eventName, callback) => {

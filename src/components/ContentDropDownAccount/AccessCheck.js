@@ -6,26 +6,18 @@ import Text from '../Text';
 import Button from '../../Views/Button';
 import { ROLE } from '../../const';
 import api from '../../api';
+import { useStoreon } from 'storeon/react';
 
-const AccessCheck = ({ first_name = 'first_name', last_name = 'last_name', logOut, page_type_auth, openModalKeyRegistration, role }) => {
-  const apiUser = api.userApi;
-
-  const getNewSubmitCode = () => {
-    apiUser
-      .resendUserKey()
-      .then(res=>{
-        console.log('response key', res)
-      })
-      .catch(err=>{          
-        console.log(`ERROR `,err.response.data)
-      }
-      )
-  };
+const AccessCheck = ({ first_name = 'first_name', last_name = 'last_name', logOut, page_type_auth, email, role }) => {
+  const {dispatch} = useStoreon();
 
   const getKeyForAccess = () => {
-    getNewSubmitCode()
-    openModalKeyRegistration()
+    const params = {
+      email: email,
+    }
+    dispatch('getNewSubmitCode', params)
   }
+  
   return (
     <LayoutDropDownMenuAccount>
       <DropDownHeaderLK.PersonalInfo
@@ -35,12 +27,12 @@ const AccessCheck = ({ first_name = 'first_name', last_name = 'last_name', logOu
       />
       <DropDownHeaderLK.Line /> 
       <DefaultAuthText.HelpText>
-        Администратор проверяет введенные Вами данные. Дождитесь обновления статуса проверки
+      {role === ROLE.RETAIL? 'Для подтверждения регистрации введите код с почты' : 'Администратор проверяет введенные Вами данные. Дождитесь обновления статуса проверки'}
       </DefaultAuthText.HelpText>
       { role === ROLE.RETAIL?
         <Button full variant={'gray_full_width'} onClick={getKeyForAccess}>
           <DefaultAuthText.Spinner slot={'icon-left'} />
-          Получить код
+          Подтвердить
         </Button>
         :<Button full variant={'gray_full_width'} to={page_type_auth} onClick={()=>window.location.reload()}>
           <DefaultAuthText.Spinner slot={'icon-left'} />

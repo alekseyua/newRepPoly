@@ -1,4 +1,21 @@
   заметки
+``` попап для ошибки ```
+  import { useStoreon } from 'storeon/react';
+  const {dispatch} = useStoreon();
+  let errMessage = {
+    path: null,
+    success: null,
+    fail : null,
+  };
+  dispatch('warrning/set',errMessage);
+  
+  
+  
+  dispatch('warrning/set', 'текст если нужно указать в попапе')
+_______________________________________________________________
+``` попап для ?????? ```
+
+
 
 разрешаем доступ для выполнения скриптов 
 Set-ExecutionPolicy RemoteSigned -Scope Process
@@ -22,7 +39,8 @@ POST
 6) Path Intellisense
 7) Wrap Console Log -> Turbo Console Log
 8) Import Cost
-9) 
+9) Code Spell Checker
+10) 
 
 
 ``````plagin for work Subline Text 3``````

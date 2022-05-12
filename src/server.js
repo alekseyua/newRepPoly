@@ -13,6 +13,7 @@ import { storeonParams } from './store';
 import { determineUserLang, supportedLangs } from './i18n';
 import { removeCookie } from './utils';
 
+
 const cookieParser = require('cookie-parser');
 
 const store = createStoreon(storeonParams);
@@ -28,7 +29,7 @@ const publicFolder = process.env.NODE_ENV==='production' ? process.env.RAZZLE_PU
 // NativeModules.ReactLocalization = {
 //   language: 'en',
 // };
- 
+
 
 server
   .disable('x-powered-by')

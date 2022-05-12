@@ -56,14 +56,15 @@ export default class UserApi extends AbstractBaseApi {
   // /user/resend_user_key/
   resendUserKey = async (params) => {
     console.log({params})
-    const res = await this.get(`/user/resend_user_key/`, params);
+    const res = await this.post(`/user/resend_user_key/`, params);
     return res;
   };
 
   // reset_user_password
   resetUserPassword = async (params) => {
-    console.log({params})
     const res = await this.post(`/user/reset_user_password/`, params);
+    console.log('res request :', res)
+
     return res;
   };
 

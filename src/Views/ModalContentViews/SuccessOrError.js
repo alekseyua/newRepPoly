@@ -6,13 +6,13 @@ import { GxIcon, GxButton } from '@garpix/garpix-web-components-react';
 const SuccessOrError = ({ success, closeModal, content = null}) => {
 
   if (content === null) {
-    success ? (content = 'Ваш отзыв принят на модерацию') : (content = 'Ваш отзыв не отправлен');
+    !!success ? (content = 'Ваш отзыв принят на модерацию') : (content = 'Ваш отзыв не отправлен');
   }
 
   return (
     <div className={style['wrapper-info']}>
       <div className={style['wrapper-info__messenge']}>
-        <GxIcon src={success ? successAlertIcon : errorAlertIcon} />
+        <GxIcon src={!!success ? successAlertIcon : errorAlertIcon} />
         <span>{content}</span>
       </div>
       <GxButton onClick={closeModal} className={style['productreviews__form-submit-btnlage']} data-cy={`close_modal_review`}>

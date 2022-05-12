@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 
 const DeliveryInfo = ({ description = '', role_configuration }) => {
   const { number: role } = role_configuration.role;
-  console.log('role_configuration:', role_configuration)
   
   return (
     <div className={style['prodpage__delivery-info']}> 

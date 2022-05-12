@@ -3,7 +3,6 @@ import { GxForm, GxIcon } from '@garpix/garpix-web-components-react';
 import { Formik } from 'formik';
 import Input from '../../Views/Input';
 import ErrorField from '../../Views/ErrorField';
-import Error from '../../Views/Error';
 import Button from '../../Views/Button';
 import CheckBox from '../../Views/CheckBox';
 import Text from '../Text';
@@ -25,6 +24,7 @@ const RegistrationFormFirst = ({ onSaveFormData, initialValues, setNextStep }) =
     username: 'Некоректный никнейм',
     symbol: 'Поле не должно содержать спец. символы',
   };
+
   return (
     <Formik
       validationSchema={signUpFirstFormSchema(errorsMessenge)}
@@ -32,6 +32,7 @@ const RegistrationFormFirst = ({ onSaveFormData, initialValues, setNextStep }) =
       onSubmit={onSaveFormData}
     >
       {({ handleSubmit, handleChange, handleBlur, setFieldValue, values, errors, touched }) => {
+
         return (
           <GxForm noValidate onGx-submit={handleSubmit}>
             <Input
@@ -93,23 +94,21 @@ const RegistrationFormFirst = ({ onSaveFormData, initialValues, setNextStep }) =
                 <GxIcon slot={'suffix'} src={toolTipIcon} />
               </Input>
             </AuthorizationAndRegViews.WrapperInputForTooltip>
-            {errors.iAgreeDataProcessing ? <Error message={errorsMessenge.requiredField} /> : null}
             <CheckBox
               checked={values.iAgreeDataProcessing}
               name={'iAgreeDataProcessing'}
               data-cy={'registration_check_box'}
               label={Text({ text: 'iAgreeDataProcessing' })}
               onGx-change={(e) => {
-                if (e.target.checked === null) return;
-                setFieldValue('iAgreeDataProcessing', e.target.checked);
+                let checked = e.target.checked;
+                if (checked === null) return;
+                setFieldValue('iAgreeDataProcessing', checked);
               }}
             />
+            {/* {errors.iAgreeDataProcessing ? <Error message={errors.requiredField} /> : null} */}
             <Button
               variant={'black_btn_full_width'}
               type={'submit'}
-              onClick={(e) => {
-                onSaveFormData(values);
-              }}
               data-cy={'registration_button'}
             >
               <Text text={'saveAndContinue'} />

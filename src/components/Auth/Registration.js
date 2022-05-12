@@ -66,7 +66,6 @@ const initialValues = {
 };
 
 const Registration = ({ history, site_configuration, setModalStates }) => {
-  console.log('history:', history)
   const { page_type_auth, page_type_catalog } = site_configuration;
   const [serverError, setServerError] = useState([]);
   const [state, setState] = useState(initialState);
@@ -74,42 +73,63 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
   const {dispatch} = useStoreon();
   const [key, setKey] = useState("");
 
+
   const registration = (newValues, setFieldError, step) => {
     let params = serializeDataRegistration(newValues, state.role);
     //! нужно сделать попап для ключа
     apiUser
       .registration(params)
       .then((res) => {
-        openModalFinallyRegistration(true, newValues);
+        const params = {
+          path: '/catalog',
+          data: true,
+          userValues: newValues,
+          role: role,
+          success: true,
+          content: 'Регистрация прошла успешно'
+      }
+      // console.log({params})
+        dispatch('finallyRegistration/set',params)
       })
       .catch((err) => {
         if (err.response) {
           const data = err.response.data;
           let error = false;
-          for (const key in data) {
+          for (let key in data) {
             const element = Array.isArray(data[key]) ? data[key][0] : data[key];
             if (step === 1) {
+              console.log('step1:', step)
               if (initialValuesFirstStep.hasOwnProperty(key)) {
+                console.log('work 1',key)
                 setFieldError(key, element);
                 error = true;
               }
             } else if (step === 2) {
+              console.log('step2:', step)
+
               if (initialValuesMiddleStep.hasOwnProperty(key)) {
                 setFieldError(key, element);
                 error = true;
               }
             } else {
+              console.log('step 3:', step)
               setFieldError(key, element);
               error = true;
               openModalFinallyRegistration(false);
             }
           }
+          let errMessage = {
+            path: '/',
+            success: '',
+            fail : data?.detail,
+          };
+          data?.detail? dispatch('warrning/set',errMessage) :null;
           if (!error && step !== state.allSteps) setNextStep();
         }
       });
   };
 
-  const nextStepOrSubmitRegData = (newValues, setFieldError) => {
+  const nextStepOrSubmitRegData = (newValues, setFieldError) => { 
     const { role, step, allSteps } = state;
     if (step >= 0) {
       registration(newValues, setFieldError, step);
@@ -120,7 +140,10 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
 
   const onSaveFormData = (data, callbacks = {}) => {
     const { setFieldError = () => {} } = callbacks;
-    setValues(data);
+    setValues({
+      ...values,
+      ...data
+    });
     nextStepOrSubmitRegData(data, setFieldError);
   };
 
@@ -137,102 +160,18 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
       step: step - 1,
     });
   };
-  const closeModal = (success, userValues = null) => {
-    setModalStates({
-      content: null,
-      show: false,
-    });
-    if (success) {
-      console.log('userValues',userValues)
-      apiUser
-        // .login(
-        //   {
-        //     phone: userValues.phone,
-        //     password: userValues.password,
-        //   },
-        //   false,
-        // )
-        .loginByUsername(
-          {
-            username: userValues.username,
-            password: userValues.password,
-          },
-          //userValues.remember,
-        )
-        .then(res => {
-          if (role === ROLE.RETAIL){
-            openModalKeyRegistration();
-          }else{
-            window.location.href = page_type_catalog;
-          }
-        })
-        .catch((err) => {
-          if (err.response) {
-            const data = err.response.data;
-            let error = false;
-            for (const key in data) {
-              const element = Array.isArray(data[key]) ? data[key][0] : data[key];
-              setFieldError(key, element);
-              error = true;
-              openModalFinallyRegistration(false);
-            }
-          }
-        });
+  
+  
+
+  const openModalFinallyRegistration = (data, userValues = null, role) => {
+    const params = {
+      path: '/',
+      data: data,
+      userValues: userValues,
+      role: role,
+      content: 'Учётная запись добавлена, необходимо подтвердить почту',
     }
-  };
-  const openModalKeyRegistration = () => {
-    const closeModal = () => { 
-      dispatch('modal/update', {
-        show: false,
-        content: null,
-        addClass: false,
-      });
-      window.location.href = page_type_catalog;
-    };
-    return  dispatch('modal/update', {
-      content: (
-        <ModalContentViews.ModalWrapper>
-        <ModalContentViews.CloseBtn closeModal={closeModal} />
-        <ModalContentViews.CenterPosition>
-          <ModalContentViews.ContentBlock>
-                <ModalSubmitCode initialValues={initialValues} />
-          </ModalContentViews.ContentBlock>
-        </ModalContentViews.CenterPosition>
-      </ModalContentViews.ModalWrapper>
-      ),
-      show: true,
-      addClass: 'modal-success_error',
-    });
-  };
-
-
-
-  const openModalFinallyRegistration = (data, userValues = null) => {
-    console.log({userValues})
-    console.log('data в попапе:', data)
-
-    return setModalStates({
-      content: (
-        <ModalContentViews.ModalWrapper>
-          <ModalContentViews.CloseBtn closeModal={() => closeModal(data, userValues)} />
-          <ModalContentViews.ContentBlock>
-            <ModalContentViews.CenterPosition>
-              <ModalContentViews.SuccessOrError
-                closeModal={() => closeModal(data, userValues)}
-                success={data}
-                content={!!data? (
-                  <div>
-                    Регистрация прошла успешно                  
-                  </div>
-                  ) : 'Ошибка при регистрации'}
-              />
-            </ModalContentViews.CenterPosition>
-          </ModalContentViews.ContentBlock>
-        </ModalContentViews.ModalWrapper>
-      ),
-      show: true,
-      addClass: 'modal-success_error',
-    });
+    dispatch('finallyRegistration/set',params)
   };
 
 
@@ -297,7 +236,7 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
         allSteps: 3,
       });
     }
-    setValues(initialValues);
+     setValues(initialValues);
   }, [state.role]);
   const { role, step, allSteps } = state;
 

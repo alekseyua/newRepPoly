@@ -18,6 +18,7 @@ import ModalContentViews from '../../Views/ModalContentViews';
 import { Formik } from 'formik';
 import OrderDetailsPersonalPageViews from '../OrderDetailsPersonalPageViews/';
 import classNames from 'classnames';
+import { NavLink } from 'react-router-dom';
 
 const Card = ({
   title,
@@ -32,6 +33,7 @@ const Card = ({
   deleteElementOrder,
   id,
   setModalStates,
+  url,
 }) => {
   const orderApi = api.orderApi;
   const fileInputRef = React.useRef(null);
@@ -66,14 +68,14 @@ const Card = ({
       addClass: null,
     });
   };
-  const openModalImage = (image) => {
+  const openModalImage = (image, url) => {
     setModalStates({
       content: (
         <ModalContentViews.ModalWrapper>
           <ModalContentViews.CloseBtn closeModal={closeModal} />
           <ModalContentViews.ContentBlock>
             <ModalContentViews.CenterPosition>
-              <ModalContentViews.ViewsImage image={image} />
+              <ModalContentViews.ViewsImage image={image} url={url} />
             </ModalContentViews.CenterPosition>
           </ModalContentViews.ContentBlock>
         </ModalContentViews.ModalWrapper>
@@ -117,13 +119,15 @@ const Card = ({
   return (
     <div className={style['cabinet_orders_details__card']}>
       <div className={style['cabinet_orders_details__wrapper-block']}>
-        <div onClick={() => openModalImage(image)}>
+        <div onClick={() => openModalImage(image, url)}>
           <img src={image} className={style['cabinet_orders_details__image_thumb']} />
         </div>
         <div className={style['cabinet_orders_details__base_info']}>
-          <div className={style['cabinet_orders_details__base_info__brand']}>{brand}</div>
-          <div className={style['cabinet_orders_details__base_info__title']}>{title}</div>
-          <div className={style['cabinet_orders_details__base_info__wrapper']}>
+          <NavLink to={url}>
+            <div className={style['cabinet_orders_details__base_info__brand']}>{brand}</div>
+            <div className={style['cabinet_orders_details__base_info__title']}>{title}</div>
+          </NavLink>
+            <div className={style['cabinet_orders_details__base_info__wrapper']}>
             <div className={style['cabinet_orders_details__base_info__col']}>
               <div className={style['cabinet_orders_details__base_info__desc']}>
                 <Text text={'size'} />

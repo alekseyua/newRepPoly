@@ -69,26 +69,28 @@ export const signUpFirstFormSchema = (errorsMessenge) => {
     lastname: Yup.string()
       .nullable()
       .matches(symbolReject, errorsMessenge.symbol)
-      // .min(0, errorsMessenge.shortLastName)
+      .min(1, errorsMessenge.shortLastName)
       .max(20, errorsMessenge.longLastName)
       .required(errorsMessenge.requiredField),
     firstname: Yup.string()
       .nullable()
       .matches(symbolReject, errorsMessenge.symbol)
-      // .min(0, errorsMessenge.shortFirstname)
+      .min(1, errorsMessenge.shortFirstname)
       .max(20, errorsMessenge.longFirstname)
       .required(errorsMessenge.requiredField),
     patronymic: Yup.string()
-      // .nullable()
+      .nullable(true)
       .matches(symbolReject, errorsMessenge.symbol)
-      // .min(0, errorsMessenge.shortPatronymic)
-      .max(20, errorsMessenge.longPatronymic),
+      .min(1, errorsMessenge.shortPatronymic)
+      .max(20, errorsMessenge.longPatronymic)
+      .transform((currentValue, originalValue) => {    
+        originalValue === '' ? null : currentValue}),
     username: Yup.string()
       .nullable()
       .min(2, errorsMessenge.shortusername)
       .max(20, errorsMessenge.longusername)
       .required(errorsMessenge.requiredField),
-    iAgreeDataProcessing: Yup.boolean().oneOf([true]),
+    iAgreeDataProcessing: Yup.boolean().oneOf([Yup.ref('iAgreeDataProcessing'), true]),
   });
 };
 

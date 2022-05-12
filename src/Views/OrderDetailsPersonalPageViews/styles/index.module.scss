@@ -184,6 +184,7 @@ p {
       line-height: 140%;
       letter-spacing: 0.07em;
       color: var(--gx-color-pink);
+      cursor: pointer;
     }
     &__title {
       font-weight: normal;
@@ -191,6 +192,7 @@ p {
       line-height: 140%;
       color: var(--gx-color-primary);
       margin-bottom: 10px;
+      cursor: pointer;
     }
     &__desc {
       font-size: 12px;

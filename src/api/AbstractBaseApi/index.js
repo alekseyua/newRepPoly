@@ -19,9 +19,7 @@ class AbstractBaseApi extends BaseApi {
   };
 
   setLanguage = (lang = 'ru') => {
-    this.language = lang;
-    
-
+    this.language = lang; 
     return this.language;
   };
 
@@ -29,6 +27,7 @@ class AbstractBaseApi extends BaseApi {
     const token = this.getAuthToken();
     const language = this.getLanguage();
     const currency = this.getCurrency();
+    // console.log(" test РАБОТЫ");
 
     axios.defaults.headers.common['Authorization'] = token ? `Token ${token}` : '';
     axios.defaults.headers.common['Accept-Language'] = language;
@@ -36,7 +35,6 @@ class AbstractBaseApi extends BaseApi {
        axios.defaults.headers.post['currency'] = currency; // for POST requests
        axios.defaults.headers.common['currency'] = currency; // for all requests
     }
-    //console.log("prosto test", axios);
     return axios;
   };
 

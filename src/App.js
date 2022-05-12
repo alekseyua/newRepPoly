@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useStoreon } from 'storeon/react';
 import Combine from './pages/Combine';
@@ -17,6 +16,9 @@ import { fakeServer } from 'cypress/types/sinon';
 import { ReactNotifications, Store } from 'react-notifications-component';
 import "react-notifications-component/dist/theme.css";
 
+import React, { useState, useCallback, useEffect } from 'react';
+
+
 
 const App = ({ lang, pageServer, ...props }) => {
 
@@ -30,12 +32,6 @@ const App = ({ lang, pageServer, ...props }) => {
   const [countNotification, setCountNotification] = useState(null);
 
   const { statusRequstOrderCountryPayment } = useStoreon('statusRequstOrderCountryPayment');
-
-  
-
-
-
-  // в диспач закидываем все функуии
   const apiProfile = api.profileApi;
   
   api.setLanguage(lang);
@@ -138,8 +134,6 @@ const App = ({ lang, pageServer, ...props }) => {
 
     useEffect(()=>{
       setCountNotification(prev => {
-        console.log(prev)
-        console.log('notifications:', notifications)
         if(prev !== notifications) return notifications;
       })
     },[])

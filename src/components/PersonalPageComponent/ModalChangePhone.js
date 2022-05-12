@@ -119,7 +119,7 @@ const ModalChangePhone = ({
                     onGx-input={handleChange}
                     variant={'largeCustomLabel'}
                     placeholder={Text({ text: 'entercode' })}
-                    className={'input-mt_20'}
+                    // className={'input-mt_20'}
                     label={'введите ключ'}
                     type={'key'}
                     className={errors.key ? 'error' : ''}
@@ -142,7 +142,7 @@ const ModalChangePhone = ({
                     name={'phone'}
                     onGx-input={handleChange}
                     variant={'largeCustomLabel'}
-                    className={'input-mt_20'}
+                    // className={'input-mt_20'}
                     type={'phone'}
                     className={errors.phone ? 'error' : ''}
                     helpText={errors.phone ? <ErrorField message={errors.phone} /> : null}

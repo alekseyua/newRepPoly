@@ -7,11 +7,20 @@ import Button from '../../Views/Button';
 import Input from '../../Views/Input';
 import Text from '../Text';
 
-const ModalNewPassword = ({ initialValues, setNextStep, openModalFinallyRestorePassword }) => {
-  const handleSubmit = (params) => {
-    //todo: обращение к апи чтобы изменить пароль
-    openModalFinallyRestorePassword(true);
+const ModalNewPassword = ({ initialValues, setNextStep, resetUserPassword,setValues }) => {
+  
+  const handleSubmit = (params, { setFieldError }) => {
+     console.log('params:', params)
+     const param = {
+       ...initialValues,
+       password: params.password,
+      //  email: params.email,
+      //  submit_code: params.submit_code
+     }
+    sessionStorage.setItem('password',params.password)
+    resetUserPassword(param,setFieldError);
   };
+
   return (
     <>
       <AuthorizationAndRegViews.ModalRestorePasswordTitle
@@ -31,7 +40,7 @@ const ModalNewPassword = ({ initialValues, setNextStep, openModalFinallyRestoreP
                 name={'password'}
                 label={'Новый пароль'}
                 onGx-input={handleChange}
-                helpText={errors.password ? <ErrorField message={errors.password} /> : null}
+                helpText={errors.password && touched.password? <ErrorField message={errors.password} /> : null}
               />
               <Input
                 type={'password'}
@@ -43,7 +52,7 @@ const ModalNewPassword = ({ initialValues, setNextStep, openModalFinallyRestoreP
                 label={'Подтвердите новый пароль'}
                 onGx-input={handleChange}
                 helpText={
-                  errors.confirm_password ? <ErrorField message={errors.confirm_password} /> : null
+                  errors.confirm_password && touched.confirm_password? <ErrorField message={errors.confirm_password} /> : null
                 }
               />
               <Button variant={'black_btn_full_width'} type={'submit'}>

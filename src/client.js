@@ -9,6 +9,7 @@ import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import ReactDOM from 'react-dom';
 import { applyPolyfills, defineCustomElements } from '@garpix/garpix-web-components/loader';
 import { RE_CAPTHA_KEY } from './const';
+import api from './api';
 const store = createStoreon(storeonParams);
 
 
@@ -18,7 +19,9 @@ const INITIAL_DATA = window.__INITIAL_DATA__.page;
 // console.log('lang', lang)
 
 // const lang = 'ru';
+//const socketWeb = api.socketApi;
 const BaseApp = () => {
+
   /*
         reCaptchaKey={RE_CAPTHA_KEY}
         language={lang}

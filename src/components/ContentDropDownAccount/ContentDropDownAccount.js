@@ -11,7 +11,7 @@ import { useHistory} from 'react-router-dom'
 import { useStoreon } from 'storeon/react';
 import ModalContentViews from '../../Views/ModalContentViews';
 import ModalSubmitCode from '../Auth/ModalSubmitCode';
-
+import api from '../../api';
 /**
  * на основе роли выберет нужный контент
  * @param {*} param0
@@ -24,8 +24,10 @@ const ContentDropDownAccount = ({
   page_type_reg,
   page_home,
 }) => {
+  const apiUser = api.userApi;
   const { role, user = {}, shop = { is_has_shop: false }, status } = profile;
-  const { first_name = 'Имя', last_name = 'Фамилия' } = user;
+  const { first_name = 'Имя', last_name = 'Фамилия', email = '' } = user;
+  console.log('user:', user)
   const history = useHistory();
   const {dispatch} = useStoreon();
   const logOut = () => {
@@ -35,20 +37,22 @@ const ContentDropDownAccount = ({
   const openModalKeyRegistration = () => {
     const initialValues = {}
 
-    const closeModal = () => { 
+
+    const closeModal = () => {
       dispatch('modal/update', {
         show: false,
         content: null,
-        addClass: false,
+        addClass: false, 
       });
     };
+
     return  dispatch('modal/update', {
       content: (
         <ModalContentViews.ModalWrapper>
         <ModalContentViews.CloseBtn closeModal={closeModal} />
         <ModalContentViews.CenterPosition>
           <ModalContentViews.ContentBlock>
-                <ModalSubmitCode initialValues={initialValues} />
+                <ModalSubmitCode initialValues={initialValues} path={'/catalog'} regist={true}/>
           </ModalContentViews.ContentBlock>
         </ModalContentViews.CenterPosition>
       </ModalContentViews.ModalWrapper>
@@ -65,6 +69,7 @@ const ContentDropDownAccount = ({
         logOut={logOut}
         page_type_auth={page_type_auth}
         role={role}
+        email={email}
         openModalKeyRegistration={openModalKeyRegistration}
       />
     ),

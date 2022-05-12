@@ -64,7 +64,6 @@ const RegistrationFormBaseInfo = ({
       onSubmit={onSaveFormData}
     >
       {({ handleSubmit, setFieldValue, handleBlur, handleChange, values, errors, touched }) => {
-
         return (
           <GxForm noValidate onGx-submit={handleSubmit}>
             <Input
@@ -76,8 +75,7 @@ const RegistrationFormBaseInfo = ({
               autocomplete={'off'}
               onGx-input={(e) => setFieldValue('email', e.target.value.trim())}
               label={Text({ text: 'email_address' })}
-              onBlur={handleBlur}
-              helpText={errors.email && touched.email ? <ErrorField message={errors.email} /> : null}
+              helpText={errors.email ? <ErrorField message={errors.email} /> : null}
               data-cy={'registration_email'}
             />
             <PhoneField
@@ -86,12 +84,11 @@ const RegistrationFormBaseInfo = ({
               name={'phone'}
               placeholder={Text({ text: 'enterPhone' })}
               autocomplete={'off'}
-              onBlur={handleBlur}
               label={Text({ text: 'mobPhone' })}
               onGx-change={(e) => {
                 setFieldValue('phone', e.detail.formattedValue);
               }}
-              helpText={errors.phone && touched.phone ? <ErrorField message={errors.phone} /> : null}
+              helpText={errors.phone? <ErrorField message={errors.phone} /> : null}
               data-cy={'registration_phone'}
             />
             <AuthorizationAndRegViews.WrapperInputForTooltip
@@ -180,12 +177,14 @@ const RegistrationFormBaseInfo = ({
             {role === ROLE.RETAIL ? (
               <AuthorizationAndRegViews.ErrorBlock helpText={serverError} />
             ) : null}
+            {
+              //!!errors? errors?.map(err=>console.log({err})) : null
+              // errors.email ? <ErrorField message={errors.email} /> : null
+            
+            }
             <Button
               variant={'black_btn_full_width'}
               type={'submit'}
-              onClick={(e) => {
-                onSaveFormData(values);
-              }}
               data-cy={'button_registration'}
             >
               {role === ROLE.RETAIL ? (

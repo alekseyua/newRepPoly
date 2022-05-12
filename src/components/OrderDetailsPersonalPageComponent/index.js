@@ -169,6 +169,7 @@ const OrderDetailsPersonalPageComponent = ({
                     image={el.image}
                     deleteElementOrder={deleteElementOrder}
                     setModalStates={setModalStates}
+                    url={el.product_url}
                   />
                 );
               })
@@ -178,6 +179,7 @@ const OrderDetailsPersonalPageComponent = ({
                   return (
                     <OrderDetailsPersonalPageViews.WrapperWhoosaleCard key={i} brand={el.title}>
                       {el.items.map((item) => {
+
                         return (
                           <OrderDetailsPersonalPageViews.Card
                             {...item}
@@ -196,6 +198,7 @@ const OrderDetailsPersonalPageComponent = ({
                             deleteElementOrder={deleteElementOrder}
                             id={item.id}
                             setModalStates={setModalStates}
+                            url={item.product_url}
                           />
                         );
                       })}

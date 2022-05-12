@@ -1,4 +1,5 @@
 class SocketBase {
+  
   activate = () => {
     this.socket.onopen = (e) => {
       if (this.listeners['open']) {
@@ -48,11 +49,12 @@ class SocketBase {
     return data;
   };
 
-  init = (start, BASE_URI_FOR_SOCKET, api, roomId) => {
+  init = (start, roomId) => {
+    console.log('BASE_URI_FOR_SOCKET: inside init', BASE_URI_FOR_SOCKET)
+
     if (start) {
-      this.api = api;
       this.roomId = roomId;
-      this.coonectionURI = `${BASE_URI_FOR_SOCKET}${this.api}${this.roomId}/`;
+      this.coonectionURI = `${BASE_URI_FOR_SOCKET}/`;
       this.socket = new WebSocket(this.coonectionURI);
       this.listeners = {};
       this.activate();

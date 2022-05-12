@@ -1,9 +1,10 @@
 import { promotionsAdds } from './ComponentStore/PromotionsAdds';
-import createStore from 'storeon';
-import { persistState } from '@storeon/localstorage';
 import api from '../api';
-import { STATUS_FETCHER } from '../const';
 import { dataBalance } from './ComponentStore/Balance';
+import { popupWarrning } from './ComponentStore/Popup';
+import { registration } from './ComponentStore/Registration';
+import { mapusagesite } from './ComponentStore/MapUsageSite';
+
 
 
 export const cart = (store) => {
@@ -448,6 +449,9 @@ export const stateUpdateBalance = store => {
 
 
 export const storeonParams = [
+  mapusagesite,
+  registration,
+  popupWarrning,
   notificationCount,
   stateUpdateBalance,
   orderCountryPayment,

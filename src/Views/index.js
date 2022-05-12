@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+
+import React, { useState, useCallback, useEffect, useRef } from 'react';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+
 import { Helmet } from 'react-helmet';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -16,8 +19,9 @@ import Cookie from './Cookie/Cookie';
 
 import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
 import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
+import { getCookie } from '../utils';
 
-
+import api from '../api';
 
 const Layout = ({
   headerModClosed = false,
@@ -43,6 +47,41 @@ let { profile } = userPage;
 const [modalStates, setModalStates] = useState(Modal.defaultModalStates);
 
 
+    const [isPaused, setIsPaused] = useState(false);
+    const [data, setData] = useState(null);
+    const [status, setStatus] = useState("");
+    const ws = useRef(null);
+
+    // useEffect(() => {
+    //     if (!isPaused) {
+     //         ws.current = new WebSocket(socketUrl); // создаем ws соединение
+    //         ws.current.onopen = () =>{ 
+    //           ws.current.send(options);
+    //           setStatus("Соединение открыто");}  // callback на ивент открытия соединения
+    //         ws.current.onclose = () => setStatus("Соединение закрыто"); // callback на ивент закрытия соединения
+
+    //         gettingData();
+    //     }
+
+    //     return () => ws.current.close(); // кода меняется isPaused - соединение закрывается
+    // }, [ws, isPaused]);
+
+    // const gettingData = useCallback(() => {
+    //     if (!ws.current) return;
+
+    //     ws.current.onmessage = e => {                //подписка на получение данных по вебсокету
+    //         if (isPaused) return;
+    //         const message = JSON.parse(e.data);
+    //         setData(message);
+    //     };
+    // }, [isPaused]);
+
+const heandlerKey = () => {
+  console.log('check work click',getCookie('ft_token'))
+  handleClickSendMessage()
+
+}
+
 if ( profile === undefined ){
      window.location.reload()
 }
@@ -67,7 +106,7 @@ if ( profile === undefined ){
   const openModalFeedbackReedFile = (file) => { 
    
     const renderPage = (props) => {
-        console.log('props:', props)
+        // console.log('props:', props)
         return (
             <>
                 {props.canvasLayer.children}
@@ -103,19 +142,6 @@ if ( profile === undefined ){
     })
   }
 
-const heandlerKey = () => {
-  console.log('work click')
-  const params = {
-  }
-  api
-    .userApi
-    .resetUserPassword(params)
-    //.resendUserKey()
-    .then(res=>{
-      console.log('response', res)
-    })
-    .catch(err=>console.log(`ERROR ${err}`))
-}
 
   return (
     <>

@@ -3,15 +3,16 @@ import Timer from '../../utils/timer';
 import Button from '../Button';
 import ModalRestorePasswordDesc from './ModalRestorePasswordDesc';
 import style from './styles/restorePassword.module.scss';
+import { useStoreon } from 'storeon/react';
 
-const ModalSubmitCodeView = ({ getNewSubmitCode }) => {
+const ModalSubmitCodeView = ({postKeyFromMail}) => {
   const [timerDone, setTimerDone] = useState(false);
   const handleTimerDone = () => {
     setTimerDone(true);
   };
-  const handleClickGetNewSubmitCode = () => {
+  const handleClickGetNewSubmitCode = (params) => {
     setTimerDone(false);
-    getNewSubmitCode();
+    postKeyFromMail();
   };
   return (
     <div className={style['restore-password__submit-code']}>

@@ -1,52 +1,44 @@
 import { GxForm } from '@garpix/garpix-web-components-react';
 import { Formik } from 'formik';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useStoreon } from 'storeon/react';
 import api from '../../api';
 import AuthorizationAndRegViews from '../../Views/AuthorizationAndRegViews';
 import Button from '../../Views/Button';
 import Input from '../../Views/Input';
 import Text from '../Text';
 
-const ModalSubmitCode = ({ initialValues, setNextStep}) => {
-  const [stateKey, setStateKey] = useState();
-  const apiUser = api.userApi;
-
-  const handleSubmit = (params, { setFieldError }) => {     
-    console.log('work click',params)
-    const param = {
-      key: +params.submit_code,
-      type: "auth"
+const ModalSubmitCode = ({ resetUserPassword, initialValues, path = null, setNextStep = null,setValues = null, regist = false}  ) => {
+  const { dispatch } = useStoreon();
+  
+  const handleSubmit = (params, { setFieldError }) => {   
+    params = {
+      ...params,
+      path: path,
     }
-    apiUser
-      .checkKey(param)
-      .then(res=>window.location.href = '/')
-      .catch(err=>{          
-        console.log(`ERROR `,err.response.data.error_auth[0])
-        if (!!err.response){
-          setFieldError({submitCode : err.response.data.error_auth[0]});
-        }
-      }
-      )
-  };
- 
-  const getNewSubmitCode = () => {
-    apiUser
-      .resendUserKey()
-      .then(res=>{
-        console.log('response key', res)
-      })
-      .catch(err=>{          
-        console.log(`ERROR `,err.response.data)
-      }
-      )
+    console.log('params: submit code', params)
+    const param = {
+      ...initialValues,
+      submit_code: params.submit_code,
+      email: params.email
+    }
+      regist? 
+        dispatch('checkKey',params) 
+        : (
+          setNextStep(),
+          sessionStorage.setItem('submit_code',params.submit_code),          
+          resetUserPassword(param)
+          );
   };
 
+  const postKeyFromMail = () => {
+    dispatch('getNewSubmitCode', {email: initialValues.email});
+  }
   return (
     <>
       <AuthorizationAndRegViews.ModalRestorePasswordTitle title={'Введите код'} mb={'10px'} />
       <Formik onSubmit={handleSubmit} initialValues={initialValues}>
         {({ handleSubmit, handleChange, values, touched, isSubmitting, errors }) => {
-          console.log({errors})
           return (
             <GxForm noValidate onGx-submit={handleSubmit} className="form-horizontal">
               <AuthorizationAndRegViews.ModalRestorePasswordDesc mb={'35px'}>
@@ -68,7 +60,7 @@ const ModalSubmitCode = ({ initialValues, setNextStep}) => {
               <Button variant={'black_btn_full_width'} type={'submit'}>
                 отправить код
               </Button>
-              <AuthorizationAndRegViews.ModalSubmitCodeView getNewSubmitCode={getNewSubmitCode}/>
+              <AuthorizationAndRegViews.ModalSubmitCodeView postKeyFromMail={postKeyFromMail}/>
             </GxForm>
           );
         }}
