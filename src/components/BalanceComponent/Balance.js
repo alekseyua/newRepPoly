@@ -27,17 +27,28 @@ const Balance = ({ setModalStates, role }) => {
 
   const openModalPay = (e) => {
     e.preventDefault()
-    orderApi.getRandomRequizites().then((res) => {
-      setModalStates({
-        content: <PayModalContent 
-                    closeModal={closeModal} 
-                    requisites={res} 
-                    order_id={false}
-                  />,
-        show: true,
-        addClass: 'modal-payments',
+    orderApi
+      .getRandomRequizites()
+      .then((res) => {
+        setModalStates({
+          content: <PayModalContent 
+                      closeModal={closeModal} 
+                      requisites={res} 
+                      order_id={false}
+                    />,
+          show: true,
+          addClass: 'modal-payments',
+        });
+      })
+      .catch(err=>{
+        console.log('ERROR', err);
+        let errMessage = {
+          path: null,
+          success: null,
+          fail : 'ошибка доступа к сервер, проверьте соединение',
+        };
+        dispatch('warrning/set',errMessage);
       });
-    });
   };
 
   return (

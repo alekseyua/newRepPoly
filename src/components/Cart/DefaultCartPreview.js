@@ -20,18 +20,24 @@ const DefaultCartPreview = ({ page_type_catalog }) => {
 
   useEffect(() => {
     let cleanupRecomProducs = false;
+
     contentApi
       .getCatalogData()
       .then(res => {
-
-        // делаем проверку насуществование т.е. мы пошли дальше данные не нужны а запрос ужде был отправлен, а ложить его то некуда
         if(!cleanupRecomProducs){
-console.log('currenssies',currenssies)
           setrecomendetProduct(res.results)
         }
         })
         .catch(e => {
           console.error(e.message);
+          if (!!e.message){
+            let errMessage = {
+              path: null,
+              success: null,
+              fail : 'ошибка доступа к сервер, проверьте соединение',
+            };
+            dispatch('warrning/set',errMessage);
+          }
         }
         )
 

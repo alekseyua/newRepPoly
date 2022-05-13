@@ -37,49 +37,6 @@ const CheckoutSchema = Yup.object().shape({
               <Text text={'checkout'} />
             </h2>
           </div>
-          {/* <div className="row">
-            <div className="col-lg-12">
-              <div className="coupon-accordion">
-                <h3>Returning customer? <span id="showlogin">Click here to login</span></h3>
-                <div id="checkout-login" className="coupon-content">
-                  <div className="coupon-info">
-                    <p className="coupon-text">Quisque gravida turpis sit amet nulla posuere lacinia. Cras sed est sit amet ipsum luctus.</p>
-                    <form action="#">
-                      <p className="form-row-first">
-                        <label>Username or email <span className="required">*</span></label>
-                        <input type="text" />
-                      </p>
-                      <p className="form-row-last">
-                        <label>Password  <span className="required">*</span></label>
-                        <input type="text" />
-                      </p>
-                      <p className="form-row">
-                        <input type="submit" defaultValue="Login" />
-                        <label>
-                          <input type="checkbox" />
-                    Remember me
-                  </label>
-                      </p>
-                      <p className="lost-password">
-                        <Link href="#">Lost your password?</Link>
-                      </p>
-                    </form>
-                  </div>
-                </div>
-                <h3>Have a coupon? <span id="showcoupon">Click here to enter your code</span></h3>
-                <div id="checkout_coupon" className="coupon-checkout-content">
-                  <div className="coupon-info">
-                    <form action="#">
-                      <p className="checkout-coupon">
-                        <input type="text" className="code" placeholder="Coupon code" />
-                        <input type="submit" defaultValue="Apply Coupon" />
-                      </p>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> */}
         </GxGrid>
       </div>
       {/* checkout-area start */}

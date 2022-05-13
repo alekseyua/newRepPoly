@@ -6,6 +6,7 @@ import Button from '../../Button';
 import { useStoreon } from 'storeon/react';
 import classnNames from 'classnames';
 import { ROLE } from '../../../const'
+import { checkLocalStorage } from '../../../utils';
 
 const ControlButtons = ({
   in_cart_count,
@@ -18,11 +19,13 @@ const ControlButtons = ({
   is_collection, //
   sizes,
   role,
+  productId,
 }) => {
+  console.log('productId:1', productId)
   const { stateCountCart, dispatch } = useStoreon('stateCountCart');
   const [ countInBtn, setCountInBtn ] = useState()
   const cartRef = createRef();
-  const test = () =>{
+  const cloneCart = () =>{
     const cloneIcon = cartRef.current.cloneNode(true)
     const cloneIconWidth = cartRef.current.offsetWidth;//ширина изображения
     const cloneIconHeight = cartRef.current.offsetHeight;// высота изображения
@@ -58,10 +61,15 @@ const ControlButtons = ({
   }
 
   //******************************************************************************************************* */
-  const addToCartProduct = (count, isRemoved = false) => {
+  const addToCartProduct = (count, isRemoved = false, productId) => {
+    let idProductStorage = null;
+    if (checkLocalStorage('productId')){
+      idProductStorage = +localStorage.getItem('productId');
+    }
+  
     (count === 1) ? setChangeColorBtn({ red: false, green: true }) : null;
     (count === -1) ? setChangeColorBtn({ red: true, green: false }) : null;
-    const openModalSucces = (countInBtn === 0) ? true : false;
+    const openModalSucces = (idProductStorage !== productId) ? true : false;
     let countInCart;
     countInCart = collections? sizes.lenght : count
     countInCart === undefined? countInCart = 0 : countInCart = collections? sizes.lenght : count;
@@ -102,8 +110,8 @@ const ControlButtons = ({
         <div className={style['prodpage-control-buttons__counter']}>
           <GxButton
             onClick={(e) => {
-              test(e)
-              addToCartProduct(- 1, true);
+              cloneCart(e)
+              addToCartProduct(- 1, true, productId);
             }}
             className={style['prodpage-control-buttons__add-button']}
           >
@@ -120,8 +128,8 @@ const ControlButtons = ({
           </p>
           <GxButton
             onClick={(e) => {
-              test(e)
-              addToCartProduct(+ 1);
+              cloneCart(e)
+              addToCartProduct(1, false, productId);
             }}
             className={style['prodpage-control-buttons__down-button']}
           >
@@ -137,8 +145,8 @@ const ControlButtons = ({
       <div className={style['prodpage-control-buttons__add']}>
         <GxButton
           onClick={(e) => {
-            test(e)
-            addToCartProduct(1);
+            cloneCart(e)
+            addToCartProduct(1, false, productId);
           }}
           className={style['prodpage-control-buttons__add-to-cart']}
         >

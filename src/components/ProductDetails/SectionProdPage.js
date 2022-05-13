@@ -109,7 +109,7 @@ const SectionProdPage = ({
   const [colorsn, setColorsn] = useState([]);
   const [sizesn, setSizesn] = useState([]);
   const [isOpen, setIsOpen] = useState();
-
+  const [ product_skuHook, setProduct_skuHook ] = useState([])
   const [showPopapInfoColection, setShowPopapInfoColection] = useState({
     show: false,
     content: null
@@ -196,21 +196,25 @@ const SectionProdPage = ({
     let color = colors.filter(el => el.selected)
     colors.length ? setColorsn(color[0]) : null;
 
+    media = media.filter(item=>item !== null);
+
     !!product_sku?(
-    newSku =  product_sku.map(item=>({
-      image: item.image,
-      image_thumb: item.image_thumb,
-      type: item?.type? item.type : 'image',
-      color: item.color,
-    }))
+      product_sku = product_sku.filter(item=>item !== null),
+      setProduct_skuHook(product_sku),
+      newSku =  product_sku.map(item=>({
+        image: item.image,
+        image_thumb: item.image_thumb,
+        type: item?.type? item.type : 'image',
+        color: item.color,
+      })),
+      newSku = newSku.filter(item=>item !== null),
+      newSku = newSku.filter(item=>(item?.image || item?.video) !== '-'),
+      newSku = newSku.filter(item=>item.color === color[0].id)
     ):null
+    
     let allNewSku = newSku;
-
-    newSku = newSku.filter(item=>item.image !== '-');
-    media = media.filter(item=>item.image !== '-');
-    allNewSku = allNewSku.filter(item=>item.image !== '-');
-
-    newSku = newSku.filter(item=>item.color === color[0].id);
+    media = media.filter(item=>(item?.image || item?.video) !== '-');
+    allNewSku = allNewSku.filter(item=>(item?.image || item?.video) !== '-');
 
     media = [...newSku, ...media, ...allNewSku];
     !!media.length ? 
@@ -341,7 +345,9 @@ const SectionProdPage = ({
   newProduct_sku = mediaHook;
   const getColorForMedia = (colorData) => {
     setMediaFirstHook(media)
-    let arr = Array.from(product_sku);
+    //debugger
+    let arr = Array.from(product_skuHook);
+
     let newArr = arr.map(item => ({
       type: "image",
       image: item.image,
@@ -353,7 +359,7 @@ const SectionProdPage = ({
       image: item.image,
       image_thumb: item.image_thumb,
     }));
-    filterArr = [...newFilterArr, ...media, ...newArr]
+    filterArr = [...newFilterArr, ...mediaHook, ...newArr]
     filterArr = Array.from(new Set(filterArr))
     setMediaHook(filterArr);
   }
@@ -371,14 +377,16 @@ const SectionProdPage = ({
     apiCart
       .addToCart(params)
       .then((res) => {
+        localStorage.setItem('productId',productId);
         setChangeColorBtn({
           red: false,
           green: false
         });
         setIn_cart_countHook(count)
+        
         if (collectionsHook) dispatch('stateCountRestart/add', !stateCountRestart)
 
-        if (openModalSucces && stateCountCart.in_cart === 0) {
+        if (openModalSucces ) {
           openModalSuccessAddToCart(colorsn, sizesn);
         }
       })
@@ -593,6 +601,7 @@ const SectionProdPage = ({
                       changeColorBtn={changeColorBtn}
                       setChangeColorBtn={setChangeColorBtn}
                       role={role}
+                      productId={productId}
 
                     />
                     {!modalView ? (

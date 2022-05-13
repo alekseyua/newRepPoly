@@ -11,6 +11,7 @@ import ModalPreviewFile from '../Views/ModalContentViews/ModalPreviewFile';
 import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
 import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
 import { ROLE } from '../const';
+import { getCookie } from '../utils';
 
 const InformationJuridical = (props) => {
   const { cabinet_menu, create_shop, cabinet_site_menu, profile, breadcrumbs = [], page_info, components } = props;
@@ -58,10 +59,10 @@ const InformationJuridical = (props) => {
                         theme={{
                           theme: 'dark',
                         }}
-                        // httpHeaders={{
-                        //     key: value,
-                        // }}
-                        // withCredentials={true}
+                        httpHeaders={{
+                          Authorization: `Token ${getCookie('ft_token')}`,
+                        }}
+                        withCredentials={true}
                       />
                     </div>
                 </Worker>

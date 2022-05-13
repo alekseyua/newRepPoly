@@ -5,12 +5,11 @@ import ModalContentViews from '../../Views/ModalContentViews';
 import Input from '../../Views/Input';
 import { paperclip } from '../../images';
 import { Formik, ErrorMessage, Form, Field, FieldArray } from 'formik';
-import { payModalScheme } from '../../utils/schemesFormic';
+import { GetMyCacheModalContentShema } from '../../utils/schemesFormic';
 import ErrorField from '../../Views/ErrorField';
 import Button from '../../Views/Button';
 import Text from '../../components/Text';
 import api from '../../api';
-import * as yup from 'yup'
 import style from './style/getMyCacheModalContent.module.scss'
 import { useStoreon } from 'storeon/react';
 
@@ -21,7 +20,7 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
   const [stateClickSend, setStateClickSend] = useState(false)
   const inputRef = useRef()
   const initialValues = {
-    fio: null,
+    fio: '',
     amount: null,
     beneficiaryBankAccountNumber: null,
     beneficiaryBankBIC: null,
@@ -29,14 +28,24 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
   };
 
   const onSubmit = (data) => {
-    setStateClickSend(true)
+    if (data.fileInput === null){
+      let errMessage = {
+        path: null,
+        success: null,
+        fail : 'Вы не прикрепили файл к заявлению',
+      };
+      dispatch('warrning/set',errMessage);
+    }
+    if (!!data.fio && !!data.amount && !!data.beneficiaryBankAccountNumber && !!data.beneficiaryBankBIC && !!data.fileInput ){
+      setStateClickSend(true)
         const fdPayments = new FormData();
         fdPayments.set('cost', data.amount);
         fdPayments.set('name', data.fio);
         fdPayments.set('number', data.beneficiaryBankAccountNumber);
         fdPayments.set('bank', data.beneficiaryBankBIC);
         fdPayments.set('receipt', data.fileInput[0].file);
-
+    
+      dispatch('spinner')
       orderApi
         .returnManyQuery(fdPayments)
         .then((res) => {
@@ -60,6 +69,7 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
             dispatch('warrning/set',errMessage);
             }
         });
+    }
       // }
     // })
     // .catch((err) =>console.log(`err ${err}`))
@@ -82,6 +92,7 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
    * @param {*} arrayHelper 
    */
   const handleFileChange = (event, values, arrayHelper) => {
+
     const arrFiles = getFileArray(event.target.files)
     const file = arrFiles.length ? arrFiles[0] : undefined
     if (!file) return
@@ -101,9 +112,11 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
        * с чистым arrayHelper и только всегда пушить
        */
       arrayHelper.replace(0, { file })
+      console.log('arrayHelper:1', arrayHelper)
     } else {
       // Или вставляем если ещё нет ни одного значения
       arrayHelper.push({ file })
+      console.log('arrayHelper:2', arrayHelper)
     }
     /**
      * Создаём новый fileList, хотя от того можно отказаться
@@ -129,30 +142,13 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
    * Если вы будете расширять схему валидации для файла 
    * то начните после file: yup..., ВАШ КОД ДАЛЕЕ
    */
-  const validationShema = (errorsMessenge) =>{  
-    return yup.object().shape({
-      fio: Yup.string()
-              .nullable()
-              .matches(symbolReject, errorsMessenge.symbol)
-              .required(errorsMessenge.requiredField),
-      cost: Yup.string().nullable().required(errorsMessenge.requiredField),
-      comment: Yup.string()
-                  .nullable()
-                  .matches(symbolReject, errorsMessenge.symbol)
-                  .min(2, errorsMessenge.shortComments)
-                  .max(250, errorsMessenge.longComments)
-                  .required(errorsMessenge.requiredField),
-      fileInput: yup.array().of(yup.object().shape({
-        // test('НАЗВАНИЕ ОШИБКИ', 'ОПИСАНИЕ ОШИБКИ', Функция проверки)
-      file: yup.mixed().test('fileSize', 'fileSize', (value) => value ? value.size < 1 : false),
-      }))
-    })
-  }
+  
   const errorsMessenge = {
-    symbol: 'symbol',
+    symbol: 'Поле не должно содержать спец. символы',
+    fileInput: 'blablabla',
     requiredField: Text({ text: 'requiredField' }),
-    shortComments: Text({ text: 'short.comments' }),
-    longComments: Text({ text: 'long.comments' }),
+    // shortComments: Text({ text: 'short.comments' }),
+    // longComments: Text({ text: 'long.comments' }),
   };
   /**
    * Функция для печати ошибок
@@ -196,14 +192,13 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
             validateOnChange
             validateOnBlur
             validateOnMount
-            validationSchema={validationShema(errorsMessenge)}
+            validationSchema={GetMyCacheModalContentShema(errorsMessenge)}
             initialValues={initialValues}
             onSubmit={async (values) => {
               onSubmit(values)
             }}
           >
             {({ errors, touched, values, isValid, handleSubmit, handleReset }) => {
-            console.log('errors:', errors)
 
               return (
                 <Form
@@ -298,14 +293,19 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
                         </>
                       )}
                     />
-                      {errors.receipt && touched ? <Error message={errors.receipt} /> : null}
+                      {/* {errors?.fileInput && touched ? <Error message={errors?.fileInput} /> : null} */}
+                      {/* {getArrErrorsMessages(errors.file).map((error) => getError(true, error))} */}
                   </div>
 
                   <hr>
                   </hr>
                   <button 
                     type="submit" 
-                    disabled={!isValid} 
+                    // disabled={!isValid}
+                    style={{
+                      pointerEvents: stateClickSend? 'none' : 'auto',
+                      backgroundColor: stateClickSend? '#c3c3c3' : null,
+                    }} 
                     onClick={handleSubmit}
                     className={style['button__form']}
                   >оформить возврат</button>

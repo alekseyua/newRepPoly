@@ -151,6 +151,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
   useEffect(() => {
 
     if (role === ROLE.WHOLESALE) {//если опт
+      debugger
       setIs_performed(stateCountCart.is_performed)
       let goods = {
         collectiion: [],
@@ -397,6 +398,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
   };
   // **********готово*********************************************************************************
   const deleteProductFromCart = (id) => {
+    
     apiCart
       .deleteCartData({
         item_id: id,
@@ -407,6 +409,15 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
       })
       .catch((err) => {
         console.log("err deleteProductFromCart", err);
+        let errMessage = {
+          path: null,
+          success: null,
+          fail : 'ошибка доступа к сервер, проверьте соединение',
+        };
+        dispatch('warrning/set',errMessage);
+        
+        
+        
       });
   };
 
@@ -456,6 +467,13 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
         .catch((err) => {
           closeModal();
           console.log('reject error', err);
+          let errMessage = {
+            path: null,
+            success: null,
+            fail : 'ошибка доступа к сервер, проверьте соединение',
+          };
+          dispatch('warrning/set',errMessage);
+          
         });
     });
   };

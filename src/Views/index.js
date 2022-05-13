@@ -124,15 +124,15 @@ if ( profile === undefined ){
                 <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456 /build/pdf.worker.min.js">
                     <div id="pdfviewer">
                       <Viewer 
-                        fileUrl={`https://cors-anywhere.herokuapp.com/${file}`}
+                        fileUrl={`${file}`}
                         renderPage={renderPage}
                         theme={{
                           theme: 'dark',
                         }}
-                        // httpHeaders={{
-                        //     key: value,
-                        // }}
-                        // withCredentials={true}
+                        httpHeaders={{
+                          Authorization: `Token ${getCookie('ft_token')}`,
+                        }}
+                        withCredentials={true}
                       />
                     </div>
                 </Worker>

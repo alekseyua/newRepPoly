@@ -19,7 +19,7 @@ import ModalNewPassword from './ModalNewPassword';
 import ModalSubmitCode from './ModalSubmitCode';
 import { secretWordEncoding, serializerUserDataDencrypt, serializerUserDataEncript } from '../../utils/encrypt';
 import { useStoreon } from 'storeon/react';
-
+import {checkLocalStorage} from '../../utils';
 
 
 
@@ -224,26 +224,12 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
     openModalRestorePassword();
   }, [state.step]);
 
-  const checkLocalStorage = (key) => {
-    for(let index = 0; index < localStorage.length; index++){
-      if (localStorage.key(index) === key){
-        return true;
-      }
-    }
-    return false;
-  };
-  // username: checkLocalStorage('username')? serializerUserDataDencrypt(localStorage.getItem('username')) : '', 
-  // password: checkLocalStorage('password')? serializerUserDataDencrypt(localStorage.getItem('password')) : '',  
-  // remember: checkLocalStorage('remember')? localStorage.getItem('remember') : false
+
   const initialValuesUserData = { 
     username: checkLocalStorage(secretWordEncoding('username'))? serializerUserDataDencrypt(localStorage.getItem(secretWordEncoding('username'))) : '', 
     password: checkLocalStorage(secretWordEncoding('password'))? serializerUserDataDencrypt(localStorage.getItem(secretWordEncoding('password'))) : '',  
     remember: checkLocalStorage(secretWordEncoding('remember'))? localStorage.getItem(secretWordEncoding('remember')) : false
   };
-
-  // secretWordEncoding('user')
-  // secretWordDecoding('user')
-
   return (
     <Grid>
       <GxRow>

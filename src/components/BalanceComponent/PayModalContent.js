@@ -44,7 +44,7 @@ const PayModalContent = ({
 
 
   const errorsMessenge = {
-    symbol: 'symbol',
+    symbol: 'Поле не должно содержать спец. символы',
     requiredField: Text({ text: 'requiredField' }),
     shortComments: Text({ text: 'short.comments' }),
     longComments: Text({ text: 'long.comments' }),
@@ -67,14 +67,22 @@ const PayModalContent = ({
 
       if (fdPayments.get('receipt') === 'null'){
         setErrClickSend(true)
+        
       }else{
         setStateClickSend(true)
+        dispatch('spinner')
         orderApi
           .createPayments(fdPayments)
           .then((res) => {
             dispatch('stateUpdateBalance/update', !stateUpdateBalance)
             !(slug === 'balance') ? history.push('orders') : history.push('balance');
             closeModal();
+            let errMessage = {
+              path: null,
+              success: 'Операция выполнена успешно',
+              fail : null,
+            };
+            dispatch('warrning/set',errMessage);
           })
           .catch((err) => {
             if (!!err) {
@@ -86,6 +94,12 @@ const PayModalContent = ({
                   setFieldError(key, element);
                 }
               }
+              let errMessage = {
+                path: null,
+                success: null,
+                fail : 'Произошла ошибка, проверте коректность введённых данных, или повторите операцию позже',
+              };
+              dispatch('warrning/set',errMessage);
             }
           });
       }

@@ -146,7 +146,16 @@ const App = ({ lang, pageServer, ...props }) => {
         .then(res => {
           dispatch('stateCountCart/add', res)
       })
-        .catch(err => console.log("ERROR CONNECT!!!!", err))
+        .catch(err =>{ 
+          console.log("ERROR CONNECT!!!!", err);
+          let errMessage = {
+            path: null,
+            success: null,
+            fail : 'ошибка доступа к сервер, проверьте соединение',
+          };
+          dispatch('warrning/set',errMessage);
+        }
+        )
     }, [stateCountRestart, updateCurrenssies])
     // consollis.log('stateValuePoly.stateCart**********', stateValuePoly.stateCart);
 
@@ -165,7 +174,15 @@ const App = ({ lang, pageServer, ...props }) => {
           })
           // setBalance(res)
         })
-        .catch(err => console.error(`ERROR BALANCE ${err}`))
+        .catch(err => {
+          console.error(`ERROR BALANCE ${err}`)
+          let errMessage = {
+            path: null,
+            success: null,
+            fail : 'ошибка доступа к сервер, проверьте соединение',
+          };
+          dispatch('warrning/set',errMessage);
+        })
     }, [
       updateCurrenssies,
       stateValuePoly.statePayment,
@@ -182,6 +199,12 @@ const App = ({ lang, pageServer, ...props }) => {
         })
         .catch((err) => { 
           console.log('ERROR getWishList');
+          let errMessage = {
+            path: null,
+            success: null,
+            fail : 'ошибка доступа к сервер, проверьте соединение',
+          };
+          dispatch('warrning/set',errMessage);
         })
     }, [])
     //********************************************************************************* */ 
@@ -195,6 +218,12 @@ const App = ({ lang, pageServer, ...props }) => {
         })
         .catch(err => {
           console.error(`ERROR ${err}`);
+          let errMessage = {
+            path: null,
+            success: null,
+            fail : 'ошибка доступа к сервер, проверьте соединение',
+          };
+          dispatch('warrning/set',errMessage);
         })
 
     }, [statusRequstOrderCountryPayment])

@@ -17,6 +17,7 @@ import { useStoreon } from 'storeon/react';
 import ModalSubmitCode from './ModalSubmitCode';
 import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
 import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
+import { getCookie } from '../../utils';
 
 const apiUser = api.userApi;
 const initialState = {
@@ -210,10 +211,10 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
                             theme={{
                               theme: 'dark',
                             }}
-                            // httpHeaders={{
-                            //     key: value,
-                            // }}
-                            // withCredentials={true}
+                            httpHeaders={{
+                              Authorization: `Token ${getCookie('ft_token')}`,
+                            }}
+                            withCredentials={true}
                           />
                         </div>
                     </Worker>
