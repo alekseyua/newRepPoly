@@ -29,8 +29,8 @@ return (
         >Ваш текущий баланс <span>{now_balance}&nbsp;<span>{currenssies}</span></span></div>
             <div 
                 className={style['balance__all-price']}
-        >Необходимо пополнить баланс для оплаты заказов <span>{total_price.toFixed(2)}&nbsp;<span>{currenssies}</span></span></div>
-            {/* <div>минимальная сумма для пополнения <span>{(total_price - now_balance).toFixed(2)}</span>{currenssies}</div> */}
+        >Необходимо пополнить баланс для оплаты заказов <span>{(total_price - now_balance).toFixed(2)}&nbsp;<span>{currenssies}</span></span></div>
+            {/* <div>минимальная сумма для пополнения <span>{total_price.toFixed(2) }</span>{currenssies}</div> */}
 
         </>
     )

@@ -12,7 +12,10 @@ import Text from '../../components/Text';
 import api from '../../api';
 import * as yup from 'yup'
 import style from './style/getMyCacheModalContent.module.scss'
+import { useStoreon } from 'storeon/react';
+
 const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
+  const {dispatch} = useStoreon();
   const history = useHistory();
   const orderApi = api.orderApi;
   const [stateClickSend, setStateClickSend] = useState(false)
@@ -24,45 +27,38 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
     beneficiaryBankBIC: null,
     fileInput: null,
   };
-  const errorsMessenge = {
-    symbol: 'symbol',
-    requiredField: Text({ text: 'requiredField' }),
-    shortComments: Text({ text: 'short.comments' }),
-    longComments: Text({ text: 'long.comments' }),
-  };
-  const onSubmit = (data) => {
-    // alert(JSON.stringify(data, null, 2))
-    console.log('click get many', data.fileInput[0].file)
-    setStateClickSend(true)
-    // orderApi
-    //   .getRandomRequizites()
-    //   .then((res) => {
-    //     console.log('click res', res)
 
-      const fdPayments = new FormData();
-      // fdPayments.set('requisites_id', requisites.id);
+  const onSubmit = (data) => {
+    setStateClickSend(true)
+        const fdPayments = new FormData();
         fdPayments.set('cost', data.amount);
         fdPayments.set('name', data.fio);
         fdPayments.set('number', data.beneficiaryBankAccountNumber);
         fdPayments.set('bank', data.beneficiaryBankBIC);
-    fdPayments.set('receipt', data.fileInput[0].file);
+        fdPayments.set('receipt', data.fileInput[0].file);
 
-
-      // if (fdPayments.get('receipt') === 'null') {
-      //   setErrClickSend(true)
-      //   resulcConfirm ? null : history.location.pathname === '/balance' ? closeModal() : history.push('balance')
-      // } else {
       orderApi
         .returnManyQuery(fdPayments)
         .then((res) => {
           closeModal();
-          // alert('заявка отправлена :)')
+          let errMessage = {
+            path: null,
+            success: 'Заявление отправлено',
+            fail : null,
+          };
+          dispatch('warrning/set',errMessage);
         })
         .catch((err) => {
           if (err.response) {
-            console.log("PayModalContent.js ERROR", err)
+            console.log("PayModalContent.js ERROR", err.response)
             closeModal();
-                     }
+            let errMessage = {
+              path: null,
+              success: null,
+              fail : 'Возникла проблема с отправкой, попробуйте немного позже',
+            };
+            dispatch('warrning/set',errMessage);
+            }
         });
       // }
     // })
@@ -133,12 +129,31 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
    * Если вы будете расширять схему валидации для файла 
    * то начните после file: yup..., ВАШ КОД ДАЛЕЕ
    */
-  const validationShema = yup.object().shape({
-    fileInput: yup.array().of(yup.object().shape({
-      // test('НАЗВАНИЕ ОШИБКИ', 'ОПИСАНИЕ ОШИБКИ', Функция проверки)
+  const validationShema = (errorsMessenge) =>{  
+    return yup.object().shape({
+      fio: Yup.string()
+              .nullable()
+              .matches(symbolReject, errorsMessenge.symbol)
+              .required(errorsMessenge.requiredField),
+      cost: Yup.string().nullable().required(errorsMessenge.requiredField),
+      comment: Yup.string()
+                  .nullable()
+                  .matches(symbolReject, errorsMessenge.symbol)
+                  .min(2, errorsMessenge.shortComments)
+                  .max(250, errorsMessenge.longComments)
+                  .required(errorsMessenge.requiredField),
+      fileInput: yup.array().of(yup.object().shape({
+        // test('НАЗВАНИЕ ОШИБКИ', 'ОПИСАНИЕ ОШИБКИ', Функция проверки)
       file: yup.mixed().test('fileSize', 'fileSize', (value) => value ? value.size < 1 : false),
-    }))
-  })
+      }))
+    })
+  }
+  const errorsMessenge = {
+    symbol: 'symbol',
+    requiredField: Text({ text: 'requiredField' }),
+    shortComments: Text({ text: 'short.comments' }),
+    longComments: Text({ text: 'long.comments' }),
+  };
   /**
    * Функция для печати ошибок
    * для ошибок массивов в errors будет обхект 
@@ -157,6 +172,8 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
 
     const callBackMoney = () => {
       window.open(callback_money)
+
+
     }
 
   return (
@@ -164,6 +181,7 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
       <ModalContentViews.CloseBtn closeModal={closeModal} />
       <ModalContentViews.HeaderBlock mb={'20px'} title={'Возврат денежных средств в связи с отменой заказа'} />
       <ModalContentViews.WarningBlock>
+        <ModalContentViews.SubTitle>Данные для возврата денежных средств:</ModalContentViews.SubTitle>
         <p>
             Оформление возврата возможно только при наличии скан-копии заявления на возврат,
           прикрепленного в форматах .jpg (jpeg), .png, bmp, .zip, .rar, .pdf. Для отправки нескольких
@@ -173,19 +191,19 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
       </ModalContentViews.WarningBlock>
       <ModalContentViews.ContentBlock>
         <ModalContentViews.ContentBlock>
-
           <Formik
             // validationSchema={payModalScheme(errorsMessenge)}
             validateOnChange
             validateOnBlur
             validateOnMount
-            // validationSchema={validationShema}
+            validationSchema={validationShema(errorsMessenge)}
             initialValues={initialValues}
             onSubmit={async (values) => {
               onSubmit(values)
             }}
           >
             {({ errors, touched, values, isValid, handleSubmit, handleReset }) => {
+            console.log('errors:', errors)
 
               return (
                 <Form
@@ -295,21 +313,7 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
               )
             }}
           </Formik>
-
-
-          {/* 
-
-                 <ModalContentViews.FileInputCustom label={"Прикрепить"} setFieldValue={setFieldValue} />
-
-                  <Button type={'submit'} stateClickSend={stateClickSend} full variant={'black_btn'}>
-                    ОПЛАТИТЬ
-                  </Button>
-                </GxForm>
-              );
-            }}
-          </Formik> */}
         </ModalContentViews.ContentBlock>
-        <ModalContentViews.CenterPosition></ModalContentViews.CenterPosition>
       </ModalContentViews.ContentBlock>
     </ModalContentViews.ModalWrapper>
   );

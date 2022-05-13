@@ -204,9 +204,14 @@ const SectionProdPage = ({
       color: item.color,
     }))
     ):null
-    const allNewSku = newSku;
+    let allNewSku = newSku;
+
+    newSku = newSku.filter(item=>item.image !== '-');
+    media = media.filter(item=>item.image !== '-');
+    allNewSku = allNewSku.filter(item=>item.image !== '-');
 
     newSku = newSku.filter(item=>item.color === color[0].id);
+
     media = [...newSku, ...media, ...allNewSku];
     !!media.length ? 
       setMediaHook(media) : null

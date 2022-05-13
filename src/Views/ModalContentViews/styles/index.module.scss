@@ -364,6 +364,69 @@
   border-radius: 4px;
   padding: 12px;
   margin-bottom: 21px;
+  max-height: 100%;
+  position: relative;
+  cursor: pointer;
+    .arrow-8 {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      top: 0;
+      right: 10px;
+      &:before,
+      &:after {
+          content: '';
+          position: absolute;
+          box-sizing: border-box;
+          width: 100%;
+          height: 100%;
+          border-left: 2px solid #c577bf;
+          border-bottom: 2px solid #c577bf;
+          animation: arrow-8 3s linear infinite;
+      }
+      &:after {
+          animation: arrow-8 3s linear infinite -1.5s;
+      }
+    }
+    &--active{
+      .warning_wrapper__grid{
+        max-height: 100%;
+      }
+      transition: all 2s ease-out;
+      font-size: 14px;
+      justify-content: left;
+      align-items: center;
+      background-color: rgba(252, 210, 215, 0.5);
+      border-radius: 2px;
+      padding: 15px;
+      position: relative;
+      max-height: 100%;
+      cursor: pointer;
+      .arrow-8 {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        // margin: 30px auto 80px auto;
+        bottom: 10px;
+        right: 10px;
+        transform: rotate(180deg);
+        transition: all .2 ease;
+        &:before,
+        &:after {
+            content: '';
+            position: absolute;
+            box-sizing: border-box;
+            width: 100%;
+            height: 100%;
+            border-left: 2px solid #c577bf;
+            border-bottom: 2px solid #c577bf;
+            animation: arrow-8 3s linear infinite;
+        }
+        &:after {
+            animation: arrow-8 3s linear infinite -1.5s;
+        }
+      }
+   }
   &-nomargin {
     margin-bottom: 0;
   }
@@ -373,6 +436,9 @@
     flex-wrap: nowrap;
     align-content: flex-start;
     justify-content: flex-start;
+    max-height: 20px;
+    overflow: hidden;
+    position: relative;
     &-text {
       padding-left: 10px;
       &a2 {
@@ -390,6 +456,7 @@
   line-height: 140%;
   letter-spacing: 0.04em;
   color: var(--gx-color-primary);
+  padding-left: 15px;
 }
 
 .input {
@@ -553,5 +620,23 @@
 
       }
     }
+  }
+}
+
+@keyframes arrow-8 {
+  0% {
+      opacity: 0;
+      transform: translate(0, -13px) rotate(-45deg);
+  }
+  10%, 90% {
+      opacity: 0;
+  }
+  50% {
+      opacity: 1;  
+      transform: translate(0, 0) rotate(-45deg);
+  }
+  100% {
+      opacity: 0;
+      transform: translate(0, 13px) rotate(-45deg);
   }
 }

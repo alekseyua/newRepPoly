@@ -246,19 +246,19 @@ const OrderComponent = ({
       //online(1) или с баланса(3)
 
       if (valueStatePay === 1) {
-        orderApi
-          .createOrder(params)
-          .then((res) => {
-            const order_id = res.id;
-            setStateCreateOrder(true)
-            openModalPay(order_id);
-            dispatch('stateCountRestart/add', !stateCountRestart);
-          })
-          .catch((err) => {
-            console.log(`ERROR creteOrder pay ONLINE, ${err}`); 
-            openModalRejectedOrdering('cart');
-          });
-      } else {
+      //   orderApi
+      //     .createOrder(params)
+      //     .then((res) => {
+      //       const order_id = res.id;
+      //       setStateCreateOrder(true)
+      //       openModalPay(order_id);
+      //       dispatch('stateCountRestart/add', !stateCountRestart);
+      //     })
+      //     .catch((err) => {
+      //       console.log(`ERROR creteOrder pay ONLINE, ${err}`); 
+      //       openModalRejectedOrdering('cart');
+      //     });
+      // } else {
         console.log(`params.total_cost < dataBalance.balance`,params.total_cost , dataBalance.balance)
         if (params.total_cost < dataBalance.balance) {
           //если достаточно денег на счету
@@ -332,21 +332,21 @@ const OrderComponent = ({
       //! openModalPay(order_id, dataBalance.balance, params.total_cost);
 
       if (valueStatePay === 1) {
-        //создаём заказ
-        orderApi
-          .createOrder(params)
-          .then((res) => {
-            const order_id = res.id;
-            //диалоговое окно оплаты по реквизитам
-            openModalPay(order_id, dataBalance.balance, params.total_cost);
-            dispatch('stateCountRestart/add', !stateCountRestart);
-               setStateCreateOrder(true)
-          })
-          .catch((err) => {
-            console.log(`ERROR creteOrder pay ONLINE, ${err}`);
-            openModalRejectedOrdering('cart');
-          });
-      } else {
+      //   //создаём заказ
+      //   orderApi
+      //     .createOrder(params)
+      //     .then((res) => {
+      //       const order_id = res.id;
+      //       //диалоговое окно оплаты по реквизитам
+      //       openModalPay(order_id, dataBalance.balance, params.total_cost);
+      //       dispatch('stateCountRestart/add', !stateCountRestart);
+      //          setStateCreateOrder(true)
+      //     })
+      //     .catch((err) => {
+      //       console.log(`ERROR creteOrder pay ONLINE, ${err}`);
+      //       openModalRejectedOrdering('cart');
+      //     });
+      // } else {
         if (params.total_cost < dataBalance.balance) {
           orderApi
             //создаём заказ когда списуют деньги со счёта

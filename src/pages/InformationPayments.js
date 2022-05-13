@@ -57,13 +57,17 @@ const InformationPayments = (props) => {
           <Title variant={'information-payments__title'} type={'h1'}>
             <Text text={'info.payments'} />
           </Title>
-          <InformationViews.PaymentsTextBlock>
-            <InformationViews.PaymentsTitle>
-              Для розничного покупателя
-            </InformationViews.PaymentsTitle>
-            <InformationViews.PaymentsDescription content={state.retailPaymentsInfo} />
-          </InformationViews.PaymentsTextBlock>
-          {role === ROLE.RETAIL || role === ROLE.UNREGISTRED ? null : (
+          {role === ROLE.RETAIL || role === ROLE.UNREGISTRED ? (
+          <>
+            <InformationViews.PaymentsTextBlock>
+              <InformationViews.PaymentsTitle>
+                Для розничного покупателя
+              </InformationViews.PaymentsTitle>
+              <InformationViews.PaymentsDescription content={state.retailPaymentsInfo} />
+            </InformationViews.PaymentsTextBlock>
+          </> 
+          )
+          : role === ROLE.WHOLESALE ? (
             <>
               <InformationViews.PaymentsTextBlock>
                 <InformationViews.PaymentsTitle>
@@ -71,13 +75,16 @@ const InformationPayments = (props) => {
                 </InformationViews.PaymentsTitle>
                 <InformationViews.PaymentsDescription content={state.woosalePaymentsInfo} />
               </InformationViews.PaymentsTextBlock>
-
+            </>
+          )
+          : role === ROLE.DROPSHIPPER ? (
+            <>
               <InformationViews.PaymentsTextBlock>
                 <InformationViews.PaymentsTitle>Для дропшиппера</InformationViews.PaymentsTitle>
                 <InformationViews.PaymentsDescription content={state.dropPaymentsInfo} />
               </InformationViews.PaymentsTextBlock>
             </>
-          )}
+          ) : null }
         </InformationViews.PaymentsConteiner>
       </Container>
     </Layout>

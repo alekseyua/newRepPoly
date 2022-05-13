@@ -1036,6 +1036,13 @@ div#viewer.pdfViewer {
   }
 
 
+  .requisites{
+    & > p {
+      pointer-events: none;
+    }
+  }
+
+
   @media (max-width: 680px) {
     .juridical-block {
       &--left{
