@@ -106,7 +106,7 @@ const HeaderButtons = ({
       })}
     >
       {lang ? (
-        <div className={style['header-buttons-dropdowns']}>
+        <div dataIntro="step2" className={style['header-buttons-dropdowns']}>
           <LangAndCurrencies
             currenciesData={currenciesData}
             isScrolled={isScrolled}

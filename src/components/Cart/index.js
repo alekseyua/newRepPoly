@@ -456,6 +456,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
     if (!selectedCartItem.length) {
       return setTooltipNoSelectedProductsOpen(true);
     }
+    console.log('selectedCartItem:', selectedCartItem)
     confirmDeleteCartItem(() => {
       apiCart
         .multipleDeleteFromCart({ items: selectedCartItem })
@@ -490,6 +491,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
   // при нажатии + или - в корзине происходит добавление или удаление товара
   // ДОДЕЛАТЬ << is_performed >>
   const updateProductFromCart = (data = []) => {
+    console.log('data:', data)
     // обнавляем состояние карзины на сервере и в хранилище если обшибка допилить выдать попап и обновлять карзину
     apiCart
       .updateCartData([...data])

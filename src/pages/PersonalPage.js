@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Layout from '../Views';
 import PersonalPageComponent from '../components/PersonalPageComponent';
 import PersonalPageViews from '../Views/PersonalPageViews';
 import Modal from '../Views/ModalCreator';
-
+import {ROLE} from '../const';
+import { useHistory } from 'react-router-dom';
 const PersonalPage = (props) => {
   const [modalStates, setModalStates] = useState(Modal.defaultModalStates);
   const {
@@ -14,10 +15,28 @@ const PersonalPage = (props) => {
     profile,
     site_configuration,
   } = props;
-  const { user = {}, shop, role, passport, organization, links, id, balance } = profile;
-  const { is_has_shop, shop_link } = shop;
-  const { username } = user;
+  const history = useHistory();  
+  console.log('profile:', profile)
+  let  user = {}, shop = null, role, passport, organization, links, id, balance;
+  let is_has_shop, shop_link ;
+  let username; 
+  if(profile === undefined){
+    history.push('authorization')
+  }else{
+ 
   //todo: можно пропсом кастрировать футер
+     user = profile.user;
+     shop = profile.shop;
+     role = profile.role;
+     passport = profile.passport;
+     organization = profile.organization;
+     links = profile.links;
+     id = profile.id;
+     balance = profile.balance;
+     is_has_shop;
+     shop_link = shop.shop_link;
+     username = user.username;
+  }
 
   return (
     <Layout responsive {...props}>
@@ -50,7 +69,7 @@ const PersonalPage = (props) => {
               site_configuration={site_configuration}
             />
             <PersonalPageComponent.DeliveryAddresses
-              profileId={profile.user.id}
+              profileId={id}
               setModalStates={setModalStates}
             />
 
@@ -66,6 +85,7 @@ const PersonalPage = (props) => {
       ></PersonalPageViews.WrapperPage>
     </Layout>
   );
+  
 };
 
 export default React.memo(PersonalPage);

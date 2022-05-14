@@ -22,21 +22,21 @@ const [ message, setMessage ] = useState({});
 
 
 useEffect(()=>{
-  const ws = new WebSocket(`ws://91.218.229.240:8001/ws/chat/${order_id}/`)
-    ws.addEventListener('open', function (event) {
-      ws.send(JSON.stringify({'order_id': order_id}))
-      console.log('message send',event)
-    })
-    ws.addEventListener('message', function (data) {
-      setcorrespondenceState(prev => [...prev, ...JSON.parse(data.data).order_chat])
-    })
+  // const ws = new WebSocket(`ws://91.218.229.240:8001/ws/chat/${order_id}/`)
+  //   ws.addEventListener('open', function (event) {
+  //     ws.send(JSON.stringify({'order_id': order_id}))
+  //     console.log('message send',event)
+  //   })
+  //   ws.addEventListener('message', function (data) {
+  //     setcorrespondenceState(prev => [...prev, ...JSON.parse(data.data).order_chat])
+  //   })
   },[])
 
   const getChatData = () => {
     orderApi
       .getCorrespondence({ order_id: order_id })
       .then((res) => {
-        //setcorrespondenceState(res);
+        setcorrespondenceState(res);
       });
   };
 
@@ -115,7 +115,7 @@ useEffect(()=>{
 
   useEffect(() => {
 
-    //getChatData();
+    getChatData();
   }, []);
 
 

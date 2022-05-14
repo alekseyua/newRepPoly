@@ -235,30 +235,10 @@ const OrderComponent = ({
         ...params,
         delivery_cost: priceNowDilevery,
       }
-      :null //cart_content.delivery.price,
-      // console.log('dataBalance',dataBalance)
-      
-      // console.log('params:', params)
-    // ДЕЛАЕМ ПРОВЕРКУ НА ДРОПШИПЕРА И "ПРОВЕРКУ НА НАЛИЧЕЕ ДОСТАТОЧНО ЛИ СРЕДСТ ДЛЯ ВЫКУПА ТОВАРА"
+      :null 
+
     if (role === ROLE.DROPSHIPPER) {
       //если дробшипер списание со счета при достаточном количестве денег на счету
-      //*************************************************************************** */
-      //online(1) или с баланса(3)
-
-      if (valueStatePay === 1) {
-      //   orderApi
-      //     .createOrder(params)
-      //     .then((res) => {
-      //       const order_id = res.id;
-      //       setStateCreateOrder(true)
-      //       openModalPay(order_id);
-      //       dispatch('stateCountRestart/add', !stateCountRestart);
-      //     })
-      //     .catch((err) => {
-      //       console.log(`ERROR creteOrder pay ONLINE, ${err}`); 
-      //       openModalRejectedOrdering('cart');
-      //     });
-      // } else {
         console.log(`params.total_cost < dataBalance.balance`,params.total_cost , dataBalance.balance)
         if (params.total_cost < dataBalance.balance) {
           //если достаточно денег на счету
@@ -288,14 +268,11 @@ const OrderComponent = ({
               openModalRejectedOrdering('cart');
             });
         }
-      }
       //***************************************************************************** */
     } else if (ROLE.RETAIL === role) {
       //если розничный
       //если оплата с баланса
       if (params.total_cost < dataBalance.balance) {
-        //если достаточно денег на счету оформляется заказ сразу
-        //???????????????????????????????????????????????????????
         //создаём заказ когда списуют деньги со счёта
          orderApi
           .createOrder(params) 
@@ -315,7 +292,6 @@ const OrderComponent = ({
           .createOrder(params)
           .then((res) => {
             const order_id = res.id;
-            //диалоговое окно оплаты по реквизитам
             setStateCreateOrder(true)
             openModalPay(order_id, dataBalance.balance, params.total_cost);
             dispatch('stateCountRestart/add', !stateCountRestart);
@@ -327,26 +303,6 @@ const OrderComponent = ({
       }
     } else if (ROLE.WHOLESALE === role) {
       //если оптовик
-      //! const order_id = 211;
-      //! setStateCreateOrder(true)
-      //! openModalPay(order_id, dataBalance.balance, params.total_cost);
-
-      if (valueStatePay === 1) {
-      //   //создаём заказ
-      //   orderApi
-      //     .createOrder(params)
-      //     .then((res) => {
-      //       const order_id = res.id;
-      //       //диалоговое окно оплаты по реквизитам
-      //       openModalPay(order_id, dataBalance.balance, params.total_cost);
-      //       dispatch('stateCountRestart/add', !stateCountRestart);
-      //          setStateCreateOrder(true)
-      //     })
-      //     .catch((err) => {
-      //       console.log(`ERROR creteOrder pay ONLINE, ${err}`);
-      //       openModalRejectedOrdering('cart');
-      //     });
-      // } else {
         if (params.total_cost < dataBalance.balance) {
           orderApi
             //создаём заказ когда списуют деньги со счёта
@@ -376,7 +332,6 @@ const OrderComponent = ({
               openModalRejectedOrdering('cart');
             });
         }
-      }
     } else {
       alert('HZ proverit');
     }
@@ -574,7 +529,6 @@ const OrderComponent = ({
             //запускаем анимацию кнопки создания заказа и отправка на бэк запроса
           if (orderFunc && !stateCreateOrder) {
             const timerBtn = setTimeout(() => {
-              console.log('hz-hz-hz ',orderFunc, 'stateCreateOrder', !stateCreateOrder)
               creteOrder(values);
               dispatch('orderFunc/state', false);
               return () =>clearTimeout(timerBtn);

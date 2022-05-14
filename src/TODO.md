@@ -1,4 +1,10 @@
   заметки
+
+
+"intro.js": "^5.1.0",
+    "intro.js-react": "^0.6.0",
+
+
 ``` попап для ошибки ```
   import { useStoreon } from 'storeon/react';
   const {dispatch} = useStoreon();

@@ -7,6 +7,10 @@ import style from './topHeaderMenu.module.scss';
 import { dropdownIcon } from '../../images';
 import SearchInput from '../SearchPageViews/SearchInput';
 import { motion, AnimatePresence } from 'framer-motion';
+
+import introJs from 'intro.js';
+import 'intro.js/introjs.css';
+import "intro.js/themes/introjs-modern.css";
 /**
  * ? Поля доступные в меню 
  * ? children: []
@@ -29,6 +33,7 @@ const TopHeaderMenu = ({ header_menu = [], handlerActiveDropDownMenuItem, classM
     [style['top-header-menu']]: true,
     [style[classModificator]]: !!classModificator,
   });
+ 
 
   const variants = {
     open: {
@@ -63,8 +68,18 @@ const TopHeaderMenu = ({ header_menu = [], handlerActiveDropDownMenuItem, classM
     return () => document.removeEventListener('click',onClick)
   }, [])
 
+  useEffect(()=>{
+      //introJs().start()
+  },[])
+
+//data-intro={'Вот так будет выглядит инструкция для знакомства с сайтом'} 
+
   return (
-    <div className={classNameBlock}>
+    <>
+
+
+    <div className={classNameBlock} dataIntro="step1">
+        
       <ul className={style['top-header-menu__list']}>
         {header_menu.map((el, i) => {
           return (
@@ -181,6 +196,7 @@ const TopHeaderMenu = ({ header_menu = [], handlerActiveDropDownMenuItem, classM
         })}
       </ul>
     </div>
+    </>
   );
 };
 

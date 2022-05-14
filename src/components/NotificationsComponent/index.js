@@ -75,8 +75,10 @@ const NotificationsComponent = ({ }) => {
         initFilter={initialFilters}
         api={apiProfile.getNotifications
         }
+        date={'DD.MM.YY'}
       >
         {(data) => {
+          console.log('data:', data)
           const {
             count,
             results = [],
@@ -93,7 +95,6 @@ const NotificationsComponent = ({ }) => {
             isPrev,
             newData,
           } = data;
-
           // пробигаемся по масиву сообщений и создаём новый массив с id
           updateArrForm = (setAllCheckEnableChange) => {
             let checkAllId = []
@@ -119,6 +120,8 @@ const NotificationsComponent = ({ }) => {
                 </NotificationsViews.SubText>
                 <NotificationsViews.Header heandlerReed={heandlerReed} heandlerDel={heandlerDel} checkAllBox={checkAllBox} checkEnable={checkEnable} />
                 {results.map((el) => {
+                  console.log('el:', el)
+
                   return (
                     <NotificationsViews.Item
                       key={el.id}
