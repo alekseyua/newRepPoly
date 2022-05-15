@@ -20,10 +20,31 @@ const ControlButtons = ({
   sizes,
   role,
   productId,
+  is_in_stock,
+  in_stock_count,
 }) => {
   console.log('productId:1', productId)
+  console.log({is_in_stock})
+
   const { stateCountCart, dispatch } = useStoreon('stateCountCart');
   const [ countInBtn, setCountInBtn ] = useState()
+  const [ stateInStockeBtn, setStateInStockeBtn ] = useState(false)
+  useEffect(()=>{ 
+    console.log(in_stock_count < 1 ,'|||',in_stock_count, in_stock_count > in_cart_count,in_cart_count)
+    if(is_in_stock){
+
+      if(in_stock_count < 1){
+        setStateInStockeBtn(true)
+      } else {
+        setStateInStockeBtn(false)
+      }
+      if (in_stock_count > in_cart_count){
+        setStateInStockeBtn(false)
+      }else{
+        setStateInStockeBtn(true)
+      }
+    }
+  },[is_in_stock,in_stock_count,in_cart_count])
   const cartRef = createRef();
   const cloneCart = () =>{
     const cloneIcon = cartRef.current.cloneNode(true)
@@ -94,6 +115,8 @@ const ControlButtons = ({
     setColorBtnClick(styleColor)
   }, [changeColorBtn.red, changeColorBtn.green])
 
+  console.log('stateInStockeBtn:', stateInStockeBtn)
+  
   //******************************************************************************************************* */
   const linkToProductPage = () => {
     if (!modalView) return null;
@@ -108,7 +131,8 @@ const ControlButtons = ({
     return (
       <div className={style['prodpage-control-buttons']}>
         <div className={style['prodpage-control-buttons__counter']}>
-          <GxButton
+          <Button
+            disabled = {in_cart_count>1? false : in_cart_count===1? true : stateInStockeBtn}
             onClick={(e) => {
               cloneCart(e)
               addToCartProduct(- 1, true, productId);
@@ -116,7 +140,7 @@ const ControlButtons = ({
             className={style['prodpage-control-buttons__add-button']}
           >
             -
-          </GxButton>
+          </Button>
           <p className={colorBtnClick}>
           <GxIcon 
           ref={cartRef}
@@ -126,7 +150,9 @@ const ControlButtons = ({
               className={style['prodpage-control-buttons__add-to-cart--span']}
             > в корзине: {countInBtn} {is_collection && role === ROLE.WHOLESALE? 'ряд(а)' : 'шт.'}</span>
           </p>
-          <GxButton
+          <Button
+          disabled = {stateInStockeBtn}
+
             onClick={(e) => {
               cloneCart(e)
               addToCartProduct(1, false, productId);
@@ -134,7 +160,7 @@ const ControlButtons = ({
             className={style['prodpage-control-buttons__down-button']}
           >
             +
-          </GxButton>
+          </Button>
         </div>
         {linkToProductPage()}
       </div>
@@ -143,7 +169,8 @@ const ControlButtons = ({
     return (
     <div className={style['prodpage-control-buttons']}>
       <div className={style['prodpage-control-buttons__add']}>
-        <GxButton
+        <Button
+          disabled = {stateInStockeBtn}
           onClick={(e) => {
             cloneCart(e)
             addToCartProduct(1, false, productId);
@@ -155,7 +182,7 @@ const ControlButtons = ({
           slot="icon-left" 
           src={shoppingIcon}></GxIcon>
           добавить в корзину
-        </GxButton>
+        </Button>
       </div>
       {linkToProductPage()}
     </div>

@@ -103,7 +103,7 @@ const OrderComponent = ({
       .catch((err) => console.log('response list order ERROR', err));
   }, [updateCurrenssies]);
 
-  let newListRes = listOrders.filter(el=>el.status?.status === 'in_process' || el.status?.status === 'payment_waiting');
+  let newListRes = listOrders.filter(el=>el.status?.status === 'in_process');// || el.status?.status === 'payment_waiting');
   const options = newListRes.map((el) => {
     return {
       title: `${el.order_number} (${el.total} ${currenssies})`,

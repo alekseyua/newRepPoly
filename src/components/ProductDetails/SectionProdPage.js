@@ -91,7 +91,7 @@ const SectionProdPage = ({
   const [is_bestsellerHook, setIs_bestsellerHook] = useState(false);
   const [styleSocialItems, setStyleSocialItems] = useState(false)
   const [collectionsHook, setCollectionsHook] = useState();//boolen
-  const [is_in_stockHook, setIs_in_stockHook] = useState(false);
+  const [is_in_stockHook, setIs_in_stockHook] = useState(is_in_stock);
   const [is_closeoutHook, setIs_closeoutHook] = useState(false);
   const [changeColorBtn, setChangeColorBtn] = useState({ red: false, green: false });
   const [modalStates, setmodalStates] = useState({ show: false });
@@ -174,10 +174,6 @@ const SectionProdPage = ({
   useEffect(() => {
     setIs_bestsellerHook(is_bestseller)
   }, [is_bestseller])
-  // являится ли товар в наличии Is_in_stock
-  useEffect(() => {
-    setIs_in_stockHook(is_in_stock)
-  }, [is_in_stock])
   // описание продукта Product_rc
   useEffect(() => {
     product_rc ? setProduct_rcHook(product_rc) : null
@@ -239,7 +235,7 @@ const SectionProdPage = ({
       // pack ??????
     }
     colorsn.id || sizesn.id ? (
-
+      console.log('change color and size'),
       apiContent
         .getProduct(productId, params)
         .then((res) => {
@@ -250,6 +246,8 @@ const SectionProdPage = ({
           setIn_cart_countHook(res.in_cart_count)
           setIn_stock_countHook(res.in_stock_count)
           setIs_likedHook(res.is_liked)
+          console.log('res:.is_in_stock', res.is_in_stock)
+          setIs_in_stockHook(res.is_in_stock)
         })
         .catch(err => console.error(`ERROR getProduct(productId, params) ${err}`))
     ) : null
@@ -591,6 +589,8 @@ const SectionProdPage = ({
                     />
                     <AsyncControlButtons
                       countProduct={in_stock_countHook}
+                      is_in_stock={is_in_stockHook}
+                      in_stock_count={in_stock_countHook}
                       in_cart_count={in_cart_countHook}
                       addToCart={addToCart}
                       modalView={modalView}
