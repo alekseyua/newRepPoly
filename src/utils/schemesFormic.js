@@ -334,6 +334,35 @@ export const createShopSheme = (errorsMessenge) => {
   });
 };
 
+export const GetMyCacheModalContentShema = (errorsMessenge) =>{  
+  return Yup.object().shape({
+    fio: Yup.string()
+            .nullable()
+            .matches(symbolReject, errorsMessenge.symbol)
+            .required(errorsMessenge.requiredField),
+    amount: Yup.string().nullable().required(errorsMessenge.requiredField),
+    beneficiaryBankAccountNumber: Yup.string().nullable().required(errorsMessenge.requiredField),
+    beneficiaryBankBIC: Yup.string().nullable().required(errorsMessenge.requiredField),
+    // comment: Yup.string()
+    //             .nullable()
+    //             .matches(symbolReject, errorsMessenge.symbol)
+    //             .min(2, errorsMessenge.shortComments)
+    //             .max(250, errorsMessenge.longComments)
+    //             .required(errorsMessenge.requiredField),
+    // fileInput: Yup.array().of(Yup.object().shape({
+    //   // test('НАЗВАНИЕ ОШИБКИ', 'ОПИСАНИЕ ОШИБКИ', Функция проверки)
+    // file: Yup.mixed().test('fileSize', 'fileSize', (value) => value ? value.size < 1 : false).required(errorsMessenge.requiredField),
+    // })
+    // ).required(errorsMessenge.fileInput)
+    // fileInput: Yup.array().of(Yup.object().shape({
+    //   file: Yup.mixed().test('fileSize', 'Размер файла больше 1 байт', (value) => {
+    //     if (!value) return false
+    //       return value.size < 1
+    //     }).required(),
+    //   })    
+    // )
+})
+}
 export const payModalScheme = (errorsMessenge) => {
   // fio: null,
   // amountCredited: null,

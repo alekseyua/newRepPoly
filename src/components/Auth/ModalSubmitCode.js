@@ -42,7 +42,7 @@ const ModalSubmitCode = ({ resetUserPassword, initialValues, path = null, setNex
           return (
             <GxForm noValidate onGx-submit={handleSubmit} className="form-horizontal">
               <AuthorizationAndRegViews.ModalRestorePasswordDesc mb={'35px'}>
-                Мы отправили код подтверждения на ваш e-mail
+                Мы отправили код подтверждения на Ваш e-mail
               </AuthorizationAndRegViews.ModalRestorePasswordDesc>
               <Input
                 type={'text'}

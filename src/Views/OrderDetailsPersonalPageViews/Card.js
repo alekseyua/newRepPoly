@@ -89,6 +89,7 @@ const Card = ({
     let hhhh=0
     console.log('count', hhhh++);
     orderApi.getCorrespondence_order_item({ order_item_id: id }).then((res) => {
+      console.log('res:', res)
       setcorrespondenceState(res);
     });
   };

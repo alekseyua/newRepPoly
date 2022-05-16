@@ -11,6 +11,7 @@ import ModalPreviewFile from '../Views/ModalContentViews/ModalPreviewFile';
 import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
 import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
 import { ROLE } from '../const';
+import { getCookie } from '../utils';
 
 const InformationJuridical = (props) => {
   const { cabinet_menu, create_shop, cabinet_site_menu, profile, breadcrumbs = [], page_info, components } = props;
@@ -53,15 +54,15 @@ const InformationJuridical = (props) => {
                 <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456 /build/pdf.worker.min.js">
                     <div id="pdfviewer">
                       <Viewer 
-                        fileUrl={`https://cors-anywhere.herokuapp.com/${file}`}
+                        fileUrl={`${file}`}
                         renderPage={renderPage}
                         theme={{
                           theme: 'dark',
                         }}
-                        // httpHeaders={{
-                        //     key: value,
-                        // }}
-                        // withCredentials={true}
+                        httpHeaders={{
+                          Authorization: `Token ${getCookie('ft_token')}`,
+                        }}
+                        withCredentials={true}
                       />
                     </div>
                 </Worker>

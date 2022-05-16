@@ -91,7 +91,7 @@ const SectionProdPage = ({
   const [is_bestsellerHook, setIs_bestsellerHook] = useState(false);
   const [styleSocialItems, setStyleSocialItems] = useState(false)
   const [collectionsHook, setCollectionsHook] = useState();//boolen
-  const [is_in_stockHook, setIs_in_stockHook] = useState(false);
+  const [is_in_stockHook, setIs_in_stockHook] = useState(is_in_stock);
   const [is_closeoutHook, setIs_closeoutHook] = useState(false);
   const [changeColorBtn, setChangeColorBtn] = useState({ red: false, green: false });
   const [modalStates, setmodalStates] = useState({ show: false });
@@ -109,7 +109,7 @@ const SectionProdPage = ({
   const [colorsn, setColorsn] = useState([]);
   const [sizesn, setSizesn] = useState([]);
   const [isOpen, setIsOpen] = useState();
-
+  const [ product_skuHook, setProduct_skuHook ] = useState([])
   const [showPopapInfoColection, setShowPopapInfoColection] = useState({
     show: false,
     content: null
@@ -174,10 +174,6 @@ const SectionProdPage = ({
   useEffect(() => {
     setIs_bestsellerHook(is_bestseller)
   }, [is_bestseller])
-  // являится ли товар в наличии Is_in_stock
-  useEffect(() => {
-    setIs_in_stockHook(is_in_stock)
-  }, [is_in_stock])
   // описание продукта Product_rc
   useEffect(() => {
     product_rc ? setProduct_rcHook(product_rc) : null
@@ -196,17 +192,26 @@ const SectionProdPage = ({
     let color = colors.filter(el => el.selected)
     colors.length ? setColorsn(color[0]) : null;
 
-    !!product_sku?(
-    newSku =  product_sku.map(item=>({
-      image: item.image,
-      image_thumb: item.image_thumb,
-      type: item?.type? item.type : 'image',
-      color: item.color,
-    }))
-    ):null
-    const allNewSku = newSku;
+    media = media.filter(item=>item !== null);
 
-    newSku = newSku.filter(item=>item.color === color[0].id);
+    !!product_sku?(
+      product_sku = product_sku.filter(item=>item !== null),
+      setProduct_skuHook(product_sku),
+      newSku =  product_sku.map(item=>({
+        image: item.image,
+        image_thumb: item.image_thumb,
+        type: item?.type? item.type : 'image',
+        color: item.color,
+      })),
+      newSku = newSku.filter(item=>item !== null),
+      newSku = newSku.filter(item=>(item?.image || item?.video) !== '-'),
+      newSku = newSku.filter(item=>item.color === color[0].id)
+    ):null
+    
+    let allNewSku = newSku;
+    media = media.filter(item=>(item?.image || item?.video) !== '-');
+    allNewSku = allNewSku.filter(item=>(item?.image || item?.video) !== '-');
+
     media = [...newSku, ...media, ...allNewSku];
     !!media.length ? 
       setMediaHook(media) : null
@@ -230,7 +235,7 @@ const SectionProdPage = ({
       // pack ??????
     }
     colorsn.id || sizesn.id ? (
-
+      console.log('change color and size'),
       apiContent
         .getProduct(productId, params)
         .then((res) => {
@@ -241,6 +246,7 @@ const SectionProdPage = ({
           setIn_cart_countHook(res.in_cart_count)
           setIn_stock_countHook(res.in_stock_count)
           setIs_likedHook(res.is_liked)
+          setIs_in_stockHook(res.is_in_stock)
         })
         .catch(err => console.error(`ERROR getProduct(productId, params) ${err}`))
     ) : null
@@ -336,7 +342,9 @@ const SectionProdPage = ({
   newProduct_sku = mediaHook;
   const getColorForMedia = (colorData) => {
     setMediaFirstHook(media)
-    let arr = Array.from(product_sku);
+    //debugger
+    let arr = Array.from(product_skuHook);
+
     let newArr = arr.map(item => ({
       type: "image",
       image: item.image,
@@ -348,7 +356,7 @@ const SectionProdPage = ({
       image: item.image,
       image_thumb: item.image_thumb,
     }));
-    filterArr = [...newFilterArr, ...media, ...newArr]
+    filterArr = [...newFilterArr, ...mediaHook, ...newArr]
     filterArr = Array.from(new Set(filterArr))
     setMediaHook(filterArr);
   }
@@ -366,14 +374,16 @@ const SectionProdPage = ({
     apiCart
       .addToCart(params)
       .then((res) => {
+        localStorage.setItem('productId',productId);
         setChangeColorBtn({
           red: false,
           green: false
         });
         setIn_cart_countHook(count)
+        
         if (collectionsHook) dispatch('stateCountRestart/add', !stateCountRestart)
 
-        if (openModalSucces && stateCountCart.in_cart === 0) {
+        if (openModalSucces ) {
           openModalSuccessAddToCart(colorsn, sizesn);
         }
       })
@@ -578,6 +588,8 @@ const SectionProdPage = ({
                     />
                     <AsyncControlButtons
                       countProduct={in_stock_countHook}
+                      is_in_stock={is_in_stockHook}
+                      in_stock_count={in_stock_countHook}
                       in_cart_count={in_cart_countHook}
                       addToCart={addToCart}
                       modalView={modalView}
@@ -588,6 +600,7 @@ const SectionProdPage = ({
                       changeColorBtn={changeColorBtn}
                       setChangeColorBtn={setChangeColorBtn}
                       role={role}
+                      productId={productId}
 
                     />
                     {!modalView ? (

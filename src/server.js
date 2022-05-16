@@ -160,7 +160,8 @@ server
               </script>  
             </html>`);
        }
-        return res.status(500).send(`got error ${error.stack}, ${error}`);
+        console.log('res:', res)
+        return res.status(500).redirect(`/authorization`);//status(500).send('/')//`got error ${error.stack}, ${error}`);
       });
   });
 

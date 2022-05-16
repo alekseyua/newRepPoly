@@ -116,7 +116,6 @@ class Api extends AbstractBaseApi {
       return { pageType, page: PAGES['development-page'].serializer(page) };
     } else {
       const { serializer } = PAGES[pageType];
-
       return { pageType, page: serializer(page) };
     }
   };

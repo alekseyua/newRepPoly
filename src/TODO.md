@@ -1,4 +1,15 @@
   заметки
+vpn tunel https://routerus.com/how-to-set-up-wireguard-vpn-on-ubuntu-20-04/
+
+linux 
+  state:  sudo wg
+  up:     sudo wg-quick up wg0
+  douwn:  sudo wg-quick down wg0
+
+"intro.js": "^5.1.0",
+    "intro.js-react": "^0.6.0",
+
+
 ``` попап для ошибки ```
   import { useStoreon } from 'storeon/react';
   const {dispatch} = useStoreon();
@@ -10,9 +21,14 @@
   dispatch('warrning/set',errMessage);
   
   
-  
+  ошибка доступа к сервер, проверьте соединение
   dispatch('warrning/set', 'текст если нужно указать в попапе')
-_______________________________________________________________
+_________
+
+  dispatch('spinner')
+
+checkLocalStorage(key) -  проверка ключа в localStorage
+______________________________________________________
 ``` попап для ?????? ```
 
 
@@ -30,6 +46,42 @@ GET
 http://91.218.229.240:8000/api/v1/order/correspondence_order_item/?order_item_id=№ товара
 
 POST
+
+```всплывающая инструкция```
+import { Steps, Hints } from 'intro.js-react';
+import "intro.js/introjs.css";
+
+const initialStateIntro = {
+    stepsEnabled: true,
+    initialStep: 0,
+    steps: [
+      {
+        element: '[data-py-id="step1"]',
+        intro: "Вот так будет выглядит инструкция для знакомства с сайтом",
+      },
+
+      {
+        element:'[data-py-id="step2"]',
+        intro: <img
+                width="100%"
+                alt=""
+                src="https://i.giphy.com/media/ujUdrdpX7Ok5W/giphy.webp"
+              ></img>
+      }
+    ],
+    disableInteraction: true,
+
+    hintsEnabled: true,
+    hints: [
+      {
+        element: '[data-py-id="step3"]',
+        hint: "Hello hint",
+        hintPosition: "middle-right"
+      }
+    ]
+  }
+
+
 ``````plagin for work VS CODE``````
 1) Auto Rename Tag 
 2) Auto Import

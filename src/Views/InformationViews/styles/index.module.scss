@@ -203,8 +203,11 @@
     display: block;
     letter-spacing: 0.04em;
     text-decoration-line: underline;
-    color: $p;
+    color: $a2;
     cursor: pointer;
+    &:hover{
+      color: #770d44;
+    }
   }
   &__switcher {
     padding-bottom: 20px;

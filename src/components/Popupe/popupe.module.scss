@@ -266,7 +266,7 @@
       // padding: 0 20px;
       border: 2px solid $g;
       box-sizing: border-box;
-      // background-color: $pi3;
+      background-color: #fff;
       border: 2px solid $p;
       box-sizing: border-box;
       border-radius: 2px;
@@ -276,11 +276,6 @@
         color: rgb(255, 255, 255);
         pointer-events: none;
         cursor: not-allowed;
-      }
-      &:hover {
-        background-color: #000;
-        color: #fff;
-        cursor: pointer;
       }
     }
 

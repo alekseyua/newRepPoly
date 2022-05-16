@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import MyOrderViews from '../../Views/MyOrderViews';
 import { btnDown, btnLoad } from '../../images';
-import { infoWhite, statusWait } from '../../images';
-import { FetcherList, dataStates } from '@garpix/fetcher';
+import { statusWait } from '../../images';
+import { FetcherList, } from '@garpix/fetcher';
 import Text from '../Text';
 import Table from '../../Views/Table';
 import Pagination from '../../Views/Pagination';
@@ -55,6 +55,7 @@ const HistoryPayments = ({}) => {
           dataFeth.obj.id,
           'id',
         );
+        
       });
   };
   const tableHeaderData = [
@@ -108,10 +109,22 @@ const HistoryPayments = ({}) => {
    * @param {[]} data
    * @returns масив с собранными компонентами для таблицы
    */
+  const [ numIndex, setNumIndex ] = useState(null);
+  
+  const handleRequisites = (e) => {
+    const indexElement = e.target.getAttribute('data-index');
+    setNumIndex(+indexElement)
+  }
+  useEffect(() => {
+    const onClick = e =>  e.target.className === ('requisites') || setNumIndex(null)
+    document.addEventListener('click', onClick);
+    return () => document.removeEventListener('click',onClick)
+  }, [])
+
   const createTdForTable = (data = [], currenssies, dataFeth) => {
     let results = [];
 
-    data.forEach((el) => {
+    data.forEach((el,i) => {
       let tr = [];
       //!Дата
       tr.push({
@@ -121,7 +134,19 @@ const HistoryPayments = ({}) => {
       //!Счёт получателя
       tr.push({
         attr: { 'data-label': 'Счёт получателя' },
-        content: <div dangerouslySetInnerHTML={{ __html: el.requisites.requisites }}></div>,
+        content:  <div
+                      key={i}
+                      data-index={i}
+                      className='requisites'
+                      style={{
+                        height: i === numIndex? 'auto' : '50px',
+                        overflow: 'hidden',
+                        cursor: 'pointer',
+                      }}
+                      onClick={handleRequisites} 
+                      dangerouslySetInnerHTML={{ __html: el.requisites.requisites }}
+                  >                      
+                  </div>,
       });
       //!Статус
       tr.push({

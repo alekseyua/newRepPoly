@@ -2,7 +2,7 @@ import ModalContentViews from "../../../Views/ModalContentViews";
 
 export const popupWarrning = store => {
 
-    const closeModal = (path) => {
+    const closeModal = (path = null) => {
         // можно сделать переход в нужное место
         store.dispatch('modal/update', {
             show: false,

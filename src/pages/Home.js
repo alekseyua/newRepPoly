@@ -2,15 +2,10 @@ import React, { useState } from 'react';
 import Layout from '../Views';
 import HomeComponent from '../components/HomeComponent';
 import Modal from '../Views/ModalCreator';
-import api from '../api';
-import { categoryCard1, categoryCard2, categoryCard3 } from '../images';
-import { getCookie, setCookie } from '../utils';
-import {useEffect} from 'react';
-import { useStoreon } from 'storeon/react';
-import { OrderCar } from '../#lifehack/OrderCar/OrderCar';
 
 const Home = (props) => {
   const [modalStates, setModalStates] = useState(Modal.defaultModalStates);
+
   const {
     banners,
     partner_banners,
@@ -23,7 +18,6 @@ const Home = (props) => {
     in_stock_product_filters,
     site_configuration,
     profile,
-    cartUpdate,
   } = props;
   const {
     page_type_catalog,
@@ -33,8 +27,9 @@ const Home = (props) => {
     page_type_404,
     page_type_500,
   } = site_configuration;
+
   return (
-   <Layout {...props} cartUpdate={cartUpdate} >
+   <Layout {...props} >
 <>
       <Modal.ModalCreator {...modalStates} setModalStates={setModalStates} />
       <Modal.StorControllerModal />

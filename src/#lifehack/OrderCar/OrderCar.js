@@ -10,6 +10,7 @@ const OrderCar = ({enabled, styleCar, setStyleCar}) => {
 			window?.localStorage?.removeItem('numOrder')
 			setStyleCar('orderCar animate');
 			dispatch('orderFunc/state', true);
+			dispatch('spinner')
 		}
 
     return(

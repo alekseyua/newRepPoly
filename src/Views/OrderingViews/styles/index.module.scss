@@ -52,9 +52,10 @@
       margin-bottom: 30px;
     }
   }
+  //.ordering_cards{}
   &_cards {
-    margin-top: 60px;
-    margin-bottom: 84px;
+    margin-top: 40px;
+    margin-bottom: 20px;
     padding-left: 30px;
     padding-right: 30px;
     display: flex;
@@ -198,9 +199,10 @@
       display: flex;
     }
   }
+  //.ordering_pay{}
   &_pay {
     background-color: rgba(243, 239, 243, 0.3);
-    padding: 60px 30px 45px 30px;
+    padding: 40px 30px 45px 30px;
     @include mobile {
       padding-left: 10px;
       padding-right: 10px;

@@ -3,7 +3,7 @@ import { GxSpinner } from '@garpix/garpix-web-components-react';
 import { v4 } from 'uuid';
 import style from './styles/table.module.scss';
 
-const Table = ({ classNameTable, tableHeaderData, tableBodyData, statusLoad}) => {
+const Table = ({ classNameTable, tableHeaderData, tableBodyData, statusLoad = null}) => {
 
   return (
     <table className={style[classNameTable]}> 

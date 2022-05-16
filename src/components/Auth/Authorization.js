@@ -19,7 +19,7 @@ import ModalNewPassword from './ModalNewPassword';
 import ModalSubmitCode from './ModalSubmitCode';
 import { secretWordEncoding, serializerUserDataDencrypt, serializerUserDataEncript } from '../../utils/encrypt';
 import { useStoreon } from 'storeon/react';
-
+import {checkLocalStorage} from '../../utils';
 
 
 
@@ -68,7 +68,6 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
     setState((prevState) => ({ ...prevState, step: prevState.step + 1 }));
   };
   const closeModal = () => {
-    console.log('Authorization:')
     setState(initialState);
     setModalStates({
       content: null,
@@ -79,13 +78,8 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
   const resetUserPassword = (params, setFieldError) =>{
   
     setValues( prev => {
-      console.log('prev:', prev)      
-      console.log('params:', params)
-
       return { ...prev, ...params }      
     })
-    console.log('work request1',params)
-
     if(state.step === 0){
       apiUser
         .resendUserKey(params)
@@ -102,10 +96,6 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
         }
       )
     }else if(state.step === 2){
-
-    console.log('values inner:', values)
-    console.log('work request2',params)
-
       let param = {
         key: sessionStorage.getItem('submit_code'),
         password: sessionStorage.getItem('password'),
@@ -115,7 +105,6 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
       apiUser
         .resetUserPassword(param)
         .then(res=>{
-          console.log('reset password', res);
           openModalFinallyRestorePassword(true);
         })
         .catch(err=>{          
@@ -156,8 +145,6 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
 // debugger
 
   const openModalRestorePassword = () => {
-    console.log('state.step open', state.step)
-    console.log('values openModalRestorePassword:', values)
     setModalStates({
       content: (
         <ModalContentViews.ModalWrapper>
@@ -224,26 +211,12 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
     openModalRestorePassword();
   }, [state.step]);
 
-  const checkLocalStorage = (key) => {
-    for(let index = 0; index < localStorage.length; index++){
-      if (localStorage.key(index) === key){
-        return true;
-      }
-    }
-    return false;
-  };
-  // username: checkLocalStorage('username')? serializerUserDataDencrypt(localStorage.getItem('username')) : '', 
-  // password: checkLocalStorage('password')? serializerUserDataDencrypt(localStorage.getItem('password')) : '',  
-  // remember: checkLocalStorage('remember')? localStorage.getItem('remember') : false
+
   const initialValuesUserData = { 
     username: checkLocalStorage(secretWordEncoding('username'))? serializerUserDataDencrypt(localStorage.getItem(secretWordEncoding('username'))) : '', 
     password: checkLocalStorage(secretWordEncoding('password'))? serializerUserDataDencrypt(localStorage.getItem(secretWordEncoding('password'))) : '',  
     remember: checkLocalStorage(secretWordEncoding('remember'))? localStorage.getItem(secretWordEncoding('remember')) : false
   };
-
-  // secretWordEncoding('user')
-  // secretWordDecoding('user')
-
   return (
     <Grid>
       <GxRow>

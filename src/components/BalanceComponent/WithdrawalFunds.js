@@ -31,16 +31,6 @@ const WithdrawalFunds = ({ setModalStates, site_configuration }) => {
            Вы можете запросить возврат денежных средств,
            воспользовавшись формой ниже. Необходимо приложить скан заполненного заявления
         </PersonalPageViews.SmallTextGray>
-        {/* <PersonalPageViews.BalanceItemsWrapper>
-          <PersonalPageViews.WarningHelpText
-            icon={infoAccent}
-            wraningText={
-              'Только для РОЗНИЦЫ! Блок должен содержать текстовую информацию о политике возврата\n сервиса, форму заявки на возврат с кнопкой для прикрепления заявления на возврат'
-            }
-            linkText={'Заявление на возврат'}
-            to={'#'}
-          />
-        </PersonalPageViews.BalanceItemsWrapper> */}
         <Button onClick={openModalGetMyCache} variant={'cabinet_default'}  style={{minWidth: 211}}>
           Оформить возврат
         </Button>

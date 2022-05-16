@@ -21,8 +21,10 @@ import AlreadyWatchedWrapperCard from './AlreadyWatchedWrapperCard';
 import SpinnerWrapper from './SpinnerWrapper';
 import CategoryMarkup from './CategoryMarkup';
 import EmptyCatalog from './EmptyCatalog';
+import SpinnerWrapperPopup from './SpinnerWrapperPopup';
 
 export default {
+  SpinnerWrapperPopup,
   EmptyCatalog,
   CategoryMarkup,
   SpinnerWrapper,

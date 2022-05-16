@@ -38,6 +38,14 @@ function removeCookie(name) {
   CookiesDelete()
 }
 
+function checkLocalStorage (key) {
+  for(let index = 0; index < localStorage.length; index++){
+    if (localStorage.key(index) === key){
+      return true;
+    }
+  }
+  return false;
+};
 
 function isTargetBlank(isBlank) {
   return isBlank ? '_blank' : '';
@@ -132,6 +140,7 @@ const rotateMatrix = (matrix) => {
   return result;
 };
 export {
+  checkLocalStorage,
   rotateMatrix,
   setCookie,
   getCookie,

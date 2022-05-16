@@ -123,22 +123,7 @@ const createTdForTable = (data = [], currenssies) => {
         <MyOrderViews.TdStatusData status={el.status.status} statusTitle={el.status.title} />
       ),
     });
-    //Добавить в заказ
-    // tr.push({
-    //   attr: { 'data-label': 'Добавить' },
-    //   content: (
-    //     // <MyOrderViews.TdStatusData  />
-    //     <GxButton 
-    //       type="submit" 
-    //       variant='default' 
-    //       onClick={(e)=>btnAddOrderItems(el)}
-    //       disabled={el.status.status !== 'in_process'?"disable":null}
-    //     >
-    //     Добавить
-    //     </GxButton>
-    //   ),
-    // });
-    //удалить заказ
+       //удалить заказ
     el.status.status === 'payment_waiting' || el.status.status === 'in_process' ?
     tr.push({
       attr: { 'data-label': el.status.status === 'payment_waiting' ? 'Отменить заказ' : 'Добавить' },

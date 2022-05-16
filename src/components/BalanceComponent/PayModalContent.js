@@ -44,7 +44,7 @@ const PayModalContent = ({
 
 
   const errorsMessenge = {
-    symbol: 'symbol',
+    symbol: 'Поле не должно содержать спец. символы',
     requiredField: Text({ text: 'requiredField' }),
     shortComments: Text({ text: 'short.comments' }),
     longComments: Text({ text: 'long.comments' }),
@@ -67,14 +67,22 @@ const PayModalContent = ({
 
       if (fdPayments.get('receipt') === 'null'){
         setErrClickSend(true)
+        
       }else{
         setStateClickSend(true)
+        dispatch('spinner')
         orderApi
           .createPayments(fdPayments)
           .then((res) => {
             dispatch('stateUpdateBalance/update', !stateUpdateBalance)
             !(slug === 'balance') ? history.push('orders') : history.push('balance');
             closeModal();
+            let errMessage = {
+              path: null,
+              success: 'Благодарим за оплату! Ваш баланс будет пополнен примерно в течении 2х рабочих дней.',
+              fail : null,
+            };
+            dispatch('warrning/set',errMessage);
           })
           .catch((err) => {
             if (!!err) {
@@ -86,6 +94,12 @@ const PayModalContent = ({
                   setFieldError(key, element);
                 }
               }
+              let errMessage = {
+                path: null,
+                success: null,
+                fail : 'Произошла ошибка, проверте коректность введённых данных, или повторите операцию позже',
+              };
+              dispatch('warrning/set',errMessage);
             }
           });
       }
@@ -99,6 +113,7 @@ const PayModalContent = ({
 
   return (
     <ModalContentViews.ModalWrapper customClassName={'modal-payments'}>
+      <ModalContentViews.CloseBtn closeModal={closeModal} />
       <ModalContentViews.HeaderBlock mb={'20px'} title={'Пополнение баланса для оплаты'} />
       {<>
         {total_price? 
@@ -141,7 +156,7 @@ const PayModalContent = ({
                     autocomplete={'off'}
                     onGx-input={handleChange}
                     onBlur={handleBlur}
-                    helpText={errors.cost && touched ? <ErrorField message={errors.cost} /> : null}
+                    helpText={errors.cost && touched.cost ? <ErrorField message={errors.cost} /> : null}
                     label={'Сумма к зачислению*'}
                   />
                   <Input
@@ -152,7 +167,7 @@ const PayModalContent = ({
                     autocomplete={'off'}
                     onGx-input={handleChange}
                     onBlur={handleBlur}
-                    helpText={errors.fio && touched ? <ErrorField message={errors.fio} /> : null}
+                    helpText={errors.fio && touched.fio ? <ErrorField message={errors.fio} /> : null}
                     label={'ФИО отправителя*'}
                   />
                   <Input
@@ -164,7 +179,7 @@ const PayModalContent = ({
                     onBlur={handleBlur}
                     onGx-input={handleChange}
                     helpText={
-                      errors.comment && touched ? <ErrorField message={errors.comment} /> : null
+                      errors.comment && touched.comment ? <ErrorField message={errors.comment} /> : null
                     }
                     label={'Комментарий'}
                   />

@@ -98,6 +98,13 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
   const rightSideWrapper = useRef(null);
   const [stateClickBtn, setStateClickBtn] = useState(false)
 
+  useEffect(()=>{
+    dispatch('modal/update', {
+      show: false,
+      content: null,
+      addClass: false,
+    });
+  },[])
   // *****************************
   useEffect(()=>{
     setEnab((!!stateCountCart.in_cart === !!stateCountCart.selected) ? true : false);
@@ -140,6 +147,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
   };
 
   const closeModal = () => {
+    
     setmodalStates({
       ...modalStates,
       callback: null,
@@ -149,8 +157,9 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
   //***************************************************************** */
 
   useEffect(() => {
-
+    
     if (role === ROLE.WHOLESALE) {//если опт
+      debugger
       setIs_performed(stateCountCart.is_performed)
       let goods = {
         collectiion: [],
@@ -397,6 +406,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
   };
   // **********готово*********************************************************************************
   const deleteProductFromCart = (id) => {
+    
     apiCart
       .deleteCartData({
         item_id: id,
@@ -407,6 +417,15 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
       })
       .catch((err) => {
         console.log("err deleteProductFromCart", err);
+        let errMessage = {
+          path: null,
+          success: null,
+          fail : 'ошибка доступа к сервер, проверьте соединение',
+        };
+        dispatch('warrning/set',errMessage);
+        
+        
+        
       });
   };
 
@@ -445,6 +464,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
     if (!selectedCartItem.length) {
       return setTooltipNoSelectedProductsOpen(true);
     }
+    console.log('selectedCartItem:', selectedCartItem)
     confirmDeleteCartItem(() => {
       apiCart
         .multipleDeleteFromCart({ items: selectedCartItem })
@@ -456,6 +476,13 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
         .catch((err) => {
           closeModal();
           console.log('reject error', err);
+          let errMessage = {
+            path: null,
+            success: null,
+            fail : 'ошибка доступа к сервер, проверьте соединение',
+          };
+          dispatch('warrning/set',errMessage);
+          
         });
     });
   };
@@ -472,6 +499,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
   // при нажатии + или - в корзине происходит добавление или удаление товара
   // ДОДЕЛАТЬ << is_performed >>
   const updateProductFromCart = (data = []) => {
+    console.log('data:', data)
     // обнавляем состояние карзины на сервере и в хранилище если обшибка допилить выдать попап и обновлять карзину
     apiCart
       .updateCartData([...data])
@@ -501,6 +529,11 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
 const textConditionPayPart_1 =  components[0].children[0].content.replace(/<p>|<\/p>/isg, '')
 const textConditionPayPart_2 =  components[0].children[1].content.replace(/<p>|<\/p>/isg, '')
 const {opt_minimum_price} = dataBalance;
+
+const handleGoToOrder = () => {
+  console.log('запускаем спинер:')
+  dispatch('spinner')
+}
 console.log('dataBalance',opt_minimum_price);
   return (
     <Container>
@@ -720,6 +753,7 @@ console.log('dataBalance',opt_minimum_price);
             <CartViews.LinkToFirmalization
               enabled={agreeWitheRegulations && is_performed}
               to={checkout_slug}
+              onClick={handleGoToOrder}
             >
               <Text text={'go.to.registration'} />
             </CartViews.LinkToFirmalization>

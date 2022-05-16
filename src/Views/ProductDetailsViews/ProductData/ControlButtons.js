@@ -6,6 +6,8 @@ import Button from '../../Button';
 import { useStoreon } from 'storeon/react';
 import classnNames from 'classnames';
 import { ROLE } from '../../../const'
+import { checkLocalStorage } from '../../../utils';
+import { useHistory } from 'react-router-dom';
 
 const ControlButtons = ({
   in_cart_count,
@@ -18,11 +20,30 @@ const ControlButtons = ({
   is_collection, //
   sizes,
   role,
+  productId,
+  is_in_stock,
+  in_stock_count,
 }) => {
+  const history = useHistory();
   const { stateCountCart, dispatch } = useStoreon('stateCountCart');
   const [ countInBtn, setCountInBtn ] = useState()
+  const [ stateInStockeBtn, setStateInStockeBtn ] = useState(false)
+  useEffect(()=>{ 
+    if(is_in_stock){
+      if(in_stock_count < 1){
+        setStateInStockeBtn(true)
+      } else {
+        setStateInStockeBtn(false)
+      }
+      if (in_stock_count > in_cart_count){
+        setStateInStockeBtn(false)
+      }else{
+        setStateInStockeBtn(true)
+      }
+    }
+  },[is_in_stock,in_stock_count,in_cart_count])
   const cartRef = createRef();
-  const test = () =>{
+  const cloneCart = () =>{
     const cloneIcon = cartRef.current.cloneNode(true)
     const cloneIconWidth = cartRef.current.offsetWidth;//ширина изображения
     const cloneIconHeight = cartRef.current.offsetHeight;// высота изображения
@@ -58,17 +79,26 @@ const ControlButtons = ({
   }
 
   //******************************************************************************************************* */
-  const addToCartProduct = (count, isRemoved = false) => {
-    (count === 1) ? setChangeColorBtn({ red: false, green: true }) : null;
-    (count === -1) ? setChangeColorBtn({ red: true, green: false }) : null;
-    const openModalSucces = (countInBtn === 0) ? true : false;
-    let countInCart;
-    countInCart = collections? sizes.lenght : count
-    countInCart === undefined? countInCart = 0 : countInCart = collections? sizes.lenght : count;
-    dispatch('stateCountCart/add', { ...stateCountCart, in_cart: stateCountCart.in_cart + countInCart})
-    count = countInBtn + count;
-    setCountInBtn(count)
-    addToCart({ count, openModalSucces });
+  const addToCartProduct = (count, isRemoved = false, productId) => {
+    if (role === ROLE.UNREGISTRED){
+      history.push('authorization')
+    }else{
+      let idProductStorage = null;
+      if (checkLocalStorage('productId')){
+        idProductStorage = +localStorage.getItem('productId');
+      }
+    
+      (count === 1) ? setChangeColorBtn({ red: false, green: true }) : null;
+      (count === -1) ? setChangeColorBtn({ red: true, green: false }) : null;
+      const openModalSucces = (idProductStorage !== productId) ? true : false;
+      let countInCart;
+      countInCart = collections? sizes.lenght : count
+      countInCart === undefined? countInCart = 0 : countInCart = collections? sizes.lenght : count;
+      dispatch('stateCountCart/add', { ...stateCountCart, in_cart: stateCountCart.in_cart + countInCart})
+      count = countInBtn + count;
+      setCountInBtn(count)
+      addToCart({ count, openModalSucces });
+    }
   };
 
   useEffect(()=>{
@@ -100,15 +130,16 @@ const ControlButtons = ({
     return (
       <div className={style['prodpage-control-buttons']}>
         <div className={style['prodpage-control-buttons__counter']}>
-          <GxButton
+          <Button
+            disabled = {in_cart_count>1? false : in_cart_count===1? true : stateInStockeBtn}
             onClick={(e) => {
-              test(e)
-              addToCartProduct(- 1, true);
+              cloneCart(e)
+              addToCartProduct(- 1, true, productId);
             }}
             className={style['prodpage-control-buttons__add-button']}
           >
             -
-          </GxButton>
+          </Button>
           <p className={colorBtnClick}>
           <GxIcon 
           ref={cartRef}
@@ -118,15 +149,17 @@ const ControlButtons = ({
               className={style['prodpage-control-buttons__add-to-cart--span']}
             > в корзине: {countInBtn} {is_collection && role === ROLE.WHOLESALE? 'ряд(а)' : 'шт.'}</span>
           </p>
-          <GxButton
+          <Button
+          disabled = {stateInStockeBtn}
+
             onClick={(e) => {
-              test(e)
-              addToCartProduct(+ 1);
+              cloneCart(e)
+              addToCartProduct(1, false, productId);
             }}
             className={style['prodpage-control-buttons__down-button']}
           >
             +
-          </GxButton>
+          </Button>
         </div>
         {linkToProductPage()}
       </div>
@@ -135,10 +168,11 @@ const ControlButtons = ({
     return (
     <div className={style['prodpage-control-buttons']}>
       <div className={style['prodpage-control-buttons__add']}>
-        <GxButton
+        <Button
+          disabled = {stateInStockeBtn}
           onClick={(e) => {
-            test(e)
-            addToCartProduct(1);
+            cloneCart(e)
+            addToCartProduct(1, false, productId);
           }}
           className={style['prodpage-control-buttons__add-to-cart']}
         >
@@ -147,7 +181,7 @@ const ControlButtons = ({
           slot="icon-left" 
           src={shoppingIcon}></GxIcon>
           добавить в корзину
-        </GxButton>
+        </Button>
       </div>
       {linkToProductPage()}
     </div>

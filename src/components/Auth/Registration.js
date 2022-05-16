@@ -17,6 +17,7 @@ import { useStoreon } from 'storeon/react';
 import ModalSubmitCode from './ModalSubmitCode';
 import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
 import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
+import { getCookie } from '../../utils';
 
 const apiUser = api.userApi;
 const initialState = {
@@ -81,7 +82,7 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
       .registration(params)
       .then((res) => {
         const params = {
-          path: '/catalog',
+          path: '/information/juridical',
           data: true,
           userValues: newValues,
           role: role,
@@ -165,7 +166,7 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
 
   const openModalFinallyRegistration = (data, userValues = null, role) => {
     const params = {
-      path: '/',
+      path: '/information/juridical',
       data: data,
       userValues: userValues,
       role: role,
@@ -184,10 +185,8 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
             content: null,
             addClass: false,
           });
-        history.push('catalog');
         };
         const renderPage = (props) => {
-            console.log('props:', props)
             return (
                 <>
                     {props.canvasLayer.children}
@@ -205,15 +204,15 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
                     <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456 /build/pdf.worker.min.js">
                         <div id="pdfviewer">
                           <Viewer 
-                            fileUrl={`https://cors-anywhere.herokuapp.com/${file}`}
+                            fileUrl={`${file}`}
                             renderPage={renderPage}
                             theme={{
                               theme: 'dark',
                             }}
-                            // httpHeaders={{
-                            //     key: value,
-                            // }}
-                            // withCredentials={true}
+                            httpHeaders={{
+                              Authorization: `Token ${getCookie('ft_token')}`,
+                            }}
+                            withCredentials={true}
                           />
                         </div>
                     </Worker>

@@ -43,7 +43,7 @@ const TradingPlatformLayout = ({ first_screen, page_type_catalog, front_admin } 
                 <NavLink to="/about" className={style['trading-platform__link']}>
                   <Text text={'about_company'} />
                 </NavLink>
-                <Button onClick={goToCatalog} variant={'accent'}>
+                <Button dataintro="step3" onClick={goToCatalog} variant={'accent'}>
                   <GxIcon
                     slot={'icon-left'}
                     src={cartIcon}

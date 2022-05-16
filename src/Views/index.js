@@ -13,13 +13,19 @@ import Modal from '../Views/ModalCreator';
 import ModalPreviewFile from './ModalContentViews/ModalPreviewFile';
 import Cookie from './Cookie/Cookie';
 
+
+// import { Steps, Hints } from 'intro.js-react';
+import introJs from 'intro.js';
+import 'intro.js/introjs.css';
+import "intro.js/themes/introjs-dark.css";
+
 // import { Document, Page } from 'react-pdf/dist/esm/entry.parcel';
 //import { Document, Page } from 'react-pdf';
 //  import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 
 import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
 import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
-import { getCookie } from '../utils';
+import { checkLocalStorage, getCookie } from '../utils';
 
 import api from '../api';
 
@@ -40,12 +46,12 @@ const Layout = ({
   currencies,
   year,
   policy,
-  cartUpdate,
 }) => {
 const { userPage, dispatch } = useStoreon('userPage');
+const { stateCountCart } = useStoreon('stateCountCart')
 let { profile } = userPage;
 const [modalStates, setModalStates] = useState(Modal.defaultModalStates);
-
+const [ timerViewTour, setTimerViewTour ] = useState(false);
 
     const [isPaused, setIsPaused] = useState(false);
     const [data, setData] = useState(null);
@@ -76,9 +82,132 @@ const [modalStates, setModalStates] = useState(Modal.defaultModalStates);
     //     };
     // }, [isPaused]);
 
+     const initialStateIntro = {
+      // stepsEnabled: true,
+      // initialStep: 0,
+      steps: [
+        {
+          element: '[dataintro="step1"]',
+          title: "здесь назовём наш слайд",
+          intro: "Вот так будет выглядит инструкция для знакомства с сайтом",
+          position: 'bottom-right-aligned',
+          highlightClass: 'myHighlightClass',
+        },
+  
+        {
+          element: '[dataintro="step2"]',
+          title: "сдесь ещё както назавём наш слайд",
+          intro: <div><img
+                  width="100%"
+                  alt="pattern"
+                  src="https://i.giphy.com/media/ujUdrdpX7Ok5W/giphy.webp"
+                ></img>
+                <p>здесь мы раскажем про выбор валюты</p>
+                </div>
+        },
+
+        {
+          element: '[dataintro="step3"]',
+          intro: "Вот сдесь мы можем расказать что будет делать эта кнопка, и слайд к примеру без названия",
+          position: 'top',
+        },
+
+      ],
+      // disableInteraction: true,
+      //hintsEnabled: true,
+      // hints: [
+      //   {
+      //     element: '[data-py-id="step3"]',
+      //     hint: "Hello hint",
+      //     hintPosition: "middle-right"
+      //   }
+      // ]
+    }
+  
+    const [state, setState] = useState({});
+    useEffect(()=>{
+      // const timerView = setTimeout(()=>{
+        const tourFromsite = () => {
+          introJs().setOptions({
+            steps: [
+              {
+                element: '[dataintro="step1"]',
+                title: "здесь назовём наш слайд",
+                intro: "Вот так будет выглядит инструкция для знакомства с сайтом",
+                position: 'bottom-right',
+                highlightClass: 'dataintro-step1',
+              },
+        
+              {
+                element: '[dataintro="step2"]',
+                title: "сдесь ещё както назавём наш слайд",
+                intro: `<div><img
+                        width="100%"
+                        alt="pattern"
+                        src="https://i.giphy.com/media/ujUdrdpX7Ok5W/giphy.webp"
+                      ></img>
+                      <p>здесь мы раскажем про выбор валюты</p>
+                      </div>`,
+                highlightClass: 'dataintro-step2',
+              },
+      
+              {
+                element: '[dataintro="step3"]',
+                intro: "Вот сдесь мы можем расказать что будет делать эта кнопка, и слайд к примеру без названия",
+                position: 'top',
+                highlightClass: 'dataintro-step3',
+
+              },
+      
+            ],
+            overlayOpacity: 0.5,
+            // dontShowAgain: true,
+           
+
+          }).onbeforeexit(function () {
+            let questions = confirm("Ещё будете  знакомится с сайтом? В ЛК можно изминить статус");
+            if(!!questions){
+              return localStorage.setItem('tour',false)
+            }
+            return
+
+          }).start();
+        }  
+        
+        if(checkLocalStorage('tour')){
+          if( JSON.parse(localStorage.getItem('tour').toLowerCase()) ){
+            return  tourFromsite();
+          }
+          return
+        } else {
+          tourFromsite();
+        }
+      
+      // },4000);
+      // return () => clearTimeout(timerView);
+    },[])
+
+    const {
+      stepsEnabled,
+      steps,
+      initialStep,
+      hintsEnabled,
+      hints
+    } = state;
+  
+    const onExit = () => {
+      console.log('onExit', state)
+      setState(() => ({ 
+        ...state,
+        stepsEnabled: false 
+      }));
+    };
+
+
+
 const heandlerKey = () => {
   console.log('check work click',getCookie('ft_token'))
-  handleClickSendMessage()
+  dispatch('spinner');
 
 }
 
@@ -86,7 +215,7 @@ if ( profile === undefined ){
      window.location.reload()
 }
   const cabinet_data = {
-    cart: cartUpdate.in_cart,
+    cart: stateCountCart.in_cart,
     notifications: profile.notifications
   };
   const mainClassModufy = classNames({
@@ -101,7 +230,7 @@ if ( profile === undefined ){
       addClass: false,
     });
   };
-
+ 
   
   const openModalFeedbackReedFile = (file) => { 
    
@@ -124,15 +253,15 @@ if ( profile === undefined ){
                 <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456 /build/pdf.worker.min.js">
                     <div id="pdfviewer">
                       <Viewer 
-                        fileUrl={`https://cors-anywhere.herokuapp.com/${file}`}
+                        fileUrl={`${file}`}
                         renderPage={renderPage}
                         theme={{
                           theme: 'dark',
                         }}
-                        // httpHeaders={{
-                        //     key: value,
-                        // }}
-                        // withCredentials={true}
+                        httpHeaders={{
+                          Authorization: `Token ${getCookie('ft_token')}`,
+                        }}
+                        withCredentials={true}
                       />
                     </div>
                 </Worker>
@@ -145,6 +274,18 @@ if ( profile === undefined ){
 
   return (
     <>
+        {/* {
+        timerViewTour?
+        <>
+        <Steps
+         enabled={stepsEnabled}
+         steps={steps}
+         initialStep={initialStep}
+         onExit={()=>onExit}
+         />
+        </>
+        :null
+        }  */}
       <Header
         headerModClosed={headerModClosed}
         header_menu={header_menu}
@@ -153,10 +294,10 @@ if ( profile === undefined ){
         announce={announce}
         cabinet_data={cabinet_data}
         profile={profile}
-        cabinet_menu={cabinet_menu}
+        cabinet_menu={cabinet_menu} 
         currencies={currencies}
       />
-         {/* <button
+         <button
           onClick={heandlerKey}
           style={{
             border: '1px solid red',
@@ -164,7 +305,7 @@ if ( profile === undefined ){
             margin: '10px',
             cursor: 'pointer',
           }}
-         >get key</button> */}
+         >get key</button>
       <Helmet>
         <title>{title}</title>
         {/* <link rel="icon" href="/favicon.ico" type="image/x-icon" />

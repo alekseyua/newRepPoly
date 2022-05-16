@@ -141,30 +141,32 @@ const PAGE_TYPES = {
 
 
 const Combine = (props) => {
-  const { stateCountCart, dispatch } = useStoreon('stateCountCart')
-  const setRoleConfiguration = ({ role_configuration, notifications }) => {
-    dispatch('notificationCount/update', notifications);
-    dispatch('role_configuration/update', role_configuration);
+  const { dispatch } = useStoreon();
+  const setRoleConfiguration = (page) => {
+    dispatch('userPage/add', page);
+    dispatch('notificationCount/update', page.notifications);
+    dispatch('role_configuration/update', page.role_configuration);
+              // console.log("page getPage", page);
   };
 
   return (
     /*
     ** происходит формирование страницы 
     ** задачи 
-    ** нужно определить почему приходит 500
+    ** 
     */
     <Fetcher {...props} paramsKey={'0'}>
       {
         (data = {}, error, status) => {
-
           let pageType, page;
           if (status === 'failed') {
-            console.log('what is failed')
-            // api.getPage({
-            //   params: '/order'
-            // })
-            //return status;
-            return <div>Wait moment please</div>;
+            return <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+              height: '100%',
+            }}><h3>Wait moment please, connect to server ...</h3></div>;
           } else {
             page = data.page;
             pageType = data.pageType;
@@ -178,15 +180,12 @@ const Combine = (props) => {
             return <DevPage {...page} {...props} />;
           }
           if ( page.profile === undefined ){
-              console.log('profile если undefined из combine')
-              //alert('page.profile === undefined of Combine, времменно оставляем для выявления 500')
+              console.log('profile если undefined из combine', )
+              //alert('page.profile === undefined of Combine, времменно оставляем для выявления 500',page)
               // window.location.reload()
           }
-          console.log("page getPage", page);
-
-          page ? dispatch('userPage/add', page) : null;
           page ? setRoleConfiguration(page) : null;
-          return <Page {...page} {...props} cartUpdate={stateCountCart} />;
+          return <Page {...page} {...props} />;
         }}
     </Fetcher>
   );

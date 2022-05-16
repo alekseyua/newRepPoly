@@ -202,6 +202,7 @@ const Popupe = ({
                             className={style['prodpage-sizes__items']}
                           >
                             {colec.map((el, i) => {
+                            // console.log('colec:', el.redeemed)
 
                               return (
                                 <li
@@ -209,14 +210,14 @@ const Popupe = ({
                                   className={style['prodpage-sizes__itemPopupe']}
                                 >
                                   <button
-                                    key={v4(i)}
-                                    disabled={classState.has(collections.id + (el.size.id + index * 444)) ? '' : el.redeemed}
-                                    type="button"
-                                    id={collections.id + (el.size.id + index * 444)}
-                                    style={el.test.has(collections.id + (el.size.id + index * 444)) ? { background: 'rgb(0, 0, 0)', color:'rgb(255,255,255)' } : null}
-                                    onClick={(e) => {
-                                      addOrRemoveEl(e.target.id)
-                                    }}
+                                    // key={v4(i)}
+                                    // disabled={classState.has(collections.id + (el.size.id + index * 444)) ? '' : el.redeemed}
+                                    // type="button"
+                                    // id={collections.id + (el.size.id + index * 444)}
+                                    style={!el.redeemed ? { background: 'rgb(0, 0, 0)', color:'rgb(255,255,255)' } : { background: 'rgb(79,79,79)', color:'rgb(0, 0, 0)' }}
+                                    // onClick={(e) => {
+                                    //   addOrRemoveEl(e.target.id)
+                                    // }}
                                     className={style['prodpage-sizes__size-buttonPopupe']}
                                   >
                                     {el.size.title}

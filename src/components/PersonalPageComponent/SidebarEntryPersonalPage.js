@@ -5,6 +5,10 @@ import { Formik } from 'formik';
 import api from '../../api';
 import { useHistory } from 'react-router-dom';
 import { useStoreon } from 'storeon/react';
+import CheckBox from '../../Views/CheckBox';
+import { checkLocalStorage } from '../../utils';
+import introJs from 'intro.js';
+
 
 const SidebarPersonalPage = ({
   create_shop,
@@ -20,6 +24,7 @@ const SidebarPersonalPage = ({
 const { stateValuePoly, dispatch } = useStoreon('stateValuePoly');
   const history = useHistory();
 const [valueIn, setValueIn] = useState(null);
+const [stateTour, setStateTour] = useState(false);
 
 const changeData = (event) => {
   event.preventDefault();
@@ -42,11 +47,21 @@ const changeData = (event) => {
   setValueIn(null)
 }
 
-const changeValue = (e) => {
-  setValueIn(e.target.value)
-}
+  const changeValue = (e) => {
+    setValueIn(e.target.value)
+  }
+  const onHandleChangeTour = (e) => {
+  setStateTour(prev => !prev)
+  localStorage.setItem('tour',!stateTour)
+  // introJs().setOption("dontShowAgain", true).start();
 
+  }
 
+  useEffect(()=>{
+    if(checkLocalStorage('tour')){
+      setStateTour(localStorage.getItem('tour'))
+    }
+  },[])
 
   return (
     <PersonalPageViews.Container>
@@ -56,6 +71,13 @@ const changeValue = (e) => {
         role={role}
         setModalStates={setModalStates}
       />
+            <CheckBox
+              checked={stateTour}
+              name={'tour'}
+              onGx-change={onHandleChangeTour}
+              label={'включть или отключить показывать тотариал'}
+              data-cy={'authorization_check_box_remember'}
+            />
       {!is_has_shop ? (
         <PersonalPageViews.CreateStore
           className={'desktop'}

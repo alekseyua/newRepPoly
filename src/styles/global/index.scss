@@ -1036,6 +1036,27 @@ div#viewer.pdfViewer {
   }
 
 
+  .requisites{
+    & > p {
+      pointer-events: none;
+    }
+  }
+
+  .dataintro-step1{
+    background-color: rgba(252, 185, 176, 0.514);
+    border: 2px dotted #820c78;
+  }
+
+  .dataintro-step2{
+    background-color: rgba(146, 134, 133, 0.4);
+    border: 2px dotted #820c78;
+  }
+
+  .dataintro-step3{
+    background-color: rgba(51, 50, 50, 0.24);
+    border: 2px dotted #4bb95e;
+  }
+  
   @media (max-width: 680px) {
     .juridical-block {
       &--left{

@@ -7,7 +7,7 @@ import style from '../InformationViews/styles/index.module.scss';
 import styleTable from '../Table/styles/table.module.scss';
 import Button from '../Button';
 
-const WorldStandardSizesChart = ({ slug='', productTableVariant = false, site_configuration = {} }) => {
+const WorldStandardSizesChart = ({ slug='', productTableVariant = '', site_configuration = {} }) => {
   const tableHeaderDataRu = [
     [
       {
@@ -719,7 +719,7 @@ const WorldStandardSizesChart = ({ slug='', productTableVariant = false, site_co
   });
 
   useEffect(() => {
-    if (productTableVariant) {
+    if (!!productTableVariant) {
       const tableBodyDataEuRotated = rotateMatrix(tableBodyDataEu);
       const tableBodyDataRuRotated = rotateMatrix(tableBodyDataRu);
       setstate({
@@ -734,11 +734,13 @@ const WorldStandardSizesChart = ({ slug='', productTableVariant = false, site_co
     setRussianStandart(!russiasStandart)
   }
 
+  const styleTableHowto = !!productTableVariant ? 'information-howto-small-table' : 'information-howto-table';
+
   return (
     <React.Fragment>
       <h3
         className={
-          productTableVariant
+          !!productTableVariant
             ? style['information-howto__heading-center']
             : style['information-howto__heading']
         }
@@ -754,7 +756,7 @@ const WorldStandardSizesChart = ({ slug='', productTableVariant = false, site_co
           })}
           onClick={() => russiasStandart?null:handClick()}
         >
-          <Text text={productTableVariant ? 'ru.size' : 'russian.standart.size'} />
+          <Text text={!!productTableVariant ? 'ru.size' : 'russian.standart.size'} />
         </div>
         <div
           className={classNames({
@@ -763,24 +765,21 @@ const WorldStandardSizesChart = ({ slug='', productTableVariant = false, site_co
           })}
           onClick={() => russiasStandart?handClick():null}
         >
-          <Text text={productTableVariant ? 'er.size' : 'euro.standart.size'} />
+          <Text text={!!productTableVariant ? 'er.size' : 'euro.standart.size'} />
         </div>
       </div>
       {russiasStandart ? (
         <Table
-          classNameTable={
-            productTableVariant ? 'information-howto-small-table' : 'information-howto-table'
-          }
+          classNameTable={styleTableHowto}
           tableBodyData={state.tableBodyDataRu}
-          tableHeaderData={productTableVariant ? [] : state.tableHeaderDataRu}
+          tableHeaderData={!!productTableVariant ? [] : state.tableHeaderDataRu}
         />
       ) : (
+
         <Table
-          classNameTable={
-            productTableVariant ? 'information-howto-small-table' : 'information-howto-table'
-          }
+          classNameTable={styleTableHowto}
           tableBodyData={state.tableBodyDataEu}
-          tableHeaderData={productTableVariant ? [] : state.tableHeaderDataEu}
+          tableHeaderData={!!productTableVariant ? [] : state.tableHeaderDataEu}
         />
       )}
         {slug !== 'how_to'?

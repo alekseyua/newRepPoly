@@ -27,7 +27,6 @@ const ContentDropDownAccount = ({
   const apiUser = api.userApi;
   const { role, user = {}, shop = { is_has_shop: false }, status } = profile;
   const { first_name = 'Имя', last_name = 'Фамилия', email = '' } = user;
-  console.log('user:', user)
   const history = useHistory();
   const {dispatch} = useStoreon();
   const logOut = () => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Breadcrumbs from '../../Views/Breadcrumbs';
 import CatalogViews from '../../Views/CatalogViews';
 import Container from '../../Views/Container';
@@ -100,12 +100,6 @@ const Catalog = ({
   const [byProductTyoe, setByProductTyoe] = useState([]);
   const [colors, setColors] = useState([]);
   const [sizes, setSizes] = useState([]);
-  const [paramFilterChange, setParamFilterChange] = useState({
-    categories: [],
-    brands: [],
-    colors: [],
-    sizes: [],
-  })
   const [optionalsFilter, setoptionalsFilter] = useState([
     {
       id: 1,
@@ -239,9 +233,12 @@ const Catalog = ({
   ]);
 
   // *****************************************************   
-  const [dataUpdateCatalog, setDataUpdateCatalog] = useState(false);
+  let handleUpdateCatalog = useMemo(() => {
+    console.log('fake function')
+  },[updateCurrenssies])
+
   useEffect(() => {
-    setDataUpdateCatalog(true)
+    handleUpdateCatalog()
   }, [updateCurrenssies])
   return (
     <React.Fragment>
@@ -251,10 +248,9 @@ const Catalog = ({
           initFilter={{ page_size: 30 }}
           isScrollTop={true}
           api={apiContent.getCatalogData}
-          profile={newProfile} 
+          profile={newProfile}
         >
           {(data) => {
-
             const {
               count,
               results = [],
@@ -266,16 +262,8 @@ const Catalog = ({
               isNext,
             } = data;
 
-            //reload
-            // *****************************************************
-            const executeUpdate = () => {
-
-              setDataUpdateCatalog(false);
-              data.reload();
-            }
-            dataUpdateCatalog ? executeUpdate() : null;
-            // *****************************************************
-
+            handleUpdateCatalog = data.reload
+     
             // добавляем удаляем данные в фильтре
             const getInitDataFilters = (data) => {
               if (Array.isArray(data)) {
@@ -391,9 +379,6 @@ const Catalog = ({
                           }}
                         >
                           {({ handleSubmit, values, setFieldValue }) => {
-                            //через функцию сохраняем состояние фильтров
-                            setParamFilterChange(values)
-                            //setColors(values.colors)
                             return (
                               <GxForm novalidate onGx-submit={handleSubmit}>
                                 <CatalogViews.SubmitButton

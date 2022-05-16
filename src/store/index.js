@@ -4,6 +4,7 @@ import { dataBalance } from './ComponentStore/Balance';
 import { popupWarrning } from './ComponentStore/Popup';
 import { registration } from './ComponentStore/Registration';
 import { mapusagesite } from './ComponentStore/MapUsageSite';
+import { spinner } from './ComponentStore/Speener';
 
 
 
@@ -449,6 +450,7 @@ export const stateUpdateBalance = store => {
 
 
 export const storeonParams = [
+  spinner,
   mapusagesite,
   registration,
   popupWarrning,
