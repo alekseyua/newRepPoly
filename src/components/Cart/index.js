@@ -534,7 +534,6 @@ const handleGoToOrder = () => {
   console.log('запускаем спинер:')
   dispatch('spinner')
 }
-console.log('dataBalance',opt_minimum_price);
   return (
     <Container>
       <GxModal

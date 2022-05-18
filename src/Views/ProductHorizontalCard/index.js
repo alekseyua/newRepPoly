@@ -118,14 +118,15 @@ const changeState = (e) =>{
               });}
           }}
         />
-        <Link
-          to={url}
-        >
+        <Link to={url}>
           <img src={image} className={style['product__image_thumb']} />
         </Link>
         <div className={style['product__base_info']}>
+        
           <div className={style['product__base_info__brand']}>{brand}</div>
-          <div className={style['product__base_info__title']}>{title}</div>
+          <Link to={url}>
+            <div className={style['product__base_info__title']}>{title}</div>
+          </Link>
           <div className={style['product__base_info__size']}>
             <Text text={'size'} />: {size}
           </div>

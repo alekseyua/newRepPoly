@@ -235,7 +235,6 @@ const SectionProdPage = ({
       // pack ??????
     }
     colorsn.id || sizesn.id ? (
-      console.log('change color and size'),
       apiContent
         .getProduct(productId, params)
         .then((res) => {

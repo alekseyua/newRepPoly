@@ -98,11 +98,10 @@ const OrderComponent = ({
     });
   }
   const errorsMessenge = {};
-  const onSubmit = () => {};
+
 
   //************************************** */
   useEffect(()=>{
-    console.log('получаем новый баланс и тушим попапы')
     dispatch('stateUpdateBalance/update',!stateUpdateBalance)
     hideModal();
   },[])
@@ -156,6 +155,7 @@ const OrderComponent = ({
   };
 
   const openModalPay = (order_id, now_balance = null, total_price = null) => {
+    hideModal();
     orderApi
       .getRandomRequizites()
       .then((res) => {
@@ -216,7 +216,6 @@ const OrderComponent = ({
       }
   };
   // **********создаём заказ с отправкой на сервер***************************************************************************************************************
-
   const creteOrder = (values) => {
     const date = dayjs(api.language, values.issued_date).format('DD.MM.YYYY');
 
@@ -248,27 +247,57 @@ const OrderComponent = ({
       }
       :null 
       
-      
-      if(!(!!statusFildValue)){
-        if (role === ROLE.DROPSHIPPER) {
-          //если дробшипер списание со счета при достаточном количестве денег на счету
-            console.log(`params.total_cost < dataBalance.balance`,params.total_cost , dataBalance.balance)
+        dispatch('spinner');
+        if(!(!!statusFildValue)){
+          if (role === ROLE.DROPSHIPPER) {
+            //если дробшипер списание со счета при достаточном количестве денег на счету
+              console.log(`params.total_cost < dataBalance.balance`,params.total_cost , dataBalance.balance)
+              if (params.total_cost < dataBalance.balance) {
+                //если достаточно денег на счету
+                orderApi
+                  .createOrder(params)
+                  .then((res) => {
+                    dispatch('stateCountRestart/add', !stateCountRestart);
+                    dispatch('stateUpdateBalance/update', !stateUpdateBalance)
+                    history.push('orders');
+                  })
+                  .catch((err) => {
+                    console.log(`ERROR creteOrder pay BALANCE, ${err}`);
+                    openModalRejectedOrdering('cart');
+                  });
+              } else {
+                //создаём заказ когда нет деньг на счету
+                orderApi
+                  .createOrder(params)
+                  .then((res) => {
+                    const order_id = res.id;
+                    setStateCreateOrder(true)
+                    openModalPay(order_id, dataBalance.balance, params.total_cost);
+                    dispatch('stateCountRestart/add', !stateCountRestart);
+                  })
+                  .catch((err) => {
+                    console.log(`ERROR creteOrder pay ONLINE, ${err}`);
+                    openModalRejectedOrdering('cart');
+                  });
+              }
+            //***************************************************************************** */
+          } else if (ROLE.RETAIL === role) {
+            //если розничный
+            //если оплата с баланса
             if (params.total_cost < dataBalance.balance) {
-              //если достаточно денег на счету
+              //создаём заказ когда списуют деньги со счёта
               orderApi
-                .createOrder(params)
+                .createOrder(params) 
                 .then((res) => {
                   dispatch('stateCountRestart/add', !stateCountRestart);
                   dispatch('stateUpdateBalance/update', !stateUpdateBalance)
-                  hideModal();
-                  history.push('orders');
+                    history.push('orders');
                 })
                 .catch((err) => {
                   console.log(`ERROR creteOrder pay BALANCE, ${err}`);
                   openModalRejectedOrdering('cart');
                 });
             } else {
-              //создаём заказ когда нет деньг на счету
               orderApi
                 .createOrder(params)
                 .then((res) => {
@@ -278,81 +307,61 @@ const OrderComponent = ({
                   dispatch('stateCountRestart/add', !stateCountRestart);
                 })
                 .catch((err) => {
-                  console.log(`ERROR creteOrder pay ONLINE, ${err}`);
+                  console.log(`ERROR creteOrder pay BALANCE, ${err}`);
                   openModalRejectedOrdering('cart');
                 });
             }
-          //***************************************************************************** */
-        } else if (ROLE.RETAIL === role) {
-          //если розничный
-          //если оплата с баланса
-          if (params.total_cost < dataBalance.balance) {
-            //создаём заказ когда списуют деньги со счёта
-            orderApi
-              .createOrder(params) 
-              .then((res) => {
-                dispatch('stateCountRestart/add', !stateCountRestart);
-                dispatch('stateUpdateBalance/update', !stateUpdateBalance)
-                hideModal();
-                  history.push('orders');
-              })
-              .catch((err) => {
-                console.log(`ERROR creteOrder pay BALANCE, ${err}`);
-                openModalRejectedOrdering('cart');
-              });
+          } else if (ROLE.WHOLESALE === role) {
+            //если оптовик
+              if (params.total_cost < dataBalance.balance) {
+                orderApi
+                  //создаём заказ когда списуют деньги со счёта
+                  .createOrder(params)
+                  .then((res) => {
+                    dispatch('stateCountRestart/add', !stateCountRestart);
+                    dispatch('stateUpdateBalance/update', !stateUpdateBalance)
+                    history.push('orders');
+                  })
+                  .catch((err) => {
+                    console.log(`ERROR creteOrder pay BALANCE, ${err}`);
+                    openModalRejectedOrdering('cart');
+                  });
+              } else {
+                orderApi
+                  .createOrder(params)
+                  .then((res) => {
+                    const order_id = res.id;
+                    //диалоговое окно оплаты по реквизитам
+                    setStateCreateOrder(true)
+                    openModalPay(order_id, dataBalance.balance, params.total_cost);
+                    dispatch('stateCountRestart/add', !stateCountRestart);
+                  })
+                  .catch((err) => {
+                    dispatch('stateCountRestart/add', !stateCountRestart);
+                    console.log(`ERROR creteOrder pay ONLINE, ${err}`);
+                    openModalRejectedOrdering('cart');
+                  });
+              }
           } else {
-            orderApi
-              .createOrder(params)
-              .then((res) => {
-                const order_id = res.id;
-                setStateCreateOrder(true)
-                openModalPay(order_id, dataBalance.balance, params.total_cost);
-                dispatch('stateCountRestart/add', !stateCountRestart);
-              })
-              .catch((err) => {
-                console.log(`ERROR creteOrder pay BALANCE, ${err}`);
-                openModalRejectedOrdering('cart');
-              });
+            alert('HZ who are you');
           }
-        } else if (ROLE.WHOLESALE === role) {
-          //если оптовик
-            if (params.total_cost < dataBalance.balance) {
-              orderApi
-                //создаём заказ когда списуют деньги со счёта
-                .createOrder(params)
-                .then((res) => {
-                  dispatch('stateCountRestart/add', !stateCountRestart);
-                  dispatch('stateUpdateBalance/update', !stateUpdateBalance)
-                  hideModal();
-                  history.push('orders');
-                })
-                .catch((err) => {
-                  console.log(`ERROR creteOrder pay BALANCE, ${err}`);
-                  openModalRejectedOrdering('cart');
-                });
-            } else {
-              orderApi
-                .createOrder(params)
-                .then((res) => {
-                  const order_id = res.id;
-                  //диалоговое окно оплаты по реквизитам
-                  setStateCreateOrder(true)
-                  openModalPay(order_id, dataBalance.balance, params.total_cost);
-                  dispatch('stateCountRestart/add', !stateCountRestart);
-                })
-                .catch((err) => {
-                  dispatch('stateCountRestart/add', !stateCountRestart);
-                  console.log(`ERROR creteOrder pay ONLINE, ${err}`);
-                  openModalRejectedOrdering('cart');
-                });
-            }
-        } else {
-          alert('HZ who are you');
+        }else{
+          // dispatch('spinner');
+          orderApi
+          .createOrder(params) 
+          .then((res) => {
+            dispatch('stateCountRestart/add', !stateCountRestart);
+            dispatch('stateUpdateBalance/update', !stateUpdateBalance)
+              history.push('orders');
+          })
+          .catch((err) => {
+            console.log(`ERROR creteOrder pay BALANCE, ${err}`);
+            openModalRejectedOrdering('cart');
+          });
+        // history.push('orders');
         }
-      }else{
-        history.push('orders');
-      }
-  };
+
+  }
 
   // **************************************************************************************************************************************
     const getEnabledToPayments = (values, errors) => {
@@ -516,6 +525,10 @@ const OrderComponent = ({
       setCart_contentOrder(newCartAlPerfomed);
     }
   }, [stateCountCart.in_cart, priceNowDilevery, fieldCountryOut, stateCountCart.total_price, currenssies]);
+  const onSubmit = (values) => {
+    creteOrder(values)
+  };
+
 
   return (
     <React.Fragment>
@@ -544,12 +557,15 @@ const OrderComponent = ({
           };
           setFieldCountryOut(fieldCountry);
             //запускаем анимацию кнопки создания заказа и отправка на бэк запроса
-          if (orderFunc && !stateCreateOrder) {
-            const timerBtn = setTimeout(() => {
-              creteOrder(values);
-              dispatch('orderFunc/state', false);
-              return () =>clearTimeout(timerBtn);
-            }, 10000);
+          if (orderFunc) {
+            if(!stateCreateOrder){
+              setStateCreateOrder(true)
+              const timerBtn = setTimeout(() => {
+                onSubmit(values)
+                dispatch('orderFunc/state', false);
+                return () => clearTimeout(timerBtn);
+              }, 7000);
+            }
           } else {
             null;
           }
@@ -664,7 +680,6 @@ const OrderComponent = ({
                       {currenssies}
                     </CartViews.Text>
                   </CartViews.BlockRightSide>
-                  {/* { ROLE.RETAIL === role?( */}
 
                  { ROLE.RETAIL === role ? (
                     <>

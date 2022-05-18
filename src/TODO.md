@@ -9,7 +9,17 @@ linux
 "intro.js": "^5.1.0",
     "intro.js-react": "^0.6.0",
 
+```в линуксе чтобы обойти лимит ```
+When this limit is not enough to monitor all files inside a directory, the limit must be increased for Listen to work properly.
 
+You can set a new limit temporary with:
+
+$ sudo sysctl fs.inotify.max_user_watches=524288
+$ sudo sysctl -p
+
+```для windows чтобы обойти лимит```
+ $env:NODE_OPTIONS="--max-old-space-size=8192"
+ 
 ``` попап для ошибки ```
   import { useStoreon } from 'storeon/react';
   const {dispatch} = useStoreon();
@@ -175,16 +185,7 @@ function removeCookie(name) {
   // document.cookie = name + '=; Max-Age=-99999999;';
 }
 
-```в линуксе чтобы обойти лимит ```
-When this limit is not enough to monitor all files inside a directory, the limit must be increased for Listen to work properly.
 
-You can set a new limit temporary with:
-
-$ sudo sysctl fs.inotify.max_user_watches=524288
-$ sudo sysctl -p
-
-```для windows чтобы обойти лимит```
- $env:NODE_OPTIONS="--max-old-space-size=8192"
 
 ```` component for admin ````
 

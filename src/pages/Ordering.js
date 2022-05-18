@@ -15,7 +15,7 @@ const Ordering = (props) => {
     role_configuration,
     site_configuration,
   } = props;
-
+  
   return (
     <Layout main {...props}>
       <Modal.StorControllerModal />

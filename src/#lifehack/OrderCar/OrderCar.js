@@ -6,11 +6,9 @@ const OrderCar = ({enabled, styleCar, setStyleCar}) => {
 	
 	const { orderFunc, dispatch } = useStoreon('orderFunc');
 		const lifehack = () =>{
-			console.log('orderFunction', orderFunc)
 			window?.localStorage?.removeItem('numOrder')
 			setStyleCar('orderCar animate');
 			dispatch('orderFunc/state', true);
-			dispatch('spinner')
 		}
 
     return(

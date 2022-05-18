@@ -27,7 +27,6 @@ import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
 import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
 import { checkLocalStorage, getCookie } from '../utils';
 
-import api from '../api';
 
 const Layout = ({
   headerModClosed = false,
@@ -203,7 +202,13 @@ const [ timerViewTour, setTimerViewTour ] = useState(false);
       }));
     };
 
-
+    useEffect(()=>{
+      dispatch('modal/update', {
+        show: false,
+        content: null,
+        addClass: false,
+      });
+    },[])
 
 const heandlerKey = () => {
   console.log('check work click',getCookie('ft_token'))
@@ -274,18 +279,7 @@ if ( profile === undefined ){
 
   return (
     <>
-        {/* {
-        timerViewTour?
-        <>
-        <Steps
-         enabled={stepsEnabled}
-         steps={steps}
-         initialStep={initialStep}
-         onExit={()=>onExit}
-         />
-        </>
-        :null
-        }  */}
+    
       <Header
         headerModClosed={headerModClosed}
         header_menu={header_menu}
@@ -297,7 +291,7 @@ if ( profile === undefined ){
         cabinet_menu={cabinet_menu} 
         currencies={currencies}
       />
-         <button
+         {/* <button
           onClick={heandlerKey}
           style={{
             border: '1px solid red',
@@ -305,7 +299,7 @@ if ( profile === undefined ){
             margin: '10px',
             cursor: 'pointer',
           }}
-         >get key</button>
+         >get key</button> */}
       <Helmet>
         <title>{title}</title>
         {/* <link rel="icon" href="/favicon.ico" type="image/x-icon" />

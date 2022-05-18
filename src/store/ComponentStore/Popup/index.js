@@ -19,7 +19,7 @@ export const popupWarrning = store => {
             store.dispatch('modal/update', {
             content: (
                 <ModalContentViews.ModalWrapper>
-                    <ModalContentViews.CloseBtn closeModal={() => closeModal(obj)} />
+                    <ModalContentViews.CloseBtn closeModal={() => closeModal(obj.path)} />
                         <ModalContentViews.ContentBlock>
                             <ModalContentViews.CenterPosition>
                             <ModalContentViews.SuccessOrError

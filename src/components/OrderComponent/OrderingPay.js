@@ -6,6 +6,7 @@ const OrderingPay = ({ payment_methods, setFieldValue, role, dataBalance, total_
   const [paymentsVariant, setpaymentsVariant] = useState(payment_methods);
   const setActiveVariantPayments = (event) => {
     const id = Number(event.target.id);
+  
     const newPaymentsVariant = paymentsVariant.map((el) => {
       if (el.id === id) {
         setFieldValue('payment_methods', el.id);
