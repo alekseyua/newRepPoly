@@ -15,7 +15,7 @@ const Wholesale = ({
       <DropDownHeaderLK.PersonalInfo
         first_name={first_name}
         last_name={last_name}
-        role={Text({ text: 'wholesaleBuyer' })}
+        titleRole={Text({ text: 'wholesaleBuyer' })}
       />
       <DropDownHeaderLK.Line />
       <DropDownHeaderLK.Menu cabinet_menu={cabinet_menu} />

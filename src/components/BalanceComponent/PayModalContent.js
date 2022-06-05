@@ -18,12 +18,12 @@ const orderApi = api.orderApi;
 
 const PayModalContent = ({
   requisites = '',
-  callbackSubmit,
   order_id = false,
   total_price,
   now_balance,
   currenssies,
   closeModal,
+  OrderComponent = false,
 }) => {
   const initialValues = {
     fio: null,
@@ -74,12 +74,12 @@ const PayModalContent = ({
         orderApi
           .createPayments(fdPayments)
           .then((res) => {
-            dispatch('stateUpdateBalance/update', !stateUpdateBalance)
-            !(slug === 'balance') ? history.push('orders') : history.push('balance');
             closeModal();
+            dispatch('stateUpdateBalance/update', !stateUpdateBalance)
+            // !(slug === 'balance') ? history.push('orders') : history.push('balance');
             let errMessage = {
-              path: null,
-              success: 'Операция выполнена успешно',
+              path: !(slug === 'balance') ? 'orders' : 'balance',
+              success: 'Благодарим за оплату! Ваш баланс будет пополнен примерно в течении 2х рабочих дней.',
               fail : null,
             };
             dispatch('warrning/set',errMessage);
@@ -113,7 +113,7 @@ const PayModalContent = ({
 
   return (
     <ModalContentViews.ModalWrapper customClassName={'modal-payments'}>
-      <ModalContentViews.CloseBtn closeModal={closeModal} />
+      {OrderComponent? null : <ModalContentViews.CloseBtn closeModal={closeModal} />}
       <ModalContentViews.HeaderBlock mb={'20px'} title={'Пополнение баланса для оплаты'} />
       {<>
         {total_price? 

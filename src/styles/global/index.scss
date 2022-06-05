@@ -393,7 +393,7 @@ header {
     z-index: 99999;
     @include mobile {
       padding: 40px 20px;
-      top:50px;
+      // top:50px;
     }
   }
   &-midle_wrap {
@@ -407,7 +407,7 @@ header {
     padding-bottom: 63px;
     @include mobile {
       top: 50px;
-      padding: 40px 20px;
+      padding: 0px 20px;
     }
   }
   &-refusing {
@@ -959,6 +959,7 @@ main {
 // & > html > body > div#outerContainer > div#mainContainer > div#viewerContainer > 
 div#viewer.pdfViewer {
   pointer-events: none;
+  width: 100%;
 }
 
 //.information-exchange__link{}
@@ -1042,21 +1043,27 @@ div#viewer.pdfViewer {
     }
   }
 
-  .dataIntro-step1{
+  .dataintro-step1{
     background-color: rgba(252, 185, 176, 0.514);
     border: 2px dotted #820c78;
   }
 
-  .dataIntro-step2{
+  .dataintro-step2{
     background-color: rgba(146, 134, 133, 0.4);
     border: 2px dotted #820c78;
   }
 
-  .dataIntro-step3{
+  .dataintro-step3{
     background-color: rgba(51, 50, 50, 0.24);
     border: 2px dotted #4bb95e;
   }
-  
+
+  .marquee-btn{
+    font-size: 18px;
+    color: rgba(245, 138, 124, 0.678);
+  }
+
+
   @media (max-width: 680px) {
     .juridical-block {
       &--left{

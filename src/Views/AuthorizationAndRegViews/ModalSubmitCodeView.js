@@ -19,7 +19,7 @@ const ModalSubmitCodeView = ({postKeyFromMail}) => {
       {timerDone ? (
         <>
           <ModalRestorePasswordDesc mb={'15px'}>
-            Если вы не получили код, попробуйте еще раз
+            Если Вы не получили код, попробуйте еще раз
           </ModalRestorePasswordDesc>
           <Button variant={'looksLikeLink'} onClick={handleClickGetNewSubmitCode}>
             Попробовать снова

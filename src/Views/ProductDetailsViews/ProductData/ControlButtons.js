@@ -7,6 +7,7 @@ import { useStoreon } from 'storeon/react';
 import classnNames from 'classnames';
 import { ROLE } from '../../../const'
 import { checkLocalStorage } from '../../../utils';
+import { useHistory } from 'react-router-dom';
 
 const ControlButtons = ({
   in_cart_count,
@@ -22,17 +23,14 @@ const ControlButtons = ({
   productId,
   is_in_stock,
   in_stock_count,
+  status,
 }) => {
-  console.log('productId:1', productId)
-  console.log({is_in_stock})
-
+  const history = useHistory();
   const { stateCountCart, dispatch } = useStoreon('stateCountCart');
   const [ countInBtn, setCountInBtn ] = useState()
   const [ stateInStockeBtn, setStateInStockeBtn ] = useState(false)
   useEffect(()=>{ 
-    console.log(in_stock_count < 1 ,'|||',in_stock_count, in_stock_count > in_cart_count,in_cart_count)
     if(is_in_stock){
-
       if(in_stock_count < 1){
         setStateInStockeBtn(true)
       } else {
@@ -43,6 +41,8 @@ const ControlButtons = ({
       }else{
         setStateInStockeBtn(true)
       }
+    }else{
+      setStateInStockeBtn(false)
     }
   },[is_in_stock,in_stock_count,in_cart_count])
   const cartRef = createRef();
@@ -83,21 +83,42 @@ const ControlButtons = ({
 
   //******************************************************************************************************* */
   const addToCartProduct = (count, isRemoved = false, productId) => {
-    let idProductStorage = null;
-    if (checkLocalStorage('productId')){
-      idProductStorage = +localStorage.getItem('productId');
-    }
-  
-    (count === 1) ? setChangeColorBtn({ red: false, green: true }) : null;
-    (count === -1) ? setChangeColorBtn({ red: true, green: false }) : null;
-    const openModalSucces = (idProductStorage !== productId) ? true : false;
-    let countInCart;
-    countInCart = collections? sizes.lenght : count
-    countInCart === undefined? countInCart = 0 : countInCart = collections? sizes.lenght : count;
-    dispatch('stateCountCart/add', { ...stateCountCart, in_cart: stateCountCart.in_cart + countInCart})
-    count = countInBtn + count;
-    setCountInBtn(count)
-    addToCart({ count, openModalSucces });
+   // if (role === ROLE.UNREGISTRED){
+
+      if(status === 0){
+      const params = {
+          path: 'authorization',
+          success: null,
+          fail: 'Что бы воспользоваться всеми возможностями сотрудничества, необходимо зарегистрироваться',
+        }
+        dispatch('warrning/set', params)
+      }
+      if(status === 2){
+        params = {
+          path: 'registration',
+          success: null,
+          fail: 'Вам отказано в регистрации, пользование сайтом ограничено',
+        }
+        dispatch('warrning/set', params)
+      }
+      // history.push('authorization')
+    // }else{
+      let idProductStorage = null;
+      if (checkLocalStorage('productId')){
+        idProductStorage = +localStorage.getItem('productId');
+      }
+    
+      (count === 1) ? setChangeColorBtn({ red: false, green: true }) : null;
+      (count === -1) ? setChangeColorBtn({ red: true, green: false }) : null;
+      const openModalSucces = (idProductStorage !== productId) ? true : false;
+      let countInCart;
+      countInCart = collections? sizes.lenght : count
+      countInCart === undefined? countInCart = 0 : countInCart = collections? sizes.lenght : count;
+      dispatch('stateCountCart/add', { ...stateCountCart, in_cart: stateCountCart.in_cart + countInCart})
+      count = countInBtn + count;
+      setCountInBtn(count)
+      addToCart({ count, openModalSucces });
+    // }
   };
 
   useEffect(()=>{
@@ -115,8 +136,6 @@ const ControlButtons = ({
     setColorBtnClick(styleColor)
   }, [changeColorBtn.red, changeColorBtn.green])
 
-  console.log('stateInStockeBtn:', stateInStockeBtn)
-  
   //******************************************************************************************************* */
   const linkToProductPage = () => {
     if (!modalView) return null;

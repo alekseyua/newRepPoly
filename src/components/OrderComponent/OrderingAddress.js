@@ -16,6 +16,8 @@ const OrderingAddress = ({
   handleChange,
 }) => {
   const [adresses, setadresses] = useState([]);
+  const [stateMarquee, setStateMarquee] = useState(true)
+
   const getAdresses = () => {
     orderApi
       .getOrderAddressDeliviry()
@@ -101,6 +103,8 @@ const OrderingAddress = ({
             setFieldValue={setFieldValue}
             setFieldCountry={setFieldCountry}
             handleChange={handleChange}
+            setStateMarquee={setStateMarquee}
+            stateMarquee={stateMarquee}
           />
         );
       })}
@@ -111,6 +115,7 @@ const OrderingAddress = ({
         ?null
         :<OrderingViews.OrderingAddressAddBtn onClick={decorOpenModalAddAddress} />
     }
+         {stateMarquee? <marquee scrollamount="12"><span class="marquee-btn">Выберите адрес доставки.</span></marquee> : <div style={{color: '	#7CFC00', fontSize: "14px"}}>Спасибо за Ваш выбор</div>} 
 
     </OrderingViews.OrderingAddress>
   );

@@ -1,15 +1,13 @@
 import http from 'http';
-
 let app = require('./server').default;
-//import app from './server';
 
+const fs = require('fs');
 const server = http.createServer(app);
-
 let currentApp = app;
-
+const PORT = process.env.PORT || 3000;
 server
-  .listen(process.env.PORT || 3000, () => { 
-    console.log('🚀 gg started');
+  .listen(PORT, () => { 
+    console.log(`🚀 gg started ${PORT}`);
   })
   .on('error', error => {
      console.log("error",error);

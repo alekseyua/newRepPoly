@@ -64,6 +64,7 @@
     --gx-input-height-medium: auto;
     --gx-input-border-width: 0;
     --gx-spacing-large: 0;
+    cursor: pointer;
     &::part(base) {
       width: 25px;
       box-shadow: none;

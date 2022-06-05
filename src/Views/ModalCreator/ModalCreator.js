@@ -31,7 +31,6 @@ const ModalCreator = ({ content = null, show = true, setModalStates, addClass = 
       open={show} 
       className={createdClassName}
     > 
-         
       {content}
 
     </GxModal>

@@ -42,6 +42,11 @@ export default class ProfileApi extends AbstractBaseApi {
     const res = await this.post(`/profile/notifications/readed_notifications/`, params);
     return res.data;
   };
+
+  gettNotificationsServiceWorker = async (params = {}) => {
+    const res = await this.get(`/ajax/device/wp/`, params);
+    return res.data;
+  };
   // ********************************************************************************************************************
   getShopUserList = async (params = {}) => {
     const res = await this.get(`/user/get_shop_users_list/`, params);

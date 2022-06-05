@@ -14,7 +14,7 @@ const AsyncRecomendetProduct = AsyncComponent(() => {
 });
 const DefaultCartPreview = ({ page_type_catalog }) => {
   const [recomendetProduct, setrecomendetProduct] = useState([])
-  const { currenssies } = useStoreon('currenssies');
+  const { currenssies, dispatch } = useStoreon('currenssies');
   const { updateWish } = useStoreon('updateWish');
 
 
@@ -34,7 +34,7 @@ const DefaultCartPreview = ({ page_type_catalog }) => {
             let errMessage = {
               path: null,
               success: null,
-              fail : 'ошибка доступа к сервер, проверьте соединение',
+              fail : 'ошибка доступа к серверу, проверьте соединение',
             };
             dispatch('warrning/set',errMessage);
           }

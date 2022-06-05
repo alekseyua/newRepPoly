@@ -26,8 +26,12 @@ const OrderingDelivery = ({
   const [deliveryVariant, setDeliveryVariant] = useState(delivery_methods);
   const [formEnabled, setFormEnabled] = useState(needPassport);
   const { delivery_condition } = role_configuration;
+  const [stateMarquee, setStateMarquee] = useState(true)
+  const [idEnableBtn, setIdEnableBtn] = useState(null)
+
   const setActiveVariantPayments = (event) => {
     const id = Number(event.target.id);
+    setIdEnableBtn(id)
     const newDeliveryVariant = deliveryVariant.map((el) => {
       if (el.id === id) {
         if (el.need_passport) {
@@ -58,6 +62,8 @@ const OrderingDelivery = ({
       }
     });
     setDeliveryVariant(newDeliveryVariant);
+    setStateMarquee(false)
+
   };
   return (
     <OrderingViews.OrderingDeliverySection>
@@ -69,6 +75,7 @@ const OrderingDelivery = ({
         deliveryVariant={deliveryVariant}
         delivery_condition={delivery_condition}
         setActiveVariantPayments={setActiveVariantPayments}
+        idEnableBtn={idEnableBtn}
       />
       {/* {formEnabled ? (
         <React.Fragment>
@@ -93,6 +100,8 @@ const OrderingDelivery = ({
           ) : null}
         </React.Fragment>
       ) : null} */}
+      {stateMarquee? <marquee scrollamount="8"><span class="marquee-btn">Выберите способ доставки.</span></marquee> : <div style={{color: '	#7CFC00', fontSize: "14px"}}>Спасибо за Ваш выбор</div>}
+
     </OrderingViews.OrderingDeliverySection>
   );
 };

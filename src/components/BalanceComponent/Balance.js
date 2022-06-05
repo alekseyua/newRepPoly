@@ -45,7 +45,7 @@ const Balance = ({ setModalStates, role }) => {
         let errMessage = {
           path: null,
           success: null,
-          fail : 'ошибка доступа к сервер, проверьте соединение',
+          fail : 'Возникла проблема с отправкой данных, попробуйте немного позже',
         };
         dispatch('warrning/set',errMessage);
       });
@@ -65,19 +65,17 @@ const Balance = ({ setModalStates, role }) => {
             value={`${dataBalance.balance} ${String(currenssies).toUpperCase()}`}
             text={'Доступно'}
           />
-          {ROLE.RETAIL !== role ? (
+
             <PersonalPageViews.BalanceItem
               icon={statusWait}
               value={`${dataBalance.passive_balance} ${String(currenssies).toUpperCase()}`}
               text={'К зачислению'}
             />
-          ) : null}
-        </PersonalPageViews.BalanceItemsWrapper>
-        {ROLE.RETAIL !== role ? (
+           </PersonalPageViews.BalanceItemsWrapper>
+   
         <Button onClick={openModalPay} variant={'cabinet_default'}>
           пополнить баланс 
         </Button>
-        ) : null}
       </PersonalPageViews.ContentBlock>
     </PersonalPageViews.WrapperForm>
   );

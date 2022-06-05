@@ -1,7 +1,9 @@
 import { ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-
-const phoneRegExp = /(7|8|1)((\D)[\-]?)?(^\s)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,12}$/;
+// /(7|8|1)((\D)[\-]?)?(^\s)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,12}$/
+// /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/
+// /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
+const phoneRegExp = /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/;
 const symbolReject = /^[aA-zZ\sаА-яЯ]+$/u;
 // /^[^\%/\\&\?\,\'\;:!-+.`-,!@#\$\^*)(0-9]{1,50}$/ 
 // /^\D*\S\D$/; 
@@ -113,7 +115,7 @@ export const signUpBaseInfoFormSchema = (errorsMessenge) => {
       .nullable()
       .min(8, errorsMessenge.shortPass)
       .max(50, errorsMessenge.longPass)
-      .required(errorsMessenge.requiredField),
+      .required(errorsMessenge.requiredField), 
     confirm_password: Yup.string()
       .nullable()
       .oneOf([Yup.ref('password'), null], errorsMessenge.confirm_password),
@@ -124,16 +126,16 @@ export const signUpBaseInfoFormSchema = (errorsMessenge) => {
 
 export const signUpSocialMediaFormSchema = (errorsMessenge) => {
   return Yup.object().shape({
-    companyName: Yup.string()
-      .nullable()
-      .min(3, errorsMessenge.shortCompanyName)
-      .required(errorsMessenge.requiredField),
-    inn: Yup.string()
-      .nullable()
-      .matches(innRegExp, errorsMessenge.inn)
-      .min(10, errorsMessenge.shortInn)
-      .max(12, errorsMessenge.longInn)
-      .required(errorsMessenge.requiredField),
+    // companyName: Yup.string()
+      // .nullable()
+      // .min(0, errorsMessenge.shortCompanyName)
+      // .required(errorsMessenge.requiredField),
+    // inn: Yup.string()
+      // .nullable()
+      // .matches(innRegExp, errorsMessenge.inn)
+      // .min(0, errorsMessenge.shortInn)
+      // .max(12, errorsMessenge.longInn)
+      // .required(errorsMessenge.requiredField),
     vk: Yup.string().nullable(),
     instagram: Yup.string().nullable(),
     facebook: Yup.string().nullable(),

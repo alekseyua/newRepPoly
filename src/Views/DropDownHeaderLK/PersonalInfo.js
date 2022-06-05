@@ -2,7 +2,7 @@ import React from 'react';
 import style from './personalInfo.module.scss';
 import { initialsName } from '../../utils';
 
-const PersonalInfo = ({ first_name, last_name, role }) => {
+const PersonalInfo = ({ first_name, last_name, titleRole }) => {
   return (
     <div className={style['wrapper']}>
       <div className={style['wrapper-ellipse']}>{initialsName(first_name, last_name)}</div>
@@ -12,7 +12,7 @@ const PersonalInfo = ({ first_name, last_name, role }) => {
           <br />
           {last_name}
           <br />
-          <span className={style['wrapper-name_and_role-role']}>{role}</span>
+          <span className={style['wrapper-name_and_role-role']}>{titleRole}</span>
         </p>
       </div>
     </div>

@@ -1,7 +1,5 @@
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import useWebSocket, { ReadyState } from 'react-use-websocket';
-
 import { Helmet } from 'react-helmet';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -10,24 +8,21 @@ import VidjetChatComponent from '../components/VidjetChatComponent';
 import ButtonScrollTopComponent from '../components/ButtonScrollTopComponent';
 import { useStoreon } from 'storeon/react';
 import Modal from '../Views/ModalCreator';
-import ModalPreviewFile from './ModalContentViews/ModalPreviewFile';
 import Cookie from './Cookie/Cookie';
 
-
-// import { Steps, Hints } from 'intro.js-react';
 import introJs from 'intro.js';
 import 'intro.js/introjs.css';
 import "intro.js/themes/introjs-dark.css";
 
-// import { Document, Page } from 'react-pdf/dist/esm/entry.parcel';
-//import { Document, Page } from 'react-pdf';
-//  import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
-
 import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
 import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
 import { checkLocalStorage, getCookie } from '../utils';
-
-import api from '../api';
+import ModalContentViews from '../Views/ModalContentViews';
+import { Formik } from 'formik';
+import { GxForm } from '@garpix/garpix-web-components-react';
+import cogoToast from 'cogo-toast';
+import ModalPreviewFile from './ModalContentViews/ModalPreviewFile';
+import api from '../api'
 
 const Layout = ({
   headerModClosed = false,
@@ -46,48 +41,29 @@ const Layout = ({
   currencies,
   year,
   policy,
-  cartUpdate,
 }) => {
 const { userPage, dispatch } = useStoreon('userPage');
+const { stateCountCart } = useStoreon('stateCountCart')
+const { notice } = useStoreon('notice');
+
 let { profile } = userPage;
 const [modalStates, setModalStates] = useState(Modal.defaultModalStates);
 const [ timerViewTour, setTimerViewTour ] = useState(false);
 
-    const [isPaused, setIsPaused] = useState(false);
-    const [data, setData] = useState(null);
-    const [status, setStatus] = useState("");
-    const ws = useRef(null);
 
-    // useEffect(() => {
-    //     if (!isPaused) {
-     //         ws.current = new WebSocket(socketUrl); // создаем ws соединение
-    //         ws.current.onopen = () =>{ 
-    //           ws.current.send(options);
-    //           setStatus("Соединение открыто");}  // callback на ивент открытия соединения
-    //         ws.current.onclose = () => setStatus("Соединение закрыто"); // callback на ивент закрытия соединения
+const ws = useRef(null);
+const [isPaused, setIsPaused] = useState(false);
+const [data, setData] = useState([]);
+const [statusSocket, setStatusSocket] = useState("");
 
-    //         gettingData();
-    //     }
 
-    //     return () => ws.current.close(); // кода меняется isPaused - соединение закрывается
-    // }, [ws, isPaused]);
-
-    // const gettingData = useCallback(() => {
-    //     if (!ws.current) return;
-
-    //     ws.current.onmessage = e => {                //подписка на получение данных по вебсокету
-    //         if (isPaused) return;
-    //         const message = JSON.parse(e.data);
-    //         setData(message);
-    //     };
-    // }, [isPaused]);
 
      const initialStateIntro = {
       // stepsEnabled: true,
       // initialStep: 0,
       steps: [
         {
-          element: '[dataIntro="step1"]',
+          element: '[dataintro="step1"]',
           title: "здесь назовём наш слайд",
           intro: "Вот так будет выглядит инструкция для знакомства с сайтом",
           position: 'bottom-right-aligned',
@@ -95,7 +71,7 @@ const [ timerViewTour, setTimerViewTour ] = useState(false);
         },
   
         {
-          element: '[dataIntro="step2"]',
+          element: '[dataintro="step2"]',
           title: "сдесь ещё както назавём наш слайд",
           intro: <div><img
                   width="100%"
@@ -107,7 +83,7 @@ const [ timerViewTour, setTimerViewTour ] = useState(false);
         },
 
         {
-          element: '[dataIntro="step3"]',
+          element: '[dataintro="step3"]',
           intro: "Вот сдесь мы можем расказать что будет делать эта кнопка, и слайд к примеру без названия",
           position: 'top',
         },
@@ -131,15 +107,15 @@ const [ timerViewTour, setTimerViewTour ] = useState(false);
           introJs().setOptions({
             steps: [
               {
-                element: '[dataIntro="step1"]',
+                element: '[dataintro="step1"]',
                 title: "здесь назовём наш слайд",
                 intro: "Вот так будет выглядит инструкция для знакомства с сайтом",
                 position: 'bottom-right',
-                highlightClass: 'dataIntro-step1',
+                highlightClass: 'dataintro-step1',
               },
         
               {
-                element: '[dataIntro="step2"]',
+                element: '[dataintro="step2"]',
                 title: "сдесь ещё както назавём наш слайд",
                 intro: `<div><img
                         width="100%"
@@ -148,14 +124,14 @@ const [ timerViewTour, setTimerViewTour ] = useState(false);
                       ></img>
                       <p>здесь мы раскажем про выбор валюты</p>
                       </div>`,
-                highlightClass: 'dataIntro-step2',
+                highlightClass: 'dataintro-step2',
               },
       
               {
-                element: '[dataIntro="step3"]',
+                element: '[dataintro="step3"]',
                 intro: "Вот сдесь мы можем расказать что будет делать эта кнопка, и слайд к примеру без названия",
                 position: 'top',
-                highlightClass: 'dataIntro-step3',
+                highlightClass: 'dataintro-step3',
 
               },
       
@@ -166,7 +142,6 @@ const [ timerViewTour, setTimerViewTour ] = useState(false);
 
           }).onbeforeexit(function () {
             let questions = confirm("Ещё будете  знакомится с сайтом? В ЛК можно изминить статус");
-            console.log('questions:', !!questions)
             if(!!questions){
               return localStorage.setItem('tour',false)
             }
@@ -176,16 +151,11 @@ const [ timerViewTour, setTimerViewTour ] = useState(false);
         }  
         
         if(checkLocalStorage('tour')){
-          console.log('work in if tour',checkLocalStorage('tour'));
-
           if( JSON.parse(localStorage.getItem('tour').toLowerCase()) ){
-            console.log('почему пропускает если false',typeof JSON.parse(localStorage.getItem('tour').toLowerCase()))
-            console.log('in ---',checkLocalStorage('tour'), '--test--', JSON.parse(localStorage.getItem('tour').toLowerCase()));
             return  tourFromsite();
           }
           return
         } else {
-          console.log('work out if tour',checkLocalStorage('tour'));
           tourFromsite();
         }
       
@@ -200,7 +170,6 @@ const [ timerViewTour, setTimerViewTour ] = useState(false);
       hintsEnabled,
       hints
     } = state;
-    console.log('state:', state)
   
     const onExit = () => {
       console.log('onExit', state)
@@ -210,19 +179,26 @@ const [ timerViewTour, setTimerViewTour ] = useState(false);
       }));
     };
 
-
+    useEffect(()=>{
+      dispatch('modal/update', {
+        show: false,
+        content: null,
+        addClass: false,
+      });
+    },[])
 
 const heandlerKey = () => {
-  console.log('check work click',getCookie('ft_token'))
-  handleClickSendMessage()
-
-}
+  api
+    .updatePage( { '0': '/cart' })
+    .then(res=>console.log({res}))
+    .catch(err=>console.log({err}))
+};
 
 if ( profile === undefined ){
      window.location.reload()
 }
   const cabinet_data = {
-    cart: cartUpdate.in_cart,
+    cart: stateCountCart.in_cart,
     notifications: profile.notifications
   };
   const mainClassModufy = classNames({
@@ -237,8 +213,7 @@ if ( profile === undefined ){
       addClass: false,
     });
   };
-
-  
+   
   const openModalFeedbackReedFile = (file) => { 
    
     const renderPage = (props) => {
@@ -262,6 +237,7 @@ if ( profile === undefined ){
                       <Viewer 
                         fileUrl={`${file}`}
                         renderPage={renderPage}
+                        defaultScale = {'PageWidth'}
                         theme={{
                           theme: 'dark',
                         }}
@@ -272,7 +248,6 @@ if ( profile === undefined ){
                       />
                     </div>
                 </Worker>
-
               </ModalPreviewFile>
         )
     })
@@ -281,18 +256,7 @@ if ( profile === undefined ){
 
   return (
     <>
-        {/* {
-        timerViewTour?
-        <>
-        <Steps
-         enabled={stepsEnabled}
-         steps={steps}
-         initialStep={initialStep}
-         onExit={()=>onExit}
-         />
-        </>
-        :null
-        }  */}
+    
       <Header
         headerModClosed={headerModClosed}
         header_menu={header_menu}
@@ -304,15 +268,7 @@ if ( profile === undefined ){
         cabinet_menu={cabinet_menu} 
         currencies={currencies}
       />
-         {/* <button
-          onClick={heandlerKey}
-          style={{
-            border: '1px solid red',
-            padding: '5px',
-            margin: '10px',
-            cursor: 'pointer',
-          }}
-         >get key</button> */}
+      {/* <button onClick={heandlerKey}>push me</button>  */}
       <Helmet>
         <title>{title}</title>
         {/* <link rel="icon" href="/favicon.ico" type="image/x-icon" />

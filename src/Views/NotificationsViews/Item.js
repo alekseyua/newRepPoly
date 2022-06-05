@@ -17,7 +17,6 @@ const Item = ({
   useEffect(() => {
     setSelect(checkEnable)
   }, [checkEnable])
-  console.log('date:', date)
   //добавляем элемент в массив при select=true
   const getArrayNotificationAdd = (items, inputvalue) => {
     let res = []

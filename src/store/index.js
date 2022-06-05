@@ -4,7 +4,9 @@ import { dataBalance } from './ComponentStore/Balance';
 import { popupWarrning } from './ComponentStore/Popup';
 import { registration } from './ComponentStore/Registration';
 import { mapusagesite } from './ComponentStore/MapUsageSite';
-import { spinner } from './ComponentStore/Speener';
+import { spinner } from './ComponentStore/SpinnerStore';
+import { notifications } from './ComponentStore/Notifications';
+import { chatMessage } from './ComponentStore/Chat';
 
 
 
@@ -310,6 +312,7 @@ export const reqestIdProduct = store => {
     export const notificationCount = store => {
       store.on('@init', () => ( {notificationCount:null} ));
       store.on('notificationCount/update', ({ notificationCount }, obj) => {
+        // console.log('notificationCount/update',obj)
         return {notificationCount : obj}
       })
     }
@@ -442,7 +445,6 @@ export const activeItemMenu = store => {
 export const stateUpdateBalance = store => {
   store.on('@init', () => ({ stateUpdateBalance: false }));
   store.on('stateUpdateBalance/update', ({ stateUpdateBalance }, obj) => {
-    console.log('stateUpdateBalance', stateUpdateBalance)
     return { stateUpdateBalance: obj }
   })
 }
@@ -450,6 +452,8 @@ export const stateUpdateBalance = store => {
 
 
 export const storeonParams = [
+chatMessage,
+  notifications,
   spinner,
   mapusagesite,
   registration,

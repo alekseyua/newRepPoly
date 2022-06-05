@@ -336,8 +336,24 @@
     height: 0;
     transition: 0.2s;
     background-color: var(--gx-color-white);
+    // &-sizes{
+      // display: none;
+    // }
     &-sizes{
-      display: none;
+      display: block;
+      width: 100%;
+      & > ul{
+        display: flex;
+        text-decoration: none;
+        padding-left: 0;
+        & > li {
+          list-style-type: none;
+
+          &:not(:last-child){
+            margin-right: 7px;
+          }
+        }
+      }
     }
     @include mobile {
       position: relative;

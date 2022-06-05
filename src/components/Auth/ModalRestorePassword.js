@@ -19,6 +19,7 @@ const ModalRestorePassword = ({ initialValues, resetUserPassword,setNextStep }) 
     const param = {
       ...initialValues,
       email: params.email,
+      type: 'restore',
     }
     sessionStorage.setItem('email',params.email)
 

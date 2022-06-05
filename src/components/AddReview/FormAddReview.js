@@ -73,7 +73,7 @@ const ModalAddReview = ({
             <ModalContentViews.FormAddReview>
               <textarea
                 value={!!values.content?values.content:''}
-                onInput={handleChange}
+                onChange={handleChange}
                 className={style["productreviews__form-textarea"]}
                 placeholder="Текст отзыва"
                 name={'content'}

@@ -240,7 +240,7 @@
   @extend %font;
   font-size: 32px;
   letter-spacing: 0.02em;
-  @include padding-for-mobile;
+  // @include padding-for-mobile;
 }
 .min_card {
   @extend %font;

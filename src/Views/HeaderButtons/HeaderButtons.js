@@ -52,7 +52,7 @@ const HeaderButtons = ({
    page_home = '#',
   } = site_configuration;
 
-  const { stateCountRestart,dispatch } = useStoreon('stateCountRestart');
+  const { stateCountRestart, dispatch } = useStoreon('stateCountRestart');
   const { stateCountWish } = useStoreon('stateCountWish');
   const { stateCountCart } = useStoreon('stateCountCart');
   const { userPage } = useStoreon('userPage');
@@ -60,8 +60,8 @@ const HeaderButtons = ({
   const [searchInputShow, setSearchInputShow] = useState(false);
   const [ countInCar, setCountInCar] = useState();
   const searchBgRef = React.createRef(null);
+  const { role, user, status }        = userPage.profile;
 
-  const role = userPage.profile;
 
   useEffect(()=>{
     setCountInCar(stateCountCart.in_cart)
@@ -91,8 +91,43 @@ const HeaderButtons = ({
   }, []);
 
   const onChangeHandler = () =>{
-      dispatch('stateCountRestart/add', !stateCountRestart)
-      history.push('cart')
+
+    dispatch('stateCountRestart/add', !stateCountRestart)
+
+    let params = {};
+      console.log('status:', status)
+      if (status === 1){
+        if (user.checkEmail){
+          params = {
+            path: null,
+            success: 'Администратор проверяет введенные Вами данные. Что бы воспользоваться всеми возможностями сотрудничества, дождитесь обновления статуса или свяжитесь с нами через форму "Обратная связи"',
+            fail: null,
+          }
+        }else{
+          params = {
+            path: null,
+            success: null,
+            fail: 'Что бы воспользоваться всеми возможностями сотрудничества, подтвердите почту и дождитесь проверки администратора',
+          }
+        }
+        dispatch('warrning/set', params)
+    } else if(status === 0){
+      params = {
+        path: 'authorization',
+        success: null,
+        fail: 'Что бы воспользоваться всеми возможностями сотрудничества, необходимо зарегистрироваться',
+      }
+      dispatch('warrning/set', params)
+    }else if(status === 2){
+      params = {
+        path: 'registration',
+        success: null,
+        fail: 'Вам отказано в регистрации, пользование сайтом ограничено',
+      }
+      dispatch('warrning/set', params)
+    }else{
+      history.push('cart');
+    }
   }
   // =======================================================================================================
 
@@ -106,7 +141,7 @@ const HeaderButtons = ({
       })}
     >
       {lang ? (
-        <div dataIntro="step2" className={style['header-buttons-dropdowns']}>
+        <div className={style['header-buttons-dropdowns']}>
           <LangAndCurrencies
             currenciesData={currenciesData}
             isScrolled={isScrolled}
@@ -212,8 +247,8 @@ const HeaderButtons = ({
             </NavLink>
 
             {/* //!cart */}
-            <NavLink
-              to={page_type_cart}
+            <div
+              // to={"#"}
               className={classNames({
                 [style['header-buttons__icon']]: true,
                 [style['light']]: false,
@@ -232,7 +267,7 @@ const HeaderButtons = ({
                   {countInCar}
                 </div>
               ) : null}
-            </NavLink>
+            </div>
           </div>
         </>
       ) : null}

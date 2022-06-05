@@ -68,7 +68,6 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
     setState((prevState) => ({ ...prevState, step: prevState.step + 1 }));
   };
   const closeModal = () => {
-    console.log('Authorization:')
     setState(initialState);
     setModalStates({
       content: null,
@@ -79,13 +78,8 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
   const resetUserPassword = (params, setFieldError) =>{
   
     setValues( prev => {
-      console.log('prev:', prev)      
-      console.log('params:', params)
-
       return { ...prev, ...params }      
     })
-    console.log('work request1',params)
-
     if(state.step === 0){
       apiUser
         .resendUserKey(params)
@@ -94,18 +88,10 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
         })
         .catch(err=>{          
             console.log(`ERROR `,err)
-            let errMessage = {
-                success: '',
-                fail : 'Неверно указана почта',
-                };
-                setFieldError('email', 'Неверно указана почта')
+            console.log('err:', err.data)
         }
       )
     }else if(state.step === 2){
-
-    console.log('values inner:', values)
-    console.log('work request2',params)
-
       let param = {
         key: sessionStorage.getItem('submit_code'),
         password: sessionStorage.getItem('password'),
@@ -115,7 +101,6 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
       apiUser
         .resetUserPassword(param)
         .then(res=>{
-          console.log('reset password', res);
           openModalFinallyRestorePassword(true);
         })
         .catch(err=>{          
@@ -156,8 +141,6 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
 // debugger
 
   const openModalRestorePassword = () => {
-    console.log('state.step open', state.step)
-    console.log('values openModalRestorePassword:', values)
     setModalStates({
       content: (
         <ModalContentViews.ModalWrapper>

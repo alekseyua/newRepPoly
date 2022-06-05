@@ -6,7 +6,6 @@ const OrderCar = ({enabled, styleCar, setStyleCar}) => {
 	
 	const { orderFunc, dispatch } = useStoreon('orderFunc');
 		const lifehack = () =>{
-			console.log('orderFunction', orderFunc)
 			window?.localStorage?.removeItem('numOrder')
 			setStyleCar('orderCar animate');
 			dispatch('orderFunc/state', true);
@@ -17,13 +16,23 @@ const OrderCar = ({enabled, styleCar, setStyleCar}) => {
 			<button 
 				className={styleCar}
 				onClick={lifehack}
-			>
-				<span className="default">{!enabled ? "ОФОРМИТЬ ЗАКАЗ НА ВЫКУП" :"ОФОРМИТЬ ЗАКАЗ НА ВЫКУП"}</span>
-				<span className="success">Заказ принят в работу
+			>		
+					{
+						styleCar === 'orderCar'?
+							<>
+								<span></span>
+								<span></span>
+								<span></span>
+								<span></span>
+							</>
+							: null
+					}
+				<strong className="default">{!enabled ? "ОФОРМИТЬ ЗАКАЗ НА ВЫКУП" :"ОФОРМИТЬ ЗАКАЗ НА ВЫКУП"}</strong>
+				<strong className="success">Заказ принят в работу
 					<svg viewBox="0 0 12 10">
 						<polyline points="1.5 6 4.5 9 10.5 1"></polyline>
 					</svg>
-				</span>
+				</strong>
 				<div className="box"></div>
 				<div className="truck">
 					<div className="car__name">FT</div>

@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import style from './popupe.module.scss';
 import { motion } from 'framer-motion';
-import { GxModal } from '@garpix/garpix-web-components-react';
+import { GxModal, GxTooltip } from '@garpix/garpix-web-components-react';
 import ModalContentViews from '../../Views/ModalContentViews';
 import classNames from 'classnames';
 import Text from '../Text';
@@ -209,19 +209,24 @@ const Popupe = ({
                                   key={v4(i * 2)}
                                   className={style['prodpage-sizes__itemPopupe']}
                                 >
-                                  <button
-                                    // key={v4(i)}
-                                    // disabled={classState.has(collections.id + (el.size.id + index * 444)) ? '' : el.redeemed}
-                                    // type="button"
-                                    // id={collections.id + (el.size.id + index * 444)}
-                                    style={!el.redeemed ? { background: 'rgb(0, 0, 0)', color:'rgb(255,255,255)' } : { background: 'rgb(79,79,79)', color:'rgb(0, 0, 0)' }}
-                                    // onClick={(e) => {
-                                    //   addOrRemoveEl(e.target.id)
-                                    // }}
-                                    className={style['prodpage-sizes__size-buttonPopupe']}
+                                  <GxTooltip
+                                    content="Товары белым цветом доступны для завершения сбора"
+                                    placement="top"
                                   >
-                                    {el.size.title}
-                                  </button>
+                                    <button
+                                      // key={v4(i)}
+                                      // disabled={classState.has(collections.id + (el.size.id + index * 444)) ? '' : el.redeemed}
+                                      // type="button"
+                                      // id={collections.id + (el.size.id + index * 444)}
+                                      style={!el.redeemed ? { background: 'rgb(255, 255, 255)', color:'rgb(0,0,0)' } : { background: 'rgb(79,79,79)', color:'rgb(0, 0, 0)' }}
+                                      // onClick={(e) => {
+                                      //   addOrRemoveEl(e.target.id)
+                                      // }}
+                                      className={style['prodpage-sizes__size-buttonPopupe']}
+                                    >
+                                      {el.size.title}
+                                    </button>
+                                  </GxTooltip>
                                 </li>
                               );
                             })}

@@ -19,6 +19,7 @@ const DropDownMenuAccount = ({
   page_home,
 }) => {
   const { notificationCount } = useStoreon('notificationCount');
+  const { noticeCount } = useStoreon('noticeCount')
   const [countNotify, setCountNotify] = useState(null);
   useEffect(()=>{
     setCountNotify(cabinet_data?.notifications)
@@ -39,7 +40,7 @@ const DropDownMenuAccount = ({
           <div
             className={classNames({
               [style['header-buttons__badge']]: true,
-              [style['empty']]: !countNotify,
+              [style['empty']]: !(!!notificationCount),
             })}
           >
             {/* {cabinet_data?.notifications} */}

@@ -12,6 +12,7 @@ const SendChatBlock = ({
   setValues,
   values,
   sendCommentFromTextField,
+  isState,
 }) => {
   const fileInputRef = React.useRef();
   return (
@@ -60,6 +61,7 @@ const SendChatBlock = ({
           ) : null}
         </GxButton>
         <GxButton
+          disabled={!isState}
           type={'submit'}
           onClick={handleSubmit}
           variant="text"

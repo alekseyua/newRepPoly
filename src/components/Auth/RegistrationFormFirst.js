@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GxForm, GxIcon } from '@garpix/garpix-web-components-react';
 import { Formik } from 'formik';
 import Input from '../../Views/Input';
@@ -24,7 +24,7 @@ const RegistrationFormFirst = ({ onSaveFormData, initialValues, setNextStep }) =
     username: 'Некоректный никнейм',
     symbol: 'Поле не должно содержать спец. символы',
   };
-
+  
   return (
     <Formik
       validationSchema={signUpFirstFormSchema(errorsMessenge)}

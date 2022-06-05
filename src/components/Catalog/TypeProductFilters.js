@@ -28,6 +28,7 @@ const TypeProductFilters = ({
         title__icontains: value,
       })
       .then((res) => {
+        console.log({res})
         setRenderTypeProductCheckBox(recursParseCategory(res));
       });
   };
@@ -45,16 +46,17 @@ const TypeProductFilters = ({
   const recursParseCategory = (data = []) => {
     let listcategories = [];
     const getListCategoryData = (category) => {
-      
-      if (category.children?.length) {
-        // listcategories.push(category);
-        // category.children.forEach((categoryChild) => {
-        //   getListCategoryData(categoryChild);
-        // });
-      } else {
+     
+      // if (category.children?.length) {
+      //   // listcategories.push(category);
+      //   // category.children.forEach((categoryChild) => {
+      //   //   getListCategoryData(categoryChild);
+      //   // });
+      // } else {
         listcategories.push(category);
-      }
+      // }
     };
+
     if (!Array.isArray(data)) {
       data = data.results;
     }

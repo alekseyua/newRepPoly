@@ -1,4 +1,4 @@
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { useStoreon } from 'storeon/react';
 import Combine from './pages/Combine';
 import { PATHS, DEFAULT_CURRENCIES, ONE_YEARS, COOKIE_KEYS } from './const';
@@ -11,134 +11,82 @@ import '/node_modules/swiper/swiper.scss';
 import '/node_modules/video-react/dist/video-react.css';
 import '@garpix/garpix-web-components/dist/garpix-web-components/garpix-web-components.css';
 import './styles/index.scss';
-import { array } from 'yup';
-import { fakeServer } from 'cypress/types/sinon';
-import { ReactNotifications, Store } from 'react-notifications-component';
+import { ReactNotifications } from 'react-notifications-component';
 import "react-notifications-component/dist/theme.css";
+import React, {useCallback, useEffect, useState } from 'react';
 
-import React, { useState, useCallback, useEffect } from 'react';
+import cogoToast from 'cogo-toast';
 
+const App = ({ lang, pageServer }) => {
 
-
-const App = ({ lang, pageServer, ...props }) => {
-
-
-  const notifications = pageServer?.notifications;
   const { dispatch } = useStoreon();
   const { stateCountRestart } = useStoreon('stateCountRestart');
   const { updateCurrenssies } = useStoreon('updateCurrenssies');
   const { stateUpdateBalance } = useStoreon('stateUpdateBalance');
-  const [listNotification, setListNotification] = useState(null);
-  const [countNotification, setCountNotification] = useState(null);
-
+  const { warrningGoToPath } = useStoreon('warrningGoToPath');
+  const history = useHistory();
   const { statusRequstOrderCountryPayment } = useStoreon('statusRequstOrderCountryPayment');
-  const apiProfile = api.profileApi;
+  const [notice, setNotice] = useState(null)
+  
   
   api.setLanguage(lang);
   const { stateValuePoly } = useStoreon('stateValuePoly');
   let currency = getCookie(COOKIE_KEYS.CURRENCIES);
   let token = getCookie('ft_token');
-
-  const pushNotification = () =>{
-    const countCookieNotification = +getCookie('notifications');
-
-    //`************браузерные функции увидомления********************
-    const deleteTag = (data) => data.replace(/<a>|<\/a>/isg, '');
-    const notifSet = (message) => {
-      if (!("Notification" in window))
-        alert ("Ваш браузер не поддерживает уведомления.");
-      else if (Notification.permission === "granted")
-        setTimeout(notifyMe(message), 2000);
-      else if (Notification.permission !== "denied") {
-        Notification.requestPermission (function (permission) {
-          if (!('permission' in Notification))
-            Notification.permission = permission;
-          if (permission === "granted")
-            setTimeout(notifyMe(message), 2000);
-        });
-      }
-      setCookie('notifications',notifications);
-    }    
-    const notifyMe = (message) => {  
-      var notification = new Notification ("Увидомление", {
-        // tag : "ache-mail",
-        body : message,
-        icon : "./images/logo/logo.svg"
-      });
-    }
-    //`**************реакт функции увидомления********************
-    const myNotification = (message) => {
-      return (
-        <div style={{
-          // display: 'flex',
-          // backgroundColor: '#c3c3c3',
-          // borderRadius: 5,
-          // position: 'absolute',
-           zIndex: 9999,
-        }}>
-          {/* <AlligatorAvatar/> */}
-          <div>
-            <h4>Увидомление!!!</h4>
-            <p>{message}</p>
-          </div>
-        </div>
-      )
-    }
-
-    //`*****************************************************************
-
-    apiProfile
-    .getNotifications()
-    .then(res=>{
-      const newRes = res.results.map(el=>({
-        ...el, message: deleteTag(el.message)
-      })) 
-      console.log('res:', newRes) 
-      if (countCookieNotification !== res.count){
-        //notifSet(message.message) // браузерные увидомления
-        newRes.map(message=>{
-           //const timer = setInterval(() => {
-             const textMessage = message.message;
-             console.log({textMessage})
-
-              Store.addNotification({
-                // content: ()=>myNotification(message.message),
-                title: "Увидомление",
-                id: message.id,
-                message: 'ddddd',
-                // message: newRes.map(message=>{message.message}),
-                type: "success",
-                insert: "top",
-                container: "top-right",
-                animationIn: ["animated", "fadeIn"],
-                animationOut: ["animated", "fadeOut"],
-                dismiss: { duration: 5000 },
-                dismissable: { 
-                  click: true, 
-                  onScreen: true,
-                },
-                slidingExit: {
-                  duration: 800,
-                  timingFunction: 'ease-out',
-                  delay: 0
-                }
-              })
-          })      
-      }
-    })
-    .catch(err=>console.log('ERROR',err));    
+  const deleteTag = (data) => data.replace(/<a.*?>|<\/a>/isg,'');
+  
+  
+  if(pageServer !== undefined){
+    setCookie('id_profile',pageServer?.profile?.id)    
   }
-
+  
+  useEffect(()=>{
+    warrningGoToPath?
+      history.push(warrningGoToPath)
+      : null
+  },[warrningGoToPath])
 
   if (!!token){
-
     useEffect(()=>{
-      setCountNotification(prev => {
-        if(prev !== notifications) return notifications;
-      })
+      
+      console.log('.serviceWorker',navigator.serviceWorker)
+      
+      if(navigator.serviceWorker){
+        navigator.serviceWorker.addEventListener('message', event => {
+          console.log('message  ---- event: ----', event.data)
+          const {msg} = event.data
+          setNotice(deleteTag(msg))
+          });
+      }
     },[])
-
+    useEffect(() => {
+      console.log(notice)
+      // const timerNotice = setTimeout(() => {
+        //changeStatusNotyIsNew(notice.id)
+        if(notice !== null){
+          const { hide } = cogoToast.success(notice, {
+            position: 'bottom-right',
+            bar: {
+              size: '2px',
+              style: 'dotted',
+              color: '#с3с3'
+            },
+            heading: `Уведомление `,
+            hideAfter: 90,
+            // toastContainerID: v4(),
+            onClick: (e) => {
+              // changeStatusNotyIsNew(notice.id)
+              // changeStatusNotyIsRead(notice.id)
+              hide();
+            }
+          }
+          );
+        }
+      // }, [3000])
+      // return clearTimeout(timerNotice);
+    }, [notice])
     //********************************************************************************* */ 
+
     useEffect(() => {
       api
         .cartApi
@@ -151,7 +99,7 @@ const App = ({ lang, pageServer, ...props }) => {
           let errMessage = {
             path: null,
             success: null,
-            fail : 'ошибка доступа к сервер, проверьте соединение',
+            fail : 'ошибка доступа к серверу, проверьте соединение',
           };
           dispatch('warrning/set',errMessage);
         }
@@ -179,7 +127,7 @@ const App = ({ lang, pageServer, ...props }) => {
           let errMessage = {
             path: null,
             success: null,
-            fail : 'ошибка доступа к сервер, проверьте соединение',
+            fail : 'ошибка доступа к серверу, проверьте соединение',
           };
           dispatch('warrning/set',errMessage);
         })
@@ -202,7 +150,7 @@ const App = ({ lang, pageServer, ...props }) => {
           let errMessage = {
             path: null,
             success: null,
-            fail : 'ошибка доступа к сервер, проверьте соединение',
+            fail : 'ошибка доступа к серверу, проверьте соединение',
           };
           dispatch('warrning/set',errMessage);
         })
@@ -221,7 +169,7 @@ const App = ({ lang, pageServer, ...props }) => {
           let errMessage = {
             path: null,
             success: null,
-            fail : 'ошибка доступа к сервер, проверьте соединение',
+            fail : 'ошибка доступа к серверу, проверьте соединение',
           };
           dispatch('warrning/set',errMessage);
         })
@@ -229,30 +177,16 @@ const App = ({ lang, pageServer, ...props }) => {
     }, [statusRequstOrderCountryPayment])
 
     //********************************************************************************* */ 
-    //const [ arrNotifications, setArrNotifications ] = useState([]);
-    // useEffect(()=>{
-    //  return pushNotification();
-  
-    // }, [])
 
-    //********************************************************************************* */ 
-    // useEffect(()=>{    
-    //   const eventBlur = () => pushNotification();
-    //   window.addEventListener('blur', eventBlur);
-    //   return () => window.removeEventListener('blur',eventBlur);
-    // },[])
-  
-    // useEffect(()=>{    
-    //   const eventBlur = () => pushNotification();
-    //   window.addEventListener('focus', eventBlur);
-    //   return () => window.removeEventListener('focus',eventBlur);
-    // },[])
     //********************************************************************************* */ 
 
     //********************************************************************************* */ 
 
     //********************************************************************************* */ 
 
+  }else{
+    console.log('unregister service worker')
+    //serviceWorker.unregister();
   }
   useEffect(() => {
     if (!currency) {
@@ -265,7 +199,7 @@ const App = ({ lang, pageServer, ...props }) => {
     }
   }, [currency]);
   //********************************************************************************* */ 
-
+  
   // console.log('+++IntlProvider+++ RENDER',stateValuePoly);
   return (
     <IntlProvider

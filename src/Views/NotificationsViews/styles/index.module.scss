@@ -21,8 +21,10 @@
         font-size: 12px;
       }
     }
+    //.cabinet_notifications__mark{}
     &__mark {
       margin-left: 50px;
+      margin-right: 10px;
       &:focus {
         box-shadow: none;
       }

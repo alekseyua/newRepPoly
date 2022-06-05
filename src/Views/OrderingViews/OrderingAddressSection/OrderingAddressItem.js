@@ -19,6 +19,8 @@ const OrderingAddressItem = ({
   setFieldValue,
   setFieldCountry,
   handleChange,
+  setStateMarquee,
+  stateMarquee,
 }) => {
 
   return (
@@ -26,6 +28,7 @@ const OrderingAddressItem = ({
       checked={selectedAdress === id ? true : null}
       id={id}
       onClick={(e) => {
+        setStateMarquee(false)
         setFieldValue('selectedAdress', id);
         setFieldCountry(country);
         handleChange(country)

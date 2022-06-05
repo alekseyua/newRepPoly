@@ -26,19 +26,21 @@ const ContentDropDownAccount = ({
 }) => {
   const apiUser = api.userApi;
   const { role, user = {}, shop = { is_has_shop: false }, status } = profile;
-  const { first_name = 'Имя', last_name = 'Фамилия', email = '' } = user;
-  console.log('user:', user)
+  const { first_name = 'Имя', last_name = 'Фамилия', email = '', checkEmail = false } = user;
   const history = useHistory();
   const {dispatch} = useStoreon();
   const logOut = () => {
     removeCookie(COOKIE_KEYS.AUTH);
+    removeCookie(COOKIE_KEYS.POLICY);
+    window.location.href='/';
   };
 
-  const openModalKeyRegistration = () => {
+  const openModalKeyRegistration = (email) => {
+    console.log('start open modal get key for registrations')
     const initialValues = {}
 
 
-    const closeModal = () => {
+    const closeModal = (email) => {
       dispatch('modal/update', {
         show: false,
         content: null,
@@ -48,11 +50,11 @@ const ContentDropDownAccount = ({
 
     return  dispatch('modal/update', {
       content: (
-        <ModalContentViews.ModalWrapper>
+      <ModalContentViews.ModalWrapper>
         <ModalContentViews.CloseBtn closeModal={closeModal} />
         <ModalContentViews.CenterPosition>
           <ModalContentViews.ContentBlock>
-                <ModalSubmitCode initialValues={initialValues} path={'/catalog'} regist={true}/>
+                <ModalSubmitCode initialValues={initialValues} path={'/catalog'} regist={true} emailUser={email}/>
           </ModalContentViews.ContentBlock>
         </ModalContentViews.CenterPosition>
       </ModalContentViews.ModalWrapper>
@@ -71,6 +73,7 @@ const ContentDropDownAccount = ({
         role={role}
         email={email}
         openModalKeyRegistration={openModalKeyRegistration}
+        checkEmail={checkEmail}
       />
     ),
     rejectedAccount: (
@@ -87,6 +90,7 @@ const ContentDropDownAccount = ({
         first_name={first_name}
         last_name={last_name}
         cabinet_menu={cabinet_menu}
+        
         logOut={logOut}
         page_type_auth={page_type_auth}
       />

@@ -1,5 +1,4 @@
 import App from './App';
-
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import { StoreContext } from 'storeon/react';
 import React from 'react';
@@ -8,18 +7,17 @@ import { createStoreon } from 'storeon';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import ReactDOM from 'react-dom';
 import { applyPolyfills, defineCustomElements } from '@garpix/garpix-web-components/loader';
-import { RE_CAPTHA_KEY } from './const';
+import * as serviceWorker from './serviceWorker';
+import { getCookie } from './utils';
 import api from './api';
+
 const store = createStoreon(storeonParams);
 
 
 const { lang, } = window.__initLang__;
 const INITIAL_DATA = window.__INITIAL_DATA__.page;
-// console.log('__INITIAL_DATA__', INITIAL_DATA)
-// console.log('lang', lang)
-
-// const lang = 'ru';
-//const socketWeb = api.socketApi;
+// console.log({INITIAL_DATA})
+let token = getCookie('ft_token');
 const BaseApp = () => {
 
   /*
@@ -61,4 +59,11 @@ applyPolyfills().then(() => {
 
 if (module.hot) {
   module.hot.accept();
+}
+
+
+if (!(!!token)){
+  serviceWorker.unregister();
+}else{
+  //serviceWorker.register();
 }

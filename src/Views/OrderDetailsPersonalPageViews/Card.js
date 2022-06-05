@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   productCard1,
   change,
@@ -19,6 +19,7 @@ import { Formik } from 'formik';
 import OrderDetailsPersonalPageViews from '../OrderDetailsPersonalPageViews/';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
+import { getCookie } from '../../utils';
 
 const Card = ({
   title,
@@ -38,6 +39,7 @@ const Card = ({
   const orderApi = api.orderApi;
   const fileInputRef = React.useRef(null);
   const { currenssies } = useStoreon('currenssies');
+  const { chatOrdersMessage } = useStoreon('chatOrdersMessage');
   const [correspondenceState, setcorrespondenceState] = useState([]);
   const [amountFile, setAmountFile] = useState(null);
   const [upDownBtn, setUpDownBtn] = useState(true);
@@ -45,6 +47,13 @@ const Card = ({
     text_field: '',
     file_list: [],
   });
+  const ws = useRef(null);
+  const [isState, setIsState] = useState(false);
+  const [data, setData] = useState([]);
+  const [arrIsnew, setArrIsnew] = useState([]);
+  
+
+
   const getIconFromStatus = (id) => {
     const statusIcons = {
       collection: shoppingBag,
@@ -60,6 +69,15 @@ const Card = ({
       return statusIcons.default;
     }
   };
+
+
+  useEffect(()=>{
+    const dataChatItem = chatOrdersMessage.filter(item=> item.item_id === id)
+    if(dataChatItem[0] !== undefined){
+      setcorrespondenceState(dataChatItem[0].chat_order_items)
+    }
+
+  },[chatOrdersMessage])
 
   const closeModal = () => {
     setModalStates({
@@ -84,12 +102,10 @@ const Card = ({
       addClass: 'modal-review',
     });
   };
-  
+
   const getChatData = () => {
-    let hhhh=0
-    console.log('count', hhhh++);
     orderApi.getCorrespondence_order_item({ order_item_id: id }).then((res) => {
-      setcorrespondenceState(res);
+      // setcorrespondenceState(res);
     });
   };
   const sendCommentFromTextField = (order_id) => {
@@ -98,7 +114,7 @@ const Card = ({
     fd.set('message', valuesState.text_field);
     fd.set('files', valuesState.file_list); 
     orderApi.postCorrespondence_order_item(fd).then((res) => {
-      getChatData();
+      //getChatData();
       setAmountFile(null);
       setvaluesState({
         text_field: '',
@@ -107,15 +123,16 @@ const Card = ({
     });
   };
 
+  
   useEffect(() => {
-    getChatData();
+     //getChatData();       
   }, []);
 
   const clickOpenCommit = () => {
-    console.log(`click`)
     setUpDownBtn(c=>!c)
   }
 
+  
   return (
     <div className={style['cabinet_orders_details__card']}>
       <div className={style['cabinet_orders_details__wrapper-block']}>
@@ -180,7 +197,9 @@ const Card = ({
                     <span className={style['cabinet_orders_icon-payment']}>💳</span>
                   ) : status.id === 'paid' ? (
                     <span className={style['cabinet_orders_icon-paid']}>✔️</span>
-                  ) : status.id === 'packaging' ? (
+                  ) :status.id === 'ordered'?(
+                    <span className={style['cabinet_orders_icon-paid']}>✔️</span>
+                  ) :status.id === 'packaging' ? (
                     <span className={style['cabinet_orders_icon-packaging']}>🛍</span>
                   ) : status.id === 'sended' ? (
                     <span className={style['cabinet_orders_icon-sended']}>🛫</span>
@@ -225,9 +244,13 @@ const Card = ({
             preview = [preview];
           }
           return (
-            <div className={style['ordering_comment']}>
+            <div className = {classNames({
+                [style['ordering_comment']]:true,
+                [style['active']]: upDownBtn
+              })}
+            >
               <div
-              onClick={clickOpenCommit}
+              
               className = {classNames({
                   [style['ordering_comment__field']]:true,
                   [style['active']]: upDownBtn
@@ -261,8 +284,9 @@ const Card = ({
                 <div className={style['ordering_comment__field-files']}>
                 </div>
 
-               {!!correspondenceState.length? <div className={style['ordering_comment__up-down']}></div>:null}
+               
               </div>
+              {!!correspondenceState.length? <div onClick={clickOpenCommit} className={style['ordering_comment__up-down']}></div>:null}
               <div className={style['ordering_comment__send']}>
                 <GxInput
                   onGx-change={(e) =>

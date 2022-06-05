@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GxForm, GxIcon } from '@garpix/garpix-web-components-react';
 import { ROLE } from '../../const';
 import { Formik } from 'formik';
@@ -56,6 +56,7 @@ const RegistrationFormBaseInfo = ({
       value: Text({ text: 'other' }),
     },
   ];
+
   return (
     <Formik
       enableReinitialize
@@ -80,7 +81,7 @@ const RegistrationFormBaseInfo = ({
             />
             <PhoneField
               variant={'varian-input'}
-              value={values.phone}
+              value={values.phone} 
               name={'phone'}
               placeholder={Text({ text: 'enterPhone' })}
               autocomplete={'off'}

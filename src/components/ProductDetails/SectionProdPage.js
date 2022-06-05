@@ -83,7 +83,7 @@ const SectionProdPage = ({
   const { stateCountWish } = useStoreon('stateCountWish')
   const { currenssies } = useStoreon('currenssies'); //currenssies
   const { userPage } = useStoreon('userPage');
-  const { role } = userPage.profile;
+  const { role, status } = userPage.profile;
   const shereRef = useRef();
   const [listCollectionsHook, setListCollectionsHookHook] = useState([]);//Array data
   const [recommended_priceHook, setRecommended_priceHook] = useState();
@@ -235,7 +235,6 @@ const SectionProdPage = ({
       // pack ??????
     }
     colorsn.id || sizesn.id ? (
-      console.log('change color and size'),
       apiContent
         .getProduct(productId, params)
         .then((res) => {
@@ -246,7 +245,6 @@ const SectionProdPage = ({
           setIn_cart_countHook(res.in_cart_count)
           setIn_stock_countHook(res.in_stock_count)
           setIs_likedHook(res.is_liked)
-          console.log('res:.is_in_stock', res.is_in_stock)
           setIs_in_stockHook(res.is_in_stock)
         })
         .catch(err => console.error(`ERROR getProduct(productId, params) ${err}`))
@@ -391,11 +389,11 @@ const SectionProdPage = ({
       .catch((err) => {
         // нужно сделать попап для ошибки добавления и удаления количества товара в превью
         const response = err.response;
-        if (response) {
-          if (response.status === ERROR_STATUS.FORBIDDEN) {
-            return (history.push(site_configuration.page_type_reg));
-          }
-        }
+        // if (response) {
+        //   if (response.status === ERROR_STATUS.FORBIDDEN) {
+        //     return (history.push(site_configuration.page_type_reg));
+        //   }
+        // }
         dispatch('stateCountRestart/add', !stateCountRestart)
       });
   };
@@ -586,6 +584,7 @@ const SectionProdPage = ({
                       currenssies={currenssies}
                       pricesHook={pricesHook}
                       product_rcAmount={product_rcAmount}
+                      status={status}
                     />
                     <AsyncControlButtons
                       countProduct={in_stock_countHook}
@@ -602,7 +601,7 @@ const SectionProdPage = ({
                       setChangeColorBtn={setChangeColorBtn}
                       role={role}
                       productId={productId}
-
+                      status={status}
                     />
                     {!modalView ? (
                       <ProductDetailsViews.DeliveryInfo

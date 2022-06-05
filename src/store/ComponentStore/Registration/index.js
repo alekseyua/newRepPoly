@@ -26,28 +26,30 @@ export const registration = store => {
       };
 
     store.on('checkKey', ({checkKey}, obj) =>  {
+        //'auth',
+        //'resend'
         const param = {
-            key: +obj.submit_code,
-            type: "auth",
+            key: +obj.submit_code, 
+            type: obj.type,
             email: obj.email,
         }
             console.log('param: checkKey', param)
+
             return {
                 checkKey: apiUser
                             .checkKey(param)
                             .then(res=>{
+
                                 let param = {
                                     ...obj,
                                     data: true,
                                     content: 'Аутентификация прошла успешно',
                                 }
-                                console.log('param: checkKey= ', param)
                                 store.dispatch('finallyRegistration/set', param);
                             }
                             )
                             .catch(err=>{          
-                            console.log(`ERROR `,err.response)
-
+                                console.log(`ERROR `,err.response)
                             }
                             )
             }
@@ -56,9 +58,6 @@ export const registration = store => {
 
     const closeModal = (obj) => {
         const {path, success = false, userValues = null, role = null, content = null} = obj;
-        console.log('path:', path)
-
-        console.log('obj: closeModal', obj)
         const params = {
             path: path,
             data: success,
@@ -67,14 +66,7 @@ export const registration = store => {
             content: content,
         }
 
-        store.dispatch('modal/update', {
-            show: false,
-            content: null,
-            addClass: false,
-        });
-
         if (success) {
-            // auto authorization
             apiUser
             .loginByUsername(
                 {
@@ -105,7 +97,17 @@ export const registration = store => {
                 }
             });
         }
-       !!path && success === false && userValues === null && role ===null? window.location.href = path : null
+        debugger
+       console.log('path: close modal store', path)
+       !!path && success === false && userValues === null && role ===null? window.location.href = path : (
+        store.dispatch('modal/update',{
+            show: false,
+            content: null,
+            addClass: false, 
+          })
+       )
+            // setTimeout(store.dispatch('warrningGoToPath',path), 2000)
+            // : null
     //    if (role === ROLE.RETAIL){
     //             //попап ввода ключа
     //     }else{
@@ -115,24 +117,27 @@ export const registration = store => {
 
     store.on('getNewSubmitCode', ({getNewSubmitCode},obj) => {
         console.log('obj getNewSubmitCode:', obj)
+        // 1) {'type': 'restore'} - восставвления пароля
+        // 2) {'type': 'resend'} - переслать еще раз
+        let path = obj.type === 'restore'? '/catalog' : '';
+
         const param = {
             email: obj.email,
-            path: '/catalog',
+            path: path,
+            type: obj.type
         }   
         return{
             getNewSubmitCode: (
                  apiUser
                     .resendUserKey(param)
                     .then(res=>{
-
                         store.dispatch('keyRegistration/set', param)
-                        // if (res.data.status === 'Send') setNextStep();
                     })
                     .catch(err=>{          
                         console.log(`ERROR `,err.response.data)
                         let errMessage = {
                             success: '',
-                            fail : '',
+                            fail : 'Ошибка!!!',
                             };
                         store.dispatch('warrning/set', errMessage)
                     }
@@ -142,13 +147,14 @@ export const registration = store => {
       }
     )
 
-    // store.on('@init',()=>({keyRegistration: ''}));
     store.on('keyRegistration/set', ({keyRegistration}, obj)=>{
        const initValue = {
            ...initialValues,
-           ...obj.userValues
+           email: obj.email,
+           path: obj.path,
+           type: obj.type,
+           ...obj.userValues,
         }
-        console.log('initValue: keyRegistration/set', initValue)
         return (
             store.dispatch('modal/update', {
             content: (
@@ -168,6 +174,12 @@ export const registration = store => {
     })
 
     store.on('finallyRegistration/set', ({finallyRegistration}, obj)=>{
+      debugger
+      store.dispatch('modal/update',{
+        show: false,
+        content: null,
+        addClass: false, 
+      })
         return (
             store.dispatch('modal/update', {
             content: (

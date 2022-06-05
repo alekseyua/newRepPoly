@@ -212,19 +212,26 @@ const OrderBaseDetails = ({
           {(role === ROLE.RETAIL)
           ?( <>  
             <CartViews.BlockRightSide>
-              <CartViews.Text type={'text-default'}>
-                <Text text={'sale'} />
-              </CartViews.Text>
-              <CartViews.Text type={'text-red'}>
-                {discount.toFixed(2)} {currentCurrcensies}
-              </CartViews.Text>
+            {
+              !!discount?
+                (<>
+                  <CartViews.Text type={'text-default'}>
+                    <Text text={'sale'} />
+                  </CartViews.Text>
+                  <CartViews.Text type={'text-red'}>
+                      {discount.toFixed(2)} {currentCurrcensies}
+                  </CartViews.Text>
+                </>
+                )
+                :null 
+            }
             </CartViews.BlockRightSide>
             <CartViews.BlockRightSide>
               <CartViews.Text type={'text-default'}>
                 <Text text={'shipping'} />
               </CartViews.Text>
               <CartViews.Text type={'text-default_currency'}>
-                              {!!delivery_cost ? (
+                              {!!delivery_cost ? (  
                                 <>
                                 &nbsp;                                
                                   {delivery_cost.toFixed(2)}&nbsp;

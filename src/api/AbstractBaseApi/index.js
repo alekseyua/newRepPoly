@@ -28,8 +28,9 @@ class AbstractBaseApi extends BaseApi {
     const language = this.getLanguage();
     const currency = this.getCurrency();
     // console.log(" test РАБОТЫ");
-
     axios.defaults.headers.common['Authorization'] = token ? `Token ${token}` : '';
+    // axios.defaults.headers.common['Authorization'] = token ? `csrftoken ${getCookie('csrftoken')}` : '';
+    // axios.defaults.headers.common['credentials'] = "include";
     axios.defaults.headers.common['Accept-Language'] = language;
     if (currency) {
        axios.defaults.headers.post['currency'] = currency; // for POST requests

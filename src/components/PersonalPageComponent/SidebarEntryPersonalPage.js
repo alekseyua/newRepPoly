@@ -71,13 +71,13 @@ const changeData = (event) => {
         role={role}
         setModalStates={setModalStates}
       />
-            <CheckBox
+            {/* <CheckBox
               checked={stateTour}
               name={'tour'}
               onGx-change={onHandleChangeTour}
               label={'включть или отключить показывать тотариал'}
               data-cy={'authorization_check_box_remember'}
-            />
+            /> */}
       {!is_has_shop ? (
         <PersonalPageViews.CreateStore
           className={'desktop'}

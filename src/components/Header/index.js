@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useStoreon } from 'storeon/react';
-import { useLocation } from 'react-router-dom';
-import { useIntl } from 'react-intl';
 import api from '../../api';
 import MainPromotion from '../../Views/MainPromotion';
 import TopHeader from '../../Views/TopHeader';
 import BottomHeader from '../../Views/BottomHeader';
 import classNames from 'classnames';
+import usePushNotifications from '../../#lifehack/Notification/usePushNotifications';
+
+
+
 
 export default ({
   headerModClosed,
@@ -18,13 +20,12 @@ export default ({
   cabinet_menu,
   site_configuration,
   currencies,
+  testProps,
 }) => {
-
-  
   const { userPage } = useStoreon('userPage');
   const role = userPage.profile;
   // const { page_type_search } = userPage.site_configuration;
-  const { promotionsAdds } = useStoreon('promotionsAdds');
+  const { promotionsAdds, dispatch } = useStoreon('promotionsAdds');
   const [offsetTop, setOffsetTop] = useState(124);
   const [isScrolled, setScrolled] = useState(false);
   const [isActiveSubmenuBg, setActiveSubmenuBg] = useState(false);
@@ -33,7 +34,34 @@ export default ({
     results: [],
     openDropDown: false,
   });
+// ==========================================================================================================
+const {
+  // userConsent,
+  // pushNotificationSupported,
+  // userSubscription,
+  onClickAskUserPermission,
+  onClickSusbribeToPushNotification,
+  onClickSendSubscriptionToPushServer,
+  // pushServerSubscriptionId,
+  // onClickSendNotification,
+  // error,
+  // loading
+} = usePushNotifications();
+  // onClickAskUserPermission            - получение разрешения
+  // onClickSusbribeToPushNotification   - подписаться на уведомления
+  // onClickSendSubscriptionToPushServer - отправить подписку на сервер
+  // onClickSendNotification             - отправить уведомление
 
+  useEffect(()=>{
+    const startRegistration = async () =>{
+     await onClickAskUserPermission();
+     await onClickSusbribeToPushNotification();
+   }
+    startRegistration()
+  },[])
+
+
+// ==========================================================================================================
   const handleChangeSearchValue = (e) => {
     const value = e.target.value;
     setSearchState((prevState) => ({
@@ -79,22 +107,20 @@ export default ({
     setOffsetTop(offset);
   };
 
-  // useEffect(() => {
-  
-  //   const getPrice = async () => setTotal(await api.getTotalPrice(cart));
-    
-  //   getPrice();
-
-  // }, [cart]);
-
   useEffect(() => {
     if (headerModClosed) {
       setScrolled(true);
       decSetOffsetTop(62);
     }
   }, []);
+
+  const heandlerClick = () => {
+    ///askUserPermission()
+  }
+
   return (
     <header>
+      <button onClick={heandlerClick} >push me for test</button>
       <MainPromotion announce={announce} role={role} />
       <div
         className={classNames({

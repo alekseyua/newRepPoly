@@ -22,7 +22,47 @@ const AddToCartBlock = ({
   const { dispatch, currenssies, stateCountRestart } = useStoreon('currenssies', 'stateCountRestart'); //currenssies
   const { userPage }    = useStoreon('userPage');
   const history         = useHistory();
-  const { role }        = userPage.profile;
+  const { role, user, status }        = userPage.profile;
+
+  const handlerGoToCart = ()=>{
+    handleClose()
+    dispatch('stateCountRestart/add',!stateCountRestart)
+    let params = {};
+    if (status === 1){
+    if (user.checkEmail){
+      params = {
+        path: null,
+        success: 'Администратор проверяет введенные Вами данные. Что бы воспользоваться всеми возможностями сотрудничества, дождитесь обновления статуса или свяжитесь с нами через форму "Обратная связи"',
+        fail: null,
+      }
+    }else{
+      params = {
+        path: null,
+        success: null,
+        fail: 'Что бы воспользоваться всеми возможностями сотрудничества, подтвердите почту и дождитесь проверки администратора',
+      }
+    }
+    dispatch('warrning/set', params)
+    } else if(status === 0){
+      params = {
+        path: 'authorization',
+        success: null,
+        fail: 'Что бы воспользоваться всеми возможностями сотрудничества, необходимо зарегистрироваться',
+      }
+      dispatch('warrning/set', params)
+    }else if(status === 2){
+      params = {
+        path: 'registration',
+        success: null,
+        fail: 'Вам отказано в регистрации, пользование сайтом ограничено',
+      }
+      dispatch('warrning/set', params)
+    }else{
+      history.push('cart');
+    }
+
+  }
+
   return (
     <div className={style['add_to_cart-wrapper']}>
       <HeaderBlock title={'Добавлено в корзину'} mb={20} />
@@ -49,12 +89,6 @@ const AddToCartBlock = ({
           </div>
         </div>
         <div className={style['add_to_cart-wrapper-content--currency_desc']}>
-          {/* {priceOneProduct ? (
-            <span>
-              {priceOneProduct} {currenssies}
-            </span>
-          ) : null} */}
-
           {allPrice ? (
             <div className={style['add_to_cart-wrapper-content--price-sell']}>
               {allPrice.toFixed(2)} {currenssies}
@@ -80,10 +114,7 @@ const AddToCartBlock = ({
           <Button variant="catalog-link-transparent-min" onClick={handleClose}>
             продолжить покупки
           </Button>
-          <Button variant="cancel-black-min" onClick={()=>{
-            dispatch('stateCountRestart/add',!stateCountRestart)
-            history.push('cart')
-            }}>
+          <Button variant="cancel-black-min" onClick={handlerGoToCart}>
             перейти в корзину
           </Button> 
         </div>

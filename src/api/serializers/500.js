@@ -15,8 +15,7 @@ const page500Serializer = (page) => {
     wishlist: profile.wishlist,
 
   };
-  // временное решение по поводу выскакивания ошибки 500 !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  
+ 
   // return (e)=>{window.location.reload();}
 };
 

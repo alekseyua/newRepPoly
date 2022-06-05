@@ -73,7 +73,13 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
   const [values, setValues] = useState(initialValues);
   const {dispatch} = useStoreon();
   const [key, setKey] = useState("");
-
+  const hideModal = () => {
+    dispatch('modal/update', {
+      show: false,
+      content: null,
+      addClass: false,
+    });
+  }
 
   const registration = (newValues, setFieldError, step) => {
     let params = serializeDataRegistration(newValues, state.role);
@@ -82,14 +88,13 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
       .registration(params)
       .then((res) => {
         const params = {
-          path: '/catalog',
+          path: '/information/juridical',
           data: true,
           userValues: newValues,
           role: role,
           success: true,
           content: 'Регистрация прошла успешно'
       }
-      // console.log({params})
         dispatch('finallyRegistration/set',params)
       })
       .catch((err) => {
@@ -99,21 +104,16 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
           for (let key in data) {
             const element = Array.isArray(data[key]) ? data[key][0] : data[key];
             if (step === 1) {
-              console.log('step1:', step)
               if (initialValuesFirstStep.hasOwnProperty(key)) {
-                console.log('work 1',key)
                 setFieldError(key, element);
                 error = true;
               }
             } else if (step === 2) {
-              console.log('step2:', step)
-
               if (initialValuesMiddleStep.hasOwnProperty(key)) {
                 setFieldError(key, element);
                 error = true;
               }
             } else {
-              console.log('step 3:', step)
               setFieldError(key, element);
               error = true;
               openModalFinallyRegistration(false);
@@ -166,7 +166,7 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
 
   const openModalFinallyRegistration = (data, userValues = null, role) => {
     const params = {
-      path: '/',
+      path: '/information/juridical',
       data: data,
       userValues: userValues,
       role: role,
@@ -185,10 +185,8 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
             content: null,
             addClass: false,
           });
-        history.push('catalog');
         };
         const renderPage = (props) => {
-            console.log('props:', props)
             return (
                 <>
                     {props.canvasLayer.children}
@@ -206,7 +204,8 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
                     <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456 /build/pdf.worker.min.js">
                         <div id="pdfviewer">
                           <Viewer 
-                            fileUrl={`https://cors-anywhere.herokuapp.com/${file}`}
+                            fileUrl={`${file}`}
+                            defaultScale = {'PageWidth'}
                             renderPage={renderPage}
                             theme={{
                               theme: 'dark',

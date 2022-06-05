@@ -1,10 +1,39 @@
   заметки
 
+            
+
+
+//row main-container
+
+
+"scripts": {
+  "start":
+    "HTTPS=true SSL_CRT_FILE={CERT-PATH} SSL_KEY_FILE={KEY-PATH} react-scripts start"
+}
+
+https://github.com/theturtle32/WebSocket-Node
+
+vpn tunel https://routerus.com/how-to-set-up-wireguard-vpn-on-ubuntu-20-04/
+
+linux 
+  state:  sudo wg
+  up:     sudo wg-quick up wg0
+  douwn:  sudo wg-quick down wg0
 
 "intro.js": "^5.1.0",
     "intro.js-react": "^0.6.0",
 
+```в линуксе чтобы обойти лимит ```
+When this limit is not enough to monitor all files inside a directory, the limit must be increased for Listen to work properly.
 
+You can set a new limit temporary with:
+
+$ sudo sysctl fs.inotify.max_user_watches=524288
+$ sudo sysctl -p
+
+```для windows чтобы обойти лимит```
+ $env:NODE_OPTIONS="--max-old-space-size=8192"
+ 
 ``` попап для ошибки ```
   import { useStoreon } from 'storeon/react';
   const {dispatch} = useStoreon();
@@ -16,12 +45,18 @@
   dispatch('warrning/set',errMessage);
   
   
-  ошибка доступа к сервер, проверьте соединение
+  ошибка доступа к серверу, проверьте соединение
   dispatch('warrning/set', 'текст если нужно указать в попапе')
 _________
 
   dispatch('spinner')
-
+  const hideModal = () => {
+    dispatch('modal/update', {
+      show: false,
+      content: null,
+      addClass: false,
+    });
+  }
 checkLocalStorage(key) -  проверка ключа в localStorage
 ______________________________________________________
 ``` попап для ?????? ```
@@ -41,16 +76,52 @@ GET
 http://91.218.229.240:8000/api/v1/order/correspondence_order_item/?order_item_id=№ товара
 
 POST
+
+```всплывающая инструкция```
+import { Steps, Hints } from 'intro.js-react';
+import "intro.js/introjs.css";
+
+const initialStateIntro = {
+    stepsEnabled: true,
+    initialStep: 0,
+    steps: [
+      {
+        element: '[data-py-id="step1"]',
+        intro: "Вот так будет выглядит инструкция для знакомства с сайтом",
+      },
+
+      {
+        element:'[data-py-id="step2"]',
+        intro: <img
+                width="100%"
+                alt=""
+                src="https://i.giphy.com/media/ujUdrdpX7Ok5W/giphy.webp"
+              ></img>
+      }
+    ],
+    disableInteraction: true,
+
+    hintsEnabled: true,
+    hints: [
+      {
+        element: '[data-py-id="step3"]',
+        hint: "Hello hint",
+        hintPosition: "middle-right"
+      }
+    ]
+  }
+
+
 ``````plagin for work VS CODE``````
 1) Auto Rename Tag 
-2) Auto Import
+2) Auto Import 
 3) Beautify
 4) Better Comments
 5) Bracket Pair Colorizer 2
 6) Path Intellisense
 7) Wrap Console Log -> Turbo Console Log
 8) Import Cost
-9) Code Spell Checker
+9) Code Spell Checker + Russian - Code Spell Checker
 10) 
 
 
@@ -79,7 +150,7 @@ POST
     { "keys": ["ctrl+`"], "command": "tag_classes"},
 ]
 
-`````REACT тестирование програмы на перерендеринг компонентов для отслеживания rerendering `````
+`````REACT тестирование программы на перерендеринг компонентов для отслеживания rerendering `````
 Why Did You Render
 https://www.npmjs.com/package/@welldone-software/why-did-you-render
 
@@ -134,16 +205,7 @@ function removeCookie(name) {
   // document.cookie = name + '=; Max-Age=-99999999;';
 }
 
-```в линуксе чтобы обойти лимит ```
-When this limit is not enough to monitor all files inside a directory, the limit must be increased for Listen to work properly.
 
-You can set a new limit temporary with:
-
-$ sudo sysctl fs.inotify.max_user_watches=524288
-$ sudo sysctl -p
-
-```для windows чтобы обойти лимит```
- $env:NODE_OPTIONS="--max-old-space-size=8192"
 
 ```` component for admin ````
 
@@ -173,6 +235,8 @@ css-loader
 let word = '<p>Ваш заказ должен быть не менее</p>';
 console.log('components:', word.replace(/<p>|<\/p>/isg, ''))
 console.log('components:', components[0].children[1].content.replace(/<p[^>]+?[^>]+>|<\/p>/isg, ''))
+
+const deleteTag = (data) => data.replace(/<a.*?>|<\/a>/isg,'');
 
 
 ```` попап показа pdf файла ````
@@ -343,7 +407,36 @@ console.log('товар пачка', finishResultIs_pack) - собирает в�
 
 
 // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        
+         <button
+          onClick={heandlerKey}
+          style={{
+            border: '1px solid red',
+            padding: '5px',
+            margin: '10px',
+            cursor: 'pointer',
+          }}
+         >get key</button>
+        <Formik enableReinitialize initialValues={reviewState} handleSubmit={sendReview}>
+          {({ handleSubmit, values, setFieldValue, handleChange }) => {
+            if (values.uploadFiles.length > 0){
+            console.log('values:', )
+            setStatusSocket(values.uploadFiles[0])
 
+          }
+
+            return (
+              <GxForm novalidate onGx-submit={handleSubmit}>
+                {/* <ModalContentViews.FormAddReview> */}
+                  <ModalContentViews.FormAddReviewUploadImage
+                    values={values}
+                    setFieldValue={setFieldValue}
+                  />
+                {/* </ModalContentViews.FormAddReview> */}
+              </GxForm>
+            );
+          }}
+        </Formik>
 
 
 

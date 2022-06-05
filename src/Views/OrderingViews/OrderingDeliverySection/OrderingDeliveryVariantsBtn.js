@@ -1,9 +1,11 @@
 import React from 'react';
-import { GxButton } from '@garpix/garpix-web-components-react';
+import { GxButton, GxIcon } from '@garpix/garpix-web-components-react';
 import classNames from 'classnames';
 import style from '../styles/index.module.scss';
+import {statusSend} from '../../../images';
 
-const OrderingDeliveryVariantsBtn = ({ deliveryVariant = [], setActiveVariantPayments }) => {
+
+const OrderingDeliveryVariantsBtn = ({ deliveryVariant = [], setActiveVariantPayments, idEnableBtn }) => {
   return (
     <>
       <div className={style['ordering__button_wrap']}>
@@ -20,6 +22,27 @@ const OrderingDeliveryVariantsBtn = ({ deliveryVariant = [], setActiveVariantPay
               })}
             >
               {el.title}
+              {/* { true?
+                  <>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                  </>
+                  : <GxIcon
+                  slot="icon-left"
+                  src={statusSend}
+                  className="cabinet_orders_details__base_info__icon"
+                />
+              } */}
+              { idEnableBtn === el.id?
+                <GxIcon
+                  slot="icon-left"
+                  src={statusSend}
+                  className="cabinet_orders_details__base_info__icon"
+                />
+                :null
+              }
             </GxButton>
           );
         })}

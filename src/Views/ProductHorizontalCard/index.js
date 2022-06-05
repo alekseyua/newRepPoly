@@ -84,7 +84,7 @@ const ProductHorizontalCard = ({
     setCountProducts(value)
     updateQty(value);
 
-  }
+  } 
 const changeState = (e) =>{
   console.log(`changeState`, e)
 }
@@ -118,28 +118,31 @@ const changeState = (e) =>{
               });}
           }}
         />
-        <Link
-          to={url}
-        >
+        <Link to={url}>
           <img src={image} className={style['product__image_thumb']} />
         </Link>
         <div className={style['product__base_info']}>
+        
           <div className={style['product__base_info__brand']}>{brand}</div>
-          <div className={style['product__base_info__title']}>{title}</div>
+          <Link className={style['product__base_info__title-link']} to={url}>
+            <div className={style['product__base_info__title']}>{title}</div>
+          </Link>
           <div className={style['product__base_info__size']}>
             <Text text={'size'} />: {size}
           </div>
           <div className={style['product__base_info__color']}>
             <Text text={'color'} />: {color}
           </div>
-          {is_collection?
-              <div className={style['product__base_info__size']}>
-                Условие покупки:
-                <div className={style['product__base_info__size-black']}>
-                  {condition}
-                </div>
-              </div>
-           : null
+          {role !== ROLE.RETAIL?
+              is_collection?
+                  <div className={style['product__base_info__size']}>
+                    Условие покупки:
+                    <div className={style['product__base_info__size-black']}>
+                      {condition}
+                    </div>
+                  </div>
+              : null
+            :null
           }
         </div>
         <Button

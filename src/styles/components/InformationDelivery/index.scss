@@ -36,6 +36,6 @@
 }
 @media screen and (max-width: 1024px) {
   .information-exchange {
-    @include padding-for-mobile;
+    // @include padding-for-mobile;
   }
 }

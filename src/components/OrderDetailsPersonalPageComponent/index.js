@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Title from '../../Views/Title';
 import OrderDetailsPersonalPageViews from '../../Views/OrderDetailsPersonalPageViews';
 import Chat from './Chat';
@@ -7,6 +7,7 @@ import api from '../../api';
 import { ROLE } from '../../const';
 import { useStoreon } from 'storeon/react';
 import { useHistory } from 'react-router-dom';
+import { getCookie } from '../../utils';
 const orderApi = api.orderApi;
 const OrderDetailsPersonalPageComponent = ({
   order,
@@ -48,13 +49,17 @@ const OrderDetailsPersonalPageComponent = ({
   const { currenssies, dispatch } = useStoreon('currenssies');
   const { stateUpdateBalance } = useStoreon('stateUpdateBalance');
 
+
+
   const getOrderItem = () => {
+  
     orderApi
       .getOrderItems({ order_id: id })
       .then((res) => {
+        console.log({res})
         if (res.length === 0) history.push('orders')
         setOrderItems(res);
-        !!res[0]?.items?getAmountGoods(res):null
+        !!res[0]?.items?getAmountGoods(res) : null
       })
       .catch(err => console.log(`Ошибка получения списка товаров находящихся в заказе №${id}`, err));
   };
@@ -117,6 +122,9 @@ const OrderDetailsPersonalPageComponent = ({
       .catch(err => console.error(`ERROR from request getOrders`, err))
   }, [currenssies, state])
 
+
+  
+
   return (
     <>
       <OrderDetailsPersonalPageViews.Wrapper>
@@ -152,6 +160,7 @@ const OrderDetailsPersonalPageComponent = ({
           <OrderDetailsPersonalPageViews.LeftSideCol>
             {role !== ROLE.WHOLESALE ? (
               orderItems.map((el, i) => {
+                console.log({el})
                 return ( 
                   <OrderDetailsPersonalPageViews.Card
                     {...el}
@@ -164,8 +173,8 @@ const OrderDetailsPersonalPageComponent = ({
                     order={el.order}
                     brand={el.brand}
                     change_agreement={el.change_agreement}
-                    comment={el.comment}
-                    commentImage={el?.comment_image !== "-" ? el?.comment_image : null}
+                    // comment={el.comment}
+                    // commentImage={el?.comment_image !== "-" ? el?.comment_image : null}
                     image={el.image}
                     deleteElementOrder={deleteElementOrder}
                     setModalStates={setModalStates}
@@ -179,7 +188,7 @@ const OrderDetailsPersonalPageComponent = ({
                   return (
                     <OrderDetailsPersonalPageViews.WrapperWhoosaleCard key={i} brand={el.title}>
                       {el.items.map((item) => {
-
+                        console.log({item})
                         return (
                           <OrderDetailsPersonalPageViews.Card
                             {...item}
@@ -192,7 +201,7 @@ const OrderDetailsPersonalPageComponent = ({
                             order={item.order}
                             brand={item.brand}
                             change_agreement={item.change_agreement}
-                            comment={item.comment}
+                            comment={[]}
                             commentImage={item?.comment_image !== '-'? item?.comment_image:null}
                             image={item.image}
                             deleteElementOrder={deleteElementOrder}

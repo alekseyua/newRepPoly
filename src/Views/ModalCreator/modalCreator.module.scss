@@ -7,7 +7,7 @@
   // --width: 100vw
 
   @include mobile {
-    --width: 100vw;
+    --width: 100%;
   }
 
   &::part(base) {
@@ -89,7 +89,7 @@
         right: 0;
       }
       .modal-min_wrap {
-        padding: 20px 40px 20px 10px;
+        // padding: 20px 40px 20px 10px;
       }
     }
     &::part(panel) {

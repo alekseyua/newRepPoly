@@ -98,11 +98,9 @@ class Api extends AbstractBaseApi {
   }
 
   getPage = async (params, queryParams = {}, axiosParams = {}) => {
-    // console.log("params getPage", params);
-  
+      
     const slug = ['/ru', '/en'].includes(params[0]) ? '/' : params[0];
 
-    //const slug = '';
     const res = await this.get(
       `/content/page${slug === '' ? '/' : slug}`,
       queryParams,
@@ -116,13 +114,12 @@ class Api extends AbstractBaseApi {
       return { pageType, page: PAGES['development-page'].serializer(page) };
     } else {
       const { serializer } = PAGES[pageType];
-
       return { pageType, page: serializer(page) };
     }
   };
 
-  updatePage = async (slug, queryParams = {}, axiosParams = {}) => {
-    // const slug = ['/en', '/ru'].includes(params[0]) ? '/' : params[0];
+  updatePage = async (params, queryParams = {}, axiosParams = {}) => {
+    const slug = ['/en', '/ru'].includes(params[0]) ? '/' : params[0];
     const res = await this.get(`/content/page${slug}`, queryParams, axiosParams);
     const page = res.data;
 

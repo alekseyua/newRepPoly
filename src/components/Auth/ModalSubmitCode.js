@@ -8,19 +8,20 @@ import Button from '../../Views/Button';
 import Input from '../../Views/Input';
 import Text from '../Text';
 
-const ModalSubmitCode = ({ resetUserPassword, initialValues, path = null, setNextStep = null,setValues = null, regist = false}  ) => {
+const ModalSubmitCode = ({ emailUser = null, resetUserPassword, initialValues, path = null, setNextStep = null,setValues = null, regist = false}  ) => {
   const { dispatch } = useStoreon();
-  
   const handleSubmit = (params, { setFieldError }) => {   
     params = {
       ...params,
       path: path,
+      type: 'auth',
+      email: emailUser? emailUser : params.email
     }
     console.log('params: submit code', params)
     const param = {
-      ...initialValues,
+      ...initialValues, 
       submit_code: params.submit_code,
-      email: params.email
+      email: emailUser? emailUser : params.email
     }
       regist? 
         dispatch('checkKey',params) 
@@ -32,7 +33,7 @@ const ModalSubmitCode = ({ resetUserPassword, initialValues, path = null, setNex
   };
 
   const postKeyFromMail = () => {
-    dispatch('getNewSubmitCode', {email: initialValues.email});
+    dispatch('getNewSubmitCode', {email: initialValues.email, type: 'resend'});
   }
   return (
     <>
@@ -42,7 +43,8 @@ const ModalSubmitCode = ({ resetUserPassword, initialValues, path = null, setNex
           return (
             <GxForm noValidate onGx-submit={handleSubmit} className="form-horizontal">
               <AuthorizationAndRegViews.ModalRestorePasswordDesc mb={'35px'}>
-                Мы отправили код подтверждения на ваш e-mail
+                {/* добавить надписи для разных ролей */}
+                Мы отправили код подтверждения на Ваш e-mail
               </AuthorizationAndRegViews.ModalRestorePasswordDesc>
               <Input
                 type={'text'}

@@ -22,7 +22,6 @@ const NotificationsComponent = ({ }) => {
       })
       .then((res) => {
         updateDataForm()
-        //window.location?.reload()
       })
       .catch((err) => console.error(`err test reques ${err}`));
   }
@@ -36,7 +35,7 @@ const NotificationsComponent = ({ }) => {
       .then((res) => {
         updateDataForm()
         dispatch('notificationCount/update',(notificationCount-allCheckEnableChange.length)?notificationCount-allCheckEnableChange.length:null)
-        setCheckEnable(!checkEnable)
+        setCheckEnable(false) 
         setAllCheckEnableChange([])
       })
       .catch((err) => console.error(`err test reques ${err}`));
@@ -57,11 +56,18 @@ const NotificationsComponent = ({ }) => {
   },[])
 
   useEffect(()=>{    
+    const eventBlur = () => console.log('test good')
+    window.addEventListener('message', eventBlur);
+    return () => window.removeEventListener('message',eventBlur);
+  },[])
+  
+
+  useEffect(()=>{    
     const eventBlur = () => updateDataForm();
     window.addEventListener('focus', eventBlur);
     return () => window.removeEventListener('focus',eventBlur);
   },[])
-  
+
 
   return (
     <>
@@ -73,12 +79,9 @@ const NotificationsComponent = ({ }) => {
         updateArrForm={updateArrForm}
         updateDataForm={updateDataForm}
         initFilter={initialFilters}
-        api={apiProfile.getNotifications
-        }
-        date={'DD.MM.YY'}
+        api={apiProfile.getNotifications}
       >
         {(data) => {
-          console.log('data:', data)
           const {
             count,
             results = [],
@@ -103,10 +106,8 @@ const NotificationsComponent = ({ }) => {
             }
            setAllCheckEnableChange(checkAllId)
           }
-          console.log(count)
           // обновляем форму с данными
           updateDataForm = () => {
-            console.log('update')
             data.reload()
           }
 
@@ -120,8 +121,6 @@ const NotificationsComponent = ({ }) => {
                 </NotificationsViews.SubText>
                 <NotificationsViews.Header heandlerReed={heandlerReed} heandlerDel={heandlerDel} checkAllBox={checkAllBox} checkEnable={checkEnable} />
                 {results.map((el) => {
-                  console.log('el:', el)
-
                   return (
                     <NotificationsViews.Item
                       key={el.id}

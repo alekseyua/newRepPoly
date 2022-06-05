@@ -15,7 +15,7 @@ const Dropshipper = ({
       <DropDownHeaderLK.PersonalInfo
         first_name={first_name}
         last_name={last_name}
-        role={Text({ text: 'dropshipper' })}
+        titleRole={Text({ text: 'dropshipper' })}
       />
       <DropDownHeaderLK.Line />
       <DropDownHeaderLK.Menu cabinet_menu={cabinet_menu} />

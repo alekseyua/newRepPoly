@@ -52,7 +52,7 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
           closeModal();
           let errMessage = {
             path: null,
-            success: 'Заявление отправлено',
+            success: 'Ваше заявление принято в работу',
             fail : null,
           };
           dispatch('warrning/set',errMessage);

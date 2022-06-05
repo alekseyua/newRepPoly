@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { GxForm, GxIcon } from '@garpix/garpix-web-components-react';
 import { fbIcon, igIcon, vkContrastIcon } from '../../images';
 import { ROLE } from '../../const';
@@ -15,7 +15,7 @@ import {
 } from '../../utils/schemesFormic';
 import Select from '../../Views/Select';
 
-const SocialMediaCompanyData = ({ onSaveFormData, initialValues, role, serverError }) => {
+const SocialMediaCompanyData = ({ onSaveFormData, initialValues, role}) => {
   const errorsMessenge = {
     requiredField: Text({ text: 'requiredField' }),
     invalidInn: Text({ text: 'invalidInn' }),

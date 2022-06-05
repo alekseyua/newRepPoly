@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import OrderDetailsPersonalPageViews from '../../Views/OrderDetailsPersonalPageViews';
 import { GxForm } from '@garpix/garpix-web-components-react';
 import ModalContentViews from '../../Views/ModalContentViews';
@@ -6,37 +6,29 @@ import { Formik } from 'formik';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 
 import api from '../../api';
+import { getCookie } from '../../utils';
+import { useStoreon } from 'storeon/react';
 
 
 const orderApi = api.orderApi;
 const socketWeb = api.socketApi;
 
 const Chat = ({ order_id, setModalStates }) => {
+  const { dispatch } = useStoreon();
   const [correspondenceState, setcorrespondenceState] = useState([]);
+  const ws = useRef(null);
+  const [isState, setIsState] = useState(false);
+
   const [valuesState, setvaluesState] = useState({
     text_field: '',
     file_list: [],
   });
 
-const [ message, setMessage ] = useState({});
-
-
-useEffect(()=>{
-  // const ws = new WebSocket(`ws://91.218.229.240:8001/ws/chat/${order_id}/`)
-  //   ws.addEventListener('open', function (event) {
-  //     ws.send(JSON.stringify({'order_id': order_id}))
-  //     console.log('message send',event)
-  //   })
-  //   ws.addEventListener('message', function (data) {
-  //     setcorrespondenceState(prev => [...prev, ...JSON.parse(data.data).order_chat])
-  //   })
-  },[])
-
   const getChatData = () => {
     orderApi
       .getCorrespondence({ order_id: order_id })
       .then((res) => {
-        setcorrespondenceState(res);
+        //setcorrespondenceState(res);
       });
   };
 
@@ -45,15 +37,6 @@ useEffect(()=>{
     fd.set('order', order_id);
     fd.set('message', values.text_field);
     fd.set('files', values.file_list);
-    
-    // const dataMessage = {
-    //   'order_id': order_id,
-    //   'message': values.text_field,
-    //   'files': values.file_list,
-    // }
-
-    // console.log('dataMessage:', dataMessage)
-    // ws.send(JSON.stringify(dataMessage))
     orderApi
       .postCorrespondence(fd)
       .then((res) => {
@@ -114,12 +97,57 @@ useEffect(()=>{
   };
 
   useEffect(() => {
-
-    getChatData();
+    //getChatData();
   }, []);
 
+  // *******************************************************************
+  const urlChatItem = `wss://back.ftownpl.com:8443/ws/chat/${order_id}/?token=$${getCookie('ft_token')}`;
 
+  useEffect(() => {
+        const newWS = () => {
+          ws.current = new WebSocket(urlChatItem); // создаем ws соединение
+        }
+        if(!!getCookie('ft_token')){
+          newWS()
+          ws.current.onopen = () =>{                  
+            // console.log("Соединение открыто Chat");  // callback на ивент открытия соединения
+            //ws.current.send(JSON.stringify({'order_id': `${order_id}`}))
+            setIsState(!isState)
+            gettingData();
+          }
+          ws.current.onclose = () => {
+            // console.log("Соединение закрыто Chat"); // callback на ивент закрытия соединения
+            setTimeout(newWS(),3000);
+            setIsState(!isState)        
+          }
+        }
+    return () => ws.current.close(); // кода меняется isState - соединение закрывается
+  }, [ws]);
 
+  const gettingData = useCallback(() => {
+      if (!ws.current) return;    
+      ws.current.onmessage = e => {                //подписка на получение данных по вебсокету
+        const message = JSON.parse(e.data);
+        console.log('message:', message)
+        if(message?.status !== false){
+        //   // console.log('message all:', message)
+          let { order_chat, order_message, order_item_message } = message;
+          dispatch('chatOrdersMessage/set',message)
+          if(order_chat !== undefined){
+             if(order_chat.length > 0){
+              setcorrespondenceState(order_chat)
+             }
+          }else if(order_message !== undefined){
+           setcorrespondenceState(prev=> ([...[message.order_message], ...prev]));
+          }
+        }
+      };
+      return ()=>{
+        ws.current.close(); // кода меняется isState - соединение закрывается
+      }
+  }, [isState]);
+
+  console.log('correspondenceState:', correspondenceState)
   return (
     <Formik enableReinitialize onSubmit={sendCommentFromTextField} handleChange={handleChange} initialValues={valuesState}>
       {({ handleSubmit, values, handleChange, setFieldValue, setValues }) => {
@@ -158,6 +186,7 @@ useEffect(()=>{
                 setValues={setValues}
                 handleSubmit={handleSubmit}
                 sendCommentFromTextField={sendCommentFromTextField}
+                isState={isState}                
               />
             </OrderDetailsPersonalPageViews.WrapperChat>
           </GxForm> 

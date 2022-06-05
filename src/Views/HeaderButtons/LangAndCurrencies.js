@@ -35,7 +35,7 @@ const LangAndCurrencies = ({
         })}
       >
         <div
-          dataPyId="step2"
+          dataintro="step2"
           ref={clickOutRef}
           slot="trigger"
           className={classNames({

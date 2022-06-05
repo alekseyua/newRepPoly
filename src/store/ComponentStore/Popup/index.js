@@ -9,17 +9,21 @@ export const popupWarrning = store => {
             content: null,
             addClass: false, 
         });
-        !!path? window.location.href = path : null;
+        
+        return store.dispatch('warrningGoToPath', path)
     };
 
     store.on('@init', () => ({warrning : '' }))
+    store.on('warrningGoToPath',({warrningGoToPath},obj)=>{
+        return {warrningGoToPath: obj}
+    })
     store.on('warrning/set', ({warrning}, obj) => {
         console.log('obj:', obj)
         return (
             store.dispatch('modal/update', {
             content: (
                 <ModalContentViews.ModalWrapper>
-                    <ModalContentViews.CloseBtn closeModal={() => closeModal(obj)} />
+                    <ModalContentViews.CloseBtn closeModal={() => closeModal(obj.path)} />
                         <ModalContentViews.ContentBlock>
                             <ModalContentViews.CenterPosition>
                             <ModalContentViews.SuccessOrError

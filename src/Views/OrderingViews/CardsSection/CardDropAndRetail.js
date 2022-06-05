@@ -99,7 +99,7 @@ const [stateChecked, setStateChecked] = useState(false)
                       :&nbsp;
                     </span>
                     <span>
-                      <span className={style['content-card__price--color']}>{(el.price*el.qty).toFixed(2)}</span>&nbsp;
+                      <span className={style['content-card__price--color']}>{(el.total_price).toFixed(2)}</span>&nbsp;
                       {currenssies}
                     </span>
                   </div>
@@ -128,7 +128,7 @@ const [stateChecked, setStateChecked] = useState(false)
                 :&nbsp;
               </span>
               <span>
-                <span className={style['content-card__price--color']}>{(el.price*el.qty).toFixed(2)}</span>&nbsp;
+                <span className={style['content-card__price--color']}>{(el.total_price).toFixed(2)}</span>&nbsp;
                 {currenssies}
               </span>
             </div>
@@ -194,7 +194,7 @@ const [stateChecked, setStateChecked] = useState(false)
                       :&nbsp;
                     </span>
                     <span>
-                      <span className={style['content-card__price--color']}>{(el.price*el.qty).toFixed(2)}</span>&nbsp;
+                      <span className={style['content-card__price--color']}>{(el.total_price).toFixed(2)}</span>&nbsp;
                       {currenssies}
                     </span>
                   </div>
@@ -223,7 +223,7 @@ const [stateChecked, setStateChecked] = useState(false)
                   :&nbsp;
                 </span>
                 <span>
-                  <span className={style['content-card__price--color']}>{(el.price*el.qty).toFixed(2)}</span>&nbsp;
+                  <span className={style['content-card__price--color']}>{(el.total_price).toFixed(2)}</span>&nbsp;
                   {currenssies}
                 </span>
               </div>

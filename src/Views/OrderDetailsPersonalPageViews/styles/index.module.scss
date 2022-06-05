@@ -635,6 +635,32 @@ p {
   &_comment {
     display: flex;
     flex-direction: column;
+    position: relative;
+    &.active {
+      .ordering_comment__up-down{
+        transition: all 3s ease-out;
+        &:after{
+          content: '';
+          width: 10px;
+          height: 2px;
+          background-color: #000;
+          bottom: 0;
+          right: 0;
+          position: inherit;
+          transform: rotate(-45deg) translateX(-3px);
+        }
+        &:before{
+          content: '';
+          width: 10px;
+          height: 2px;
+          background-color: #000;
+          bottom: 0;
+          left: 0;
+          position: inherit;
+          transform: rotate(45deg) translateX(3px);
+        }
+      }
+    }
     &__up-down{
       width: 20px;
       height: 20px;
@@ -664,8 +690,10 @@ p {
         left: 0;
         position: inherit;
         transform: rotate(-45deg) translateX(3px);
+
       }
     }
+    //.ordering_comment__field{}
     &__field {
       background-color: $g;
       height: 100%;
@@ -673,31 +701,11 @@ p {
       width: 100%;
       overflow-y: auto;
       position: relative;
+      max-height: 300px;
       &.active {
         height: 45px;
         // right: 10px;
-        .ordering_comment__up-down{
-          &:after{
-            content: '';
-            width: 10px;
-            height: 2px;
-            background-color: #000;
-            bottom: 0;
-            right: 0;
-            position: inherit;
-            transform: rotate(-45deg) translateX(-3px);
-          }
-          &:before{
-            content: '';
-            width: 10px;
-            height: 2px;
-            background-color: #000;
-            bottom: 0;
-            left: 0;
-            position: inherit;
-            transform: rotate(45deg) translateX(3px);
-          }
-        }
+
 
       }
       &-comment {

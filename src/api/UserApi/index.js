@@ -8,7 +8,6 @@ export default class UserApi extends AbstractBaseApi {
     return data;
   };
   loginByUsername = async (params, remember) => {
-    console.log('pass user', params)
     const res = await this.post('/user/login/', params);
     const data = res.data;
     if (remember) remember = 2592e3;
@@ -48,14 +47,12 @@ export default class UserApi extends AbstractBaseApi {
 // ***********************************************************************************************
 //user/check_key/
   checkKey = async (params) => {
-    console.log({params})
     const res = await this.post(`/user/check_key/`, params);
     return res;
   };
   
   // /user/resend_user_key/
   resendUserKey = async (params) => {
-    console.log({params})
     const res = await this.post(`/user/resend_user_key/`, params);
     return res;
   };

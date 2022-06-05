@@ -27,7 +27,7 @@ const SizesItems = ({
 }) => {
   const [selectedSizeList, setselectedSizeList] = useState(false);
   const { userPage } = useStoreon('userPage')
-  const { role } = userPage.profile;
+  const { role, status } = userPage.profile;
   const [ gropsSizes, setGropsSizes ] = useState([]);
   const [clickDelay, setClickDelay] = useState(null)
   useEffect(() => {
@@ -249,7 +249,8 @@ const SizesItems = ({
 
           </div>
             {/* кнопка  Иформация по открытым сборам*/}
-          {collections && listCollectionsHook.length !== 0 ?
+          { status !== 0 || status !== 2 ?(
+          collections && listCollectionsHook.length !== 0 ?
           (<div className={style['prodpage-range__wrap-mb']}>
             <div className={style['prodpage-range__wrap-btn']}>
               <GxButton
@@ -263,7 +264,8 @@ const SizesItems = ({
               </GxButton>
             </div>
           </div>
-          ):null
+          ):null)
+          : null
 }
         </React.Fragment>
       ) : 

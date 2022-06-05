@@ -117,10 +117,11 @@
 .information-exchange {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 @media screen and (max-width: 1024px) {
   .information-exchange {
-    @include padding-for-mobile;
+    // @include padding-for-mobile;
   }
 }
 
@@ -203,8 +204,11 @@
     display: block;
     letter-spacing: 0.04em;
     text-decoration-line: underline;
-    color: $p;
+    color: $a2;
     cursor: pointer;
+    &:hover{
+      color: #770d44;
+    }
   }
   &__switcher {
     padding-bottom: 20px;

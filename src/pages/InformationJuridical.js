@@ -54,7 +54,8 @@ const InformationJuridical = (props) => {
                 <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456 /build/pdf.worker.min.js">
                     <div id="pdfviewer">
                       <Viewer 
-                        fileUrl={`https://cors-anywhere.herokuapp.com/${file}`}
+                        fileUrl={`${file}`}
+                        defaultScale = {'PageWidth'}
                         renderPage={renderPage}
                         theme={{
                           theme: 'dark',

@@ -52,6 +52,7 @@
       font-size: 22px;
       line-height: 25px;
       color: var(--gx-color-primary);
+      margin-bottom: 30px;
     }
   }
 }
@@ -530,12 +531,20 @@
   &-wrapper {
     width: 100%;
     height: 100%;
+    position: relative;
+    top: -17px;
     &-content {
       display: flex;
       justify-content: space-between;
+      @include mobile-md {
+        flex-direction: column;
+      }
       &-wrapper {
         display: flex;
         justify-content: space-between;
+        @include mobile-md {
+          justify-content: flex-start;
+        }
       }
       &--image {
         width: 72px;
@@ -550,6 +559,9 @@
         padding-left: 5px;
         justify-content: space-between;
         margin-right: 3px;
+        @include mobile-md {
+          justify-content: flex-start;
+        }
         &>span:first-child{
           padding: 0 15px 20px;
           font-size: 22px;

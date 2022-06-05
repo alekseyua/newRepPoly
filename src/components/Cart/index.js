@@ -23,6 +23,7 @@ import { Link } from 'react-router-dom';
 import { memo } from 'react';
 import ProductWhosaleIsCollectionHorizontalCard from '../../Views/ProductWhosaleHorizontalCard/ProductWhosaleIsCollectionHorizontalCard';
 import Settings from '../../#lifehack/Settings/Settings';
+import { checkLocalStorage } from '../../utils';
 
 const apiCart = api.cartApi;
 const initialCartData = {
@@ -98,6 +99,13 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
   const rightSideWrapper = useRef(null);
   const [stateClickBtn, setStateClickBtn] = useState(false)
 
+  useEffect(()=>{
+    dispatch('modal/update', {
+      show: false,
+      content: null,
+      addClass: false,
+    });
+  },[])
   // *****************************
   useEffect(()=>{
     setEnab((!!stateCountCart.in_cart === !!stateCountCart.selected) ? true : false);
@@ -140,6 +148,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
   };
 
   const closeModal = () => {
+    
     setmodalStates({
       ...modalStates,
       callback: null,
@@ -149,9 +158,8 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
   //***************************************************************** */
 
   useEffect(() => {
-
+    
     if (role === ROLE.WHOLESALE) {//если опт
-      debugger
       setIs_performed(stateCountCart.is_performed)
       let goods = {
         collectiion: [],
@@ -405,14 +413,17 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
       })
       .then((res) => {
         dispatch('stateCountRestart/add', !stateCountRestart) ///???????????????
-        // updateProductFromCart() нельзя циклится
+        if(checkLocalStorage('productId')){
+          localStorage.removeItem('productId');
+        }
+       // updateProductFromCart() нельзя циклится
       })
       .catch((err) => {
         console.log("err deleteProductFromCart", err);
         let errMessage = {
           path: null,
           success: null,
-          fail : 'ошибка доступа к сервер, проверьте соединение',
+          fail : 'ошибка доступа к серверу, проверьте соединение',
         };
         dispatch('warrning/set',errMessage);
         
@@ -464,6 +475,9 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
           dispatch('stateCountRestart/add', !stateCountRestart)
           closeModal();
           setOneClick(false)
+          if(checkLocalStorage('productId')){
+            localStorage.removeItem('productId');
+          }
         })
         .catch((err) => {
           closeModal();
@@ -471,7 +485,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
           let errMessage = {
             path: null,
             success: null,
-            fail : 'ошибка доступа к сервер, проверьте соединение',
+            fail : 'ошибка доступа к серверу, проверьте соединение',
           };
           dispatch('warrning/set',errMessage);
           
@@ -491,7 +505,6 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
   // при нажатии + или - в корзине происходит добавление или удаление товара
   // ДОДЕЛАТЬ << is_performed >>
   const updateProductFromCart = (data = []) => {
-    console.log('data:', data)
     // обнавляем состояние карзины на сервере и в хранилище если обшибка допилить выдать попап и обновлять карзину
     apiCart
       .updateCartData([...data])
@@ -521,7 +534,11 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
 const textConditionPayPart_1 =  components[0].children[0].content.replace(/<p>|<\/p>/isg, '')
 const textConditionPayPart_2 =  components[0].children[1].content.replace(/<p>|<\/p>/isg, '')
 const {opt_minimum_price} = dataBalance;
-console.log('dataBalance',opt_minimum_price);
+
+const handleGoToOrder = () => {
+  console.log('запускаем спинер:')
+  dispatch('spinner')
+}
   return (
     <Container>
       <GxModal
@@ -740,6 +757,7 @@ console.log('dataBalance',opt_minimum_price);
             <CartViews.LinkToFirmalization
               enabled={agreeWitheRegulations && is_performed}
               to={checkout_slug}
+              onClick={handleGoToOrder}
             >
               <Text text={'go.to.registration'} />
             </CartViews.LinkToFirmalization>

@@ -12,6 +12,7 @@ export const ONE_YEARS = 2592e3;
 export const COOKIE_KEYS = {
   CURRENCIES: 'currency',
   AUTH: 'ft_token',
+  POLICY: 'policy',
 };
 export const ACTIONS_KEY = {
   LOG_OUT: 'log_out',
