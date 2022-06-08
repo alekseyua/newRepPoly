@@ -154,15 +154,8 @@ const createTdForTable = (data = [], currenssies) => {
 // *****************************************************************************************
 
 const btnAddOrderItems = async (el) => {
-  // console.log('el',el)
   window.localStorage.setItem('numOrder', el.id)
-
-  // dispatch('numberIdProduct/add', el.order_number)
-  //нужно ввести переменную со значением который говорит что должен быть выподающий список
  const result = await api.orderApi.listOrderItem()
-//                   // .then(res=>res)
-//                   // .then(()=>{return res})
-//                   // .catch(err=>err);
   history.push('catalog');
 }
 
@@ -170,12 +163,9 @@ const btnAddOrderItems = async (el) => {
 
 const btnDelOrder = (data) => {
     const params = {
-     //order_id : data.order_number,
      order_id : data.id,    
     }
-  //  const gotoCartFunc = (e, value) => { 
-  //   value?deleteOrder(params):null;
-  //  }
+
    api
    .orderApi
    .cancelOrder(params)
@@ -183,29 +173,6 @@ const btnDelOrder = (data) => {
     setStateClickDel(!stateClickDel)
      })
      .catch(err=>console.log('ERROR btnDelOrder dont work',err))
-  
-    // setmodalStates({ 
-    //   content: <GoBackToCartModalContent 
-    //               closeModal={closeModal} 
-    //               // page_type_cart={page_type_cart} 
-    //               gotoCartFunc={gotoCartFunc}
-    //             />,
-    //   show: true,
-    //   cusstomClassNameModalResize: 'modal-payments',
-    // });    
-  }
-
-  const deleteOrder = (params) => {
-  // closeModal()
-   // запрос работает нужно  только раскомить
-    //  api
-    //    .orderApi
-    //    .cancelOrder(params)
-    //    .then(res=>{
-    //        console.log('Order was delete from orders');
-    //      })
-    //      .catch(err=>console.log('ERROR btnDelOrder dont work',err))
-      
   }
  //------------------------------------------------------------------------------------------------
 

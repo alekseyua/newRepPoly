@@ -76,9 +76,6 @@ const ModalChangePassword = ({ closeModal, userId, title: titleProp }) => {
             password = data.new_password[0];
             kindOfErr = 2;
           }
-
-          // console.log('ОШИБКА');
-
           password = password.slice(0, password.indexOf('.'));
           kindOfErr === 1 ? SetCorrectOldPassword(password) : SetCorrectNewPassword(password);
           resetForm();

@@ -41,7 +41,6 @@ const Balance = ({ setModalStates, role }) => {
         });
       })
       .catch(err=>{
-        console.log('ERROR', err);
         let errMessage = {
           path: null,
           success: null,

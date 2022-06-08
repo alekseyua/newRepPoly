@@ -36,10 +36,7 @@ const ContentDropDownAccount = ({
   };
 
   const openModalKeyRegistration = (email) => {
-    console.log('start open modal get key for registrations')
     const initialValues = {}
-
-
     const closeModal = (email) => {
       dispatch('modal/update', {
         show: false,

@@ -6,6 +6,7 @@ export const PATHS = {
     fetchInitialData: api.getPage,
   },
 };
+export const PUSH_SERVER_PUBLICK_KEY = "BOkWACNDKja5Dgs_wv8UKbziwJq2AoUPioTIf6YxyhL6wOpplaUEgC9ed1nOq-KlGOUX67VLEqw3lxiR4Akb_Ko";
 export const RE_CAPTHA_KEY = '6LcXhGwUAAAAAGiWdDTN_VYRMx2SWDVxmAaWGLYP';
 export const DEFAULT_CURRENCIES = 'USD';
 export const ONE_YEARS = 2592e3;

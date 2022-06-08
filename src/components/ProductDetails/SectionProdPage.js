@@ -423,8 +423,6 @@ const SectionProdPage = ({
       size: size,
       productId: productId,
     }
-    
-    console.log('heandlerAddCollections: просто проверяю', heandlerAddCollections)
     apiContent
       .getProduct(productId, params)
       .then((res) => {

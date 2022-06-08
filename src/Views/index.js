@@ -24,6 +24,10 @@ import cogoToast from 'cogo-toast';
 import ModalPreviewFile from './ModalContentViews/ModalPreviewFile';
 import api from '../api'
 
+import {PUSH_SERVER_PUBLICK_KEY} from '../const';
+import {urlB64ToUint8Array, subscribeUser, pushManager} from '../#lifehack/Notification/push-notifications';
+
+
 const Layout = ({
   headerModClosed = false,
   main = false,
@@ -172,7 +176,6 @@ const [statusSocket, setStatusSocket] = useState("");
     } = state;
   
     const onExit = () => {
-      console.log('onExit', state)
       setState(() => ({ 
         ...state,
         stepsEnabled: false 
@@ -186,13 +189,6 @@ const [statusSocket, setStatusSocket] = useState("");
         addClass: false,
       });
     },[])
-
-const heandlerKey = () => {
-  api
-    .updatePage( { '0': '/cart' })
-    .then(res=>console.log({res}))
-    .catch(err=>console.log({err}))
-};
 
 if ( profile === undefined ){
      window.location.reload()
@@ -217,7 +213,6 @@ if ( profile === undefined ){
   const openModalFeedbackReedFile = (file) => { 
    
     const renderPage = (props) => {
-        // console.log('props:', props)
         return (
             <>
                 {props.canvasLayer.children}
@@ -254,6 +249,101 @@ if ( profile === undefined ){
   }
 
 
+  const [statePushMamager, setStatePushManager] = useState(false)
+  const options = {
+    userVisibleOnly: true,
+    applicationServerKey: PUSH_SERVER_PUBLICK_KEY,
+  };
+  //===============================================================================
+  const heandlerKeyOn = async () => {
+
+      const permissionNotice = await permission();
+      if (permissionNotice !== 'denied') {
+       const resSubscribe = await subscribePush();
+       console.log({resSubscribe})
+       if (!!resSubscribe) setStatePushManager(false)
+      }      
+
+  };
+  const heandlerKeyOff = () => {
+    const getSubscribeNotice = async () =>{
+      try {
+        const readyWork = await navigator.serviceWorker.ready
+        const subscribe = await readyWork.pushManager.getSubscription();
+        console.log('subscribe', !!subscribe)
+        const unsubscribe = await subscribe.unsubscribe()
+          console.log({unsubscribe})
+          if (!!subscribe) {
+            setStatePushManager(false)
+          }else{
+            setStatePushManager(true)
+          }
+        }catch(e){
+          console.error(`Ошибка: ${e.name} = ${e.message}`);
+        }
+      }
+      getSubscribeNotice()
+  };
+
+  async function permission (){
+    try{
+      const workerContainerInstance = await navigator.serviceWorker.getRegistration();
+      return await workerContainerInstance.pushManager.permissionState(options)
+    }
+    catch(e){
+      console.error(`Ошибка: ${e.name} = ${e.message}`);
+    }
+  }
+  async function subscribePush(){
+    try{
+      const workerContainerInstance = await navigator.serviceWorker.getRegistration();
+      console.log({workerContainerInstance})
+      if (workerContainerInstance !== undefined){
+        subscribeUser(workerContainerInstance)
+      }
+    }
+    catch(e){
+      console.error(`Ошибка: ${e.name} = ${e.message}`);
+    }
+  }
+
+  useEffect(()=>{
+    setStatePushManager(true)
+    // const getSubscribeNotice = async () =>{
+    // const readyWork = await navigator.serviceWorker.ready
+    // const subscribe = await readyWork.pushManager.getSubscription();
+    // console.log('subscribe', !!subscribe)
+    //   if (!!subscribe) {
+    //     setStatePushManager(false)
+    //   }else{
+    //     setStatePushManager(true)
+    //   }
+    // }
+    // getSubscribeNotice()
+  },[])
+
+  useEffect(() => {
+    // console.log('sheck render page header')
+    // const subscribePush = async () => {
+    //   const permissionNotice = await permission();
+    //   if (permissionNotice !== 'denied') {
+    //    const resSubscribe = await subscribe();
+    //    if (!!resSubscribe) setStatePushManager(false)
+    //   }      
+    // }
+
+    // console.log('statePushMamager', statePushMamager)
+
+    // if (statePushMamager) {
+    //   console.log('gogogogogogo')
+    //   setTimeout(()=>subscribePush,3000)
+    // }
+  }, [statePushMamager])
+
+  //===============================================================================
+
+
+
   return (
     <>
     
@@ -268,7 +358,9 @@ if ( profile === undefined ){
         cabinet_menu={cabinet_menu} 
         currencies={currencies}
       />
-      {/* <button onClick={heandlerKey}>push me</button>  */}
+      <button onClick={heandlerKeyOn}> Включить уведомления</button>
+      <button onClick={heandlerKeyOff}>Выключить уведомления</button>
+
       <Helmet>
         <title>{title}</title>
         {/* <link rel="icon" href="/favicon.ico" type="image/x-icon" />

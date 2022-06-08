@@ -65,5 +65,5 @@ if (module.hot) {
 if (!(!!token)){
   serviceWorker.unregister();
 }else{
-  //serviceWorker.register();
+  serviceWorker.register();
 }

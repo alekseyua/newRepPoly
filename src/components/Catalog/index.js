@@ -329,10 +329,6 @@ const Catalog = ({
             };
 
             //***********************************************************************************************
-            // console.log('newContent', newContent)
-
-
-
 
             return (
               <React.Fragment>

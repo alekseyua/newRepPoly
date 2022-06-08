@@ -112,11 +112,9 @@ const GetMyCacheModalContent = ({ closeModal, callback_money }) => {
        * с чистым arrayHelper и только всегда пушить
        */
       arrayHelper.replace(0, { file })
-      console.log('arrayHelper:1', arrayHelper)
     } else {
       // Или вставляем если ещё нет ни одного значения
       arrayHelper.push({ file })
-      console.log('arrayHelper:2', arrayHelper)
     }
     /**
      * Создаём новый fileList, хотя от того можно отказаться

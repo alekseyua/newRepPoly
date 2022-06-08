@@ -50,7 +50,7 @@ const InformationDelivery = (props) => {
       woosalePaymentsInfo: whosaleInfo,
     });
   }, [info_delivery]);
-  console.log('components', retailData.title)
+
   return (
     <Layout profile={profile} {...props}>
       <Modal.StorControllerModal />

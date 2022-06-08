@@ -56,8 +56,6 @@ const NewsComponent = ({ titlePage = 'новости', rubrics }) => {
               <NewViews.NewsContainer
               >
                 {results.map((el, i) => {
-          console.log('results',el,i)
-
                   return (<>
                     <NewsCard
                       key={el.id}

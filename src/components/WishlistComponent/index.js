@@ -33,7 +33,6 @@ const WishlistComponent = ({ breadcrumbs, initfilters, page_type_catalog }) => {
   const { role } = userPage.profile;
 
   useEffect(() => {
-    // console.log('wishlistAl.results', stateCountWish.results);
     apiProfile
       .getWishlist()
       .then((res) => {

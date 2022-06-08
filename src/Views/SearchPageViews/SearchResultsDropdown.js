@@ -23,7 +23,6 @@ const SearchResultsDropdown = ({
       <GxDropdown className={style['search-dropdown']} open={open}>
         <GxMenu className={style['search-dropdown__menu']}>
           {results.map((item, index) => {
-  console.log('outresultsput', item);
 
             return (
               <GxMenuItem className={style['search-dropdown__menu-item']} key={index}>

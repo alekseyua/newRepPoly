@@ -142,11 +142,8 @@ const OrderComponent = ({
       content: null,
     });
     const pathName = history.location.pathname.split("/");
-    console.log('====',pathName[pathName.length - 1])
     pathName[pathName.length - 1] === 'order' && stateCreateOrder ? 
       history.push('orders') 
-    //   : history.location.pathname === '/order' && !stateCreateOrder ?
-    //     history.push('cart')
         : null
   };
 

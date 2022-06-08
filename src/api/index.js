@@ -156,9 +156,7 @@ class Api extends AbstractBaseApi {
     return res.data;
   };
   getUser = async (params) => {
-    console.log("params getUser ", params);
     const res = await this.get('/user/', params);
-    console.log("res getUser ", res.data);
     return res.data;
   };
   createUser = async (params) => {
@@ -204,9 +202,7 @@ class Api extends AbstractBaseApi {
 }
 
 const MAIN_URL = process.env.RAZZLE_APP_API_URL; //RAZZLE_APP_API_URL_LOCAL_BACK RAZZLE_APP_API_URL;
-console.log('MAIN_URL:', MAIN_URL)
 const MAIN_URL_WS = 'ws://91.218.229.240:8001/ws/chat/1594/';//process.env.BASE_URI_FOR_SOCKET;
-console.log('MAIN_URL_WS:', MAIN_URL_WS)
 const api = new Api(`${MAIN_URL}`, `${MAIN_URL_WS}`);
 
 export default api;

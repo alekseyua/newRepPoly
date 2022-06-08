@@ -110,13 +110,10 @@ const Chat = ({ order_id, setModalStates }) => {
         if(!!getCookie('ft_token')){
           newWS()
           ws.current.onopen = () =>{                  
-            // console.log("Соединение открыто Chat");  // callback на ивент открытия соединения
-            //ws.current.send(JSON.stringify({'order_id': `${order_id}`}))
             setIsState(!isState)
             gettingData();
           }
           ws.current.onclose = () => {
-            // console.log("Соединение закрыто Chat"); // callback на ивент закрытия соединения
             setTimeout(newWS(),3000);
             setIsState(!isState)        
           }
@@ -128,9 +125,7 @@ const Chat = ({ order_id, setModalStates }) => {
       if (!ws.current) return;    
       ws.current.onmessage = e => {                //подписка на получение данных по вебсокету
         const message = JSON.parse(e.data);
-        console.log('message:', message)
         if(message?.status !== false){
-        //   // console.log('message all:', message)
           let { order_chat, order_message, order_item_message } = message;
           dispatch('chatOrdersMessage/set',message)
           if(order_chat !== undefined){
@@ -147,7 +142,6 @@ const Chat = ({ order_id, setModalStates }) => {
       }
   }, [isState]);
 
-  console.log('correspondenceState:', correspondenceState)
   return (
     <Formik enableReinitialize onSubmit={sendCommentFromTextField} handleChange={handleChange} initialValues={valuesState}>
       {({ handleSubmit, values, handleChange, setFieldValue, setValues }) => {

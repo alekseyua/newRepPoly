@@ -8,7 +8,6 @@ const Sharing = ({
   const callbackShareClick = () => {
     // Проверка поддержки navigator.share
     if (navigator.share) {
-      console.log('Congrats! Your browser supports Web Share API');
       navigator
         .share({
           title: title,

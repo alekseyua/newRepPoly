@@ -120,7 +120,7 @@ const {
 
   return (
     <header>
-      <button onClick={heandlerClick} >push me for test</button>
+      {/* <button onClick={heandlerClick} >push me for test</button> */}
       <MainPromotion announce={announce} role={role} />
       <div
         className={classNames({

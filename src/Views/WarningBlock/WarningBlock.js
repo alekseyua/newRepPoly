@@ -5,7 +5,6 @@ import { GxIcon } from '@garpix/garpix-web-components-react';
 import classNames from 'classnames';
 
 const WarningBlock = ({ textWarning = 'warning', variant = "wrapper" }) => {
-  // console.log('textWarning++++++', textWarning.props.dangerouslySetInnerHTML)
   const [spolerActive, setSpolerActive] = useState(false)
   const heandleClickSpoler = () => {
     setSpolerActive(!spolerActive)

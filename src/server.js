@@ -96,7 +96,6 @@ server
               <head>
                   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                   <meta charset="utf-8" />
-                  <link rel="manifest" href="/manifest.json">
 
                   ${helmet.title.toString()}
                   ${helmet.meta.toString()}
@@ -189,3 +188,5 @@ export default server;
 // данная кука перестаёт быть доступной для изменения с помощью JavaScript. 
 // Для удаления таких кук нужно либо лезть в настройки браузера и ручками их вычищать, 
 // либо лезть на сервер и генерировать страницу с очисткой кук по HTTP-протоколу.
+
+//                  <link rel="manifest" href="/manifest.json">

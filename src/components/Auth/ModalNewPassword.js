@@ -10,12 +10,9 @@ import Text from '../Text';
 const ModalNewPassword = ({ initialValues, setNextStep, resetUserPassword,setValues }) => {
   
   const handleSubmit = (params, { setFieldError }) => {
-     console.log('params:', params)
      const param = {
        ...initialValues,
        password: params.password,
-      //  email: params.email,
-      //  submit_code: params.submit_code
      }
     sessionStorage.setItem('password',params.password)
     resetUserPassword(param,setFieldError);

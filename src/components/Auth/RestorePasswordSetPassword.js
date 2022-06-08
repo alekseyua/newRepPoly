@@ -31,9 +31,7 @@ const RestorePasswordSetPassword = ({ match, history }) => {
         }
       })
       .catch(error => {
-        // setErrors(error.response.data)
         console.log("RestorePasswordSetPassword.js", error)
-        // setSend(false)
       });
   }
 

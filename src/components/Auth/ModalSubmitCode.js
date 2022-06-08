@@ -17,7 +17,6 @@ const ModalSubmitCode = ({ emailUser = null, resetUserPassword, initialValues, p
       type: 'auth',
       email: emailUser? emailUser : params.email
     }
-    console.log('params: submit code', params)
     const param = {
       ...initialValues, 
       submit_code: params.submit_code,

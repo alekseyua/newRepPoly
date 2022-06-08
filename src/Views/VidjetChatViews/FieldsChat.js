@@ -46,7 +46,6 @@ const FieldsChat = ({ answers = [], categorys = [], submitQuestrion, successResp
             onSubmit={submitQuestrion}
           >
             {({ handleSubmit, values, touched, errors, setFieldValue, handleChange }) => {
-              console.log('values',!!values.category)
               return (
                 <GxForm novalidate onGx-submit={handleSubmit}>
                   <div className={style['widget__form_wrap']}>

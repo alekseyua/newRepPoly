@@ -66,7 +66,6 @@ import IMLivePhoto from './IMLivePhoto';
 import IMCart from './IMCart';
 import TestPage from './TestPage';
 import ContentHomeShop from './ContentHomeShop';
-import api from '../api';
 
 const PAGE_TYPES = {
   33: Error500,
@@ -146,7 +145,6 @@ const Combine = (props) => {
     dispatch('userPage/add', page);
     dispatch('notificationCount/update', page.notifications);
     dispatch('role_configuration/update', page.role_configuration);
-              // console.log("page getPage", page);
   };
 
   return (
@@ -182,7 +180,6 @@ const Combine = (props) => {
             return <DevPage {...page} {...props} />;
           }
           if ( page.profile === undefined ){
-              console.log('profile если undefined из combine', )
               //alert('page.profile === undefined of Combine, времменно оставляем для выявления 500',page)
               // window.location.reload()
           }

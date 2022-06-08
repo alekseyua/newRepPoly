@@ -3,14 +3,6 @@
             
 
 
-//row main-container
-
-
-"scripts": {
-  "start":
-    "HTTPS=true SSL_CRT_FILE={CERT-PATH} SSL_KEY_FILE={KEY-PATH} react-scripts start"
-}
-
 https://github.com/theturtle32/WebSocket-Node
 
 vpn tunel https://routerus.com/how-to-set-up-wireguard-vpn-on-ubuntu-20-04/
@@ -211,24 +203,6 @@ function removeCookie(name) {
 
                 import Settings from '../../#lifehack/Settings/Settings';
                 {front_admin?<Settings nameComponent={'TradingPlatformLayout'} /> : null }
-
-condition_pay
-https://back.ftownpl.com/admin/garpix_page/component/27/change/
-
-
-```библиотеки которые не использовались```
-ignore-styles
-md5-file
-react-datepicker
-react-fast-compare
-react-favicon
-react-redux
-react-scripts
-redux
-redux-logger
-slick-carousel
-css-loader
-
 
 
 ```` избовляемся от тегов  ````

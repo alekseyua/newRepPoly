@@ -88,7 +88,6 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
         })
         .catch(err=>{          
             console.log(`ERROR `,err)
-            console.log('err:', err.data)
         }
       )
     }else if(state.step === 2){
@@ -97,7 +96,6 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
         password: sessionStorage.getItem('password'),
         email: sessionStorage.getItem('email'),
       }
-      console.log('param: reset password', param)
       apiUser
         .resetUserPassword(param)
         .then(res=>{

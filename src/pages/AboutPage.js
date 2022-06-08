@@ -35,7 +35,6 @@ const AboutPage = (props) => {
     };
   });
 
-  console.log('platformSection.children',platformSection.children);
   return (
     <Layout {...props}>
       <Modal.StorControllerModal />

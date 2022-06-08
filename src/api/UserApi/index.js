@@ -60,8 +60,6 @@ export default class UserApi extends AbstractBaseApi {
   // reset_user_password
   resetUserPassword = async (params) => {
     const res = await this.post(`/user/reset_user_password/`, params);
-    console.log('res request :', res)
-
     return res;
   };
 

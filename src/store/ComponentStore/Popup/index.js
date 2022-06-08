@@ -18,7 +18,6 @@ export const popupWarrning = store => {
         return {warrningGoToPath: obj}
     })
     store.on('warrning/set', ({warrning}, obj) => {
-        console.log('obj:', obj)
         return (
             store.dispatch('modal/update', {
             content: (

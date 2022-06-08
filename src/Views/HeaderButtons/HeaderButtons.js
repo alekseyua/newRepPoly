@@ -16,7 +16,8 @@ import Text from '../../components/Text';
 import SearchPageViews from '../SearchPageViews';
 import { useStoreon } from 'storeon/react';
 import styleWish from './style/styleWish.module.scss';
-import { motion } from 'framer-motion';
+
+
 //-------------------------------------------------------
 import api from '../../api';
 // import chalk from 'chalk';
@@ -61,11 +62,15 @@ const HeaderButtons = ({
   const [ countInCar, setCountInCar] = useState();
   const searchBgRef = React.createRef(null);
   const { role, user, status }        = userPage.profile;
+  const {in_cart} = stateCountCart;
+
+  
 
 
-  useEffect(()=>{
-    setCountInCar(stateCountCart.in_cart)
-  },[stateCountCart.in_cart])
+
+  // useEffect(()=>{
+  //   setCountInCar(stateCountCart.in_cart)
+  // },[stateCountCart.in_cart])
 
   const handleClickSearchBtn = () => {
     setSearchInputShow((prevState) => !prevState);
@@ -91,11 +96,8 @@ const HeaderButtons = ({
   }, []);
 
   const onChangeHandler = () =>{
-
     dispatch('stateCountRestart/add', !stateCountRestart)
-
     let params = {};
-      console.log('status:', status)
       if (status === 1){
         if (user.checkEmail){
           params = {
@@ -226,12 +228,10 @@ const HeaderButtons = ({
               })}
               data-cy={'header_wishlist'}
             >
-              {/* <Wish countP={countP}> </Wish> */}
               <GxIcon
                 src={favoriteIcon}
                 label={Text({ text: 'wishlist' })}
               />
-              {/* {stateCountWish.count ? <div className={styleWish['count-wish']}>{stateCountWish.count}</div> : null} */}
               {stateCountWish.count ? (
                 <div
                   className={classNames({
@@ -248,7 +248,6 @@ const HeaderButtons = ({
 
             {/* //!cart */}
             <div
-              // to={"#"}
               className={classNames({
                 [style['header-buttons__icon']]: true,
                 [style['light']]: false,
@@ -257,14 +256,14 @@ const HeaderButtons = ({
               onClick={onChangeHandler}
             >
               <GxIcon src={cartIcon} id='cart-id' label={Text({ text: 'cart' })} />
-              {countInCar !==0 ? (
+              {in_cart !==0 ? (
                 <div
                   className={classNames({
                     [style['header-buttons__badge']]: true,
-                    [style['empty']]: !`${countInCar}`,
+                    [style['empty']]: !`${in_cart}`,
                   })}
                 >
-                  {countInCar}
+                  {in_cart}
                 </div>
               ) : null}
             </div>

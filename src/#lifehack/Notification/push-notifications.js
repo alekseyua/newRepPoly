@@ -1,11 +1,13 @@
 const pushServerPublicKey = "BOkWACNDKja5Dgs_wv8UKbziwJq2AoUPioTIf6YxyhL6wOpplaUEgC9ed1nOq-KlGOUX67VLEqw3lxiR4Akb_Ko";
+import api from "../../api";
+import {PUSH_SERVER_PUBLICK_KEY} from '../../const';
 
 /**
  * checks if Push notification and service workers are supported by your browser
  */
 function isPushNotificationSupported() {
   return "serviceWorker" in navigator && "PushManager" in window;
-}
+} 
 
 /**
  * asks user consent to receive push notifications and returns the response of the user, one of granted, default, denied
@@ -56,6 +58,16 @@ async function createNotificationSubscription() {
   });
 }
 
+
+async function unSubscriptionNotification() {
+  //wait for service worker installation to be ready
+  const serviceWorker = await navigator.serviceWorker.ready;
+  // subscribe and return the subscription
+  return await serviceWorker.pushManager.unsubscribe({
+    userVisibleOnly: true,
+    applicationServerKey: pushServerPublicKey
+  });
+}
 /**
  * returns the subscription if present or nothing
  */
@@ -125,6 +137,53 @@ function loadVersionBrowser() {
     version: M[1]
   };
 };
+
+async function pushManager(subscribe) {
+  const endpointParts = subscribe.endpoint.split('/');
+  const registration_id = endpointParts[endpointParts.length - 1];
+  const browser = await loadVersionBrowser();
+  const data = {
+    'browser': browser.name.toUpperCase(),
+    'p256dh': btoa(String.fromCharCode.apply(null, new Uint8Array(subscribe.getKey('p256dh')))),
+    'auth': btoa(String.fromCharCode.apply(null, new Uint8Array(subscribe.getKey('auth')))),
+    'name': 'XXXXX',
+    'registration_id': registration_id,
+  };
+    const response = await saveSubscription(data)
+}
+
+function saveSubscription(data) {
+ console.log({data})
+ api.profileApi
+        .gettNotificationsServiceWorker(data)
+        .then(res=>{
+          console.log(`      --------------подписка прошла успешно---------------      `, res)
+        })
+        .catch(err=>console.error(err))
+}
+async function subscribeUser(swRegistration) {
+  const applicationServerPublicKey = PUSH_SERVER_PUBLICK_KEY;
+  const applicationServerKey = await urlB64ToUint8Array(applicationServerPublicKey);
+  const regPushMamager = await swRegistration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: applicationServerKey
+  })
+  pushManager(regPushMamager)
+}
+
+function urlB64ToUint8Array(base64String) {
+    const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, "+")
+      .replace(/_/g, "/");
+    const rawData = atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray; 
+}
+
 export {
   isPushNotificationSupported,
   askUserPermission,
@@ -133,4 +192,7 @@ export {
   createNotificationSubscription,
   getUserSubscription,
   loadVersionBrowser,
+  pushManager,
+  urlB64ToUint8Array,
+  subscribeUser,
 };

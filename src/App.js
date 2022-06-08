@@ -14,8 +14,18 @@ import './styles/index.scss';
 import { ReactNotifications } from 'react-notifications-component';
 import "react-notifications-component/dist/theme.css";
 import React, {useCallback, useEffect, useState } from 'react';
-
 import cogoToast from 'cogo-toast';
+//the function to call the push server: https://github.com/Spyna/push-notification-demo/blob/master/front-end-react/src/utils/http.js
+import {
+  isPushNotificationSupported,
+  registerServiceWorker,
+  createNotificationSubscription,
+  getUserSubscription,
+  pushManager,
+
+} from "./#lifehack/Notification/push-notifications";
+
+
 
 const App = ({ lang, pageServer }) => {
 
@@ -28,14 +38,13 @@ const App = ({ lang, pageServer }) => {
   const { statusRequstOrderCountryPayment } = useStoreon('statusRequstOrderCountryPayment');
   const [notice, setNotice] = useState(null)
   
+
   
   api.setLanguage(lang);
   const { stateValuePoly } = useStoreon('stateValuePoly');
   let currency = getCookie(COOKIE_KEYS.CURRENCIES);
   let token = getCookie('ft_token');
-  const deleteTag = (data) => data.replace(/<a.*?>|<\/a>/isg,'');
-  
-  
+  const deleteTag = (data) => data.replace(/<a.*?>|<\/a>/isg,''); 
   if(pageServer !== undefined){
     setCookie('id_profile',pageServer?.profile?.id)    
   }
@@ -47,13 +56,33 @@ const App = ({ lang, pageServer }) => {
   },[warrningGoToPath])
 
   if (!!token){
-    useEffect(()=>{
-      
-      console.log('.serviceWorker',navigator.serviceWorker)
-      
+    // useEffect(() => {
+    //   if (isPushNotificationSupported()) {
+    //     registerServiceWorker().then(() => {
+    //     });
+    //   }
+    // }, []);
+    // подписываемся
+    useEffect(() => {
+      // const getExixtingSubscription = async () => {
+      //   const existingSubscription = await getUserSubscription();
+      //   if(!!existingSubscription){
+      //    await console.log('Вы подписаны на уведомления ') 
+      //   }else{
+      //    const subscribe = await createNotificationSubscription();
+      //    await pushManager(subscribe)
+      //   }
+      // };
+      // getExixtingSubscription();
+  
+    }, []);
+
+
+// =========================================================================================
+
+    useEffect(()=>{    
       if(navigator.serviceWorker){
         navigator.serviceWorker.addEventListener('message', event => {
-          console.log('message  ---- event: ----', event.data)
           const {msg} = event.data
           setNotice(deleteTag(msg))
           });
@@ -65,7 +94,7 @@ const App = ({ lang, pageServer }) => {
         //changeStatusNotyIsNew(notice.id)
         if(notice !== null){
           const { hide } = cogoToast.success(notice, {
-            position: 'bottom-right',
+            position: 'top-right',
             bar: {
               size: '2px',
               style: 'dotted',
@@ -146,7 +175,6 @@ const App = ({ lang, pageServer }) => {
           dispatch('stateCountWish/add', res);
         })
         .catch((err) => { 
-          console.log('ERROR getWishList');
           let errMessage = {
             path: null,
             success: null,
@@ -200,7 +228,6 @@ const App = ({ lang, pageServer }) => {
   }, [currency]);
   //********************************************************************************* */ 
   
-  // console.log('+++IntlProvider+++ RENDER',stateValuePoly);
   return (
     <IntlProvider
       locale={lang}

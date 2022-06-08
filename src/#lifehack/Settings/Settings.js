@@ -4,7 +4,6 @@ const Settings = (props) => {
 
 
     const defaultComponent = (component) => {
-        console.log('switcher path:', component)
 
         switch (component){
             case 'TradingPlatformLayout':

@@ -9,16 +9,6 @@ const BottomHeaderMenu = ({ main_menu = [], isScrolled }) => {
   const [activeIndex, setActiveIndex] = useState();
   const clickOutMenuItemRef = useRef();
 
-
-  // useEffect(() => {
-
-  //   console.log(clickOutMenuItemRef.current)
-  //   const clickOutMenu = (e) => clickOutMenuItemRef.current.contains(e.target) || console.log('out from block', e.target, clickOutMenuItemRef.current);
-  //   document.addEventListener('click', clickOutMenu)
-  //   return () => document.removeEventListener('click', clickOutMenu);
-
-  // }, [])
-
   return (
     <div
       className={classNames({
@@ -29,7 +19,6 @@ const BottomHeaderMenu = ({ main_menu = [], isScrolled }) => {
       <div className={style['container']}>
         <ul className={style['bottom-header-menu__list']}
           ref={clickOutMenuItemRef}
-
         >
           <AnimateSharedLayout>
             {main_menu.map((el, i) => (

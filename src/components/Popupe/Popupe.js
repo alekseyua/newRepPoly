@@ -202,8 +202,6 @@ const Popupe = ({
                             className={style['prodpage-sizes__items']}
                           >
                             {colec.map((el, i) => {
-                            // console.log('colec:', el.redeemed)
-
                               return (
                                 <li
                                   key={v4(i * 2)}

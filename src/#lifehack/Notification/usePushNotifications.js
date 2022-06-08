@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import api from "../../api";
 //the function to call the push server: https://github.com/Spyna/push-notification-demo/blob/master/front-end-react/src/utils/http.js
 
 import {
@@ -19,7 +18,7 @@ export default function usePushNotifications() {
   const [userConsent, setSuserConsent] = useState();
   //to manage the user consent: Notification.permission is a JavaScript native function that return the current state of the permission
   //We initialize the userConsent with that value
-  const [userSubscription, setUserSubscription] = useState(null);
+  // const [userSubscription, setUserSubscription] = useState(null);
   //to manage the use push notification subscription
   const [pushServerSubscriptionId, setPushServerSubscriptionId] = useState();
   //to manage the push server subscription
@@ -29,38 +28,38 @@ export default function usePushNotifications() {
   //to manage async actions
 
   // регим СВ
-  useEffect(() => {
-    setSuserConsent(Notification.permission)
-    if (isPushNotificationSupported()) {
-      setLoading(true);
-      setError(false);
-      registerServiceWorker().then(() => {
-        setLoading(false);
-      });
-    }
-  }, []);
-  //if the push notifications are supported, registers the service worker
-  //this effect runs only the first render
-  // подписываемся
-  useEffect(() => {
-    setLoading(true);
-    setError(false);
-    const getExixtingSubscription = async () => {
-      const existingSubscription = await getUserSubscription();
-      console.log('!!existingSubscription',!!existingSubscription)
-      if(!!existingSubscription){
-       await console.log('Вы подписаны на уведомления ') 
-      }else{
-       const subscribe = await createNotificationSubscription();
-       await pushManager(subscribe)
-      }
-      setUserSubscription(existingSubscription);
+  // useEffect(() => {
+  //   setSuserConsent(Notification.permission)
+  //   if (isPushNotificationSupported()) {
+  //     setLoading(true);
+  //     setError(false);
+  //     registerServiceWorker().then(() => {
+  //       setLoading(false);
+  //     });
+  //   }
+  // }, []);
+  // //if the push notifications are supported, registers the service worker
+  // //this effect runs only the first render
+  // // подписываемся
+  // useEffect(() => {
+  //   setLoading(true);
+  //   setError(false);
+  //   const getExixtingSubscription = async () => {
+  //     const existingSubscription = await getUserSubscription();
+  //     console.log('!!existingSubscription',!!existingSubscription)
+  //     if(!!existingSubscription){
+  //      await console.log('Вы подписаны на уведомления ') 
+  //     }else{
+  //      const subscribe = await createNotificationSubscription();
+  //      await pushManager(subscribe)
+  //     }
+  //     setUserSubscription(existingSubscription);
 
-      setLoading(false);
-    };
-    getExixtingSubscription();
+  //     setLoading(false);
+  //   };
+  //   getExixtingSubscription();
 
-  }, []);
+  // }, []);
   //Retrieve if there is any push notification subscription for the registered service worker
   // this use effect runs only in the first render
 
@@ -91,17 +90,11 @@ export default function usePushNotifications() {
    * Once the subscription is created, it uses the setUserSubscription hook
    */
   const onClickSusbribeToPushNotification = () => {
-    setLoading(true);
-    setError(false);
     createNotificationSubscription()
       .then(function(subscrition) {
-        setUserSubscription(subscrition);
-        setLoading(false);
       })
       .catch(err => {
         console.error("Couldn't create the notification subscription", err, "name:", err.name, "message:", err.message, "code:", err.code);
-        setError(err);
-        setLoading(false);
       });
   };
 
@@ -159,32 +152,32 @@ export default function usePushNotifications() {
 
 
 
-  async function pushManager(subscribe) {
-      var endpointParts = subscribe.endpoint.split('/');
-      var registration_id = endpointParts[endpointParts.length - 1];
-      const browser = loadVersionBrowser();
-      var data = {
-        'browser': browser.name.toUpperCase(),
-        'p256dh': btoa(String.fromCharCode.apply(null, new Uint8Array(subscribe.getKey('p256dh')))),
-        'auth': btoa(String.fromCharCode.apply(null, new Uint8Array(subscribe.getKey('auth')))),
-        'name': 'XXXXX',
-        'registration_id': registration_id,
-      };
-      console.log('----------------подписываемся на указаный сервер----------------')
-        const response = await saveSubscription(data)
-  }
+  // async function pushManager(subscribe) {
+  //     var endpointParts = subscribe.endpoint.split('/');
+  //     var registration_id = endpointParts[endpointParts.length - 1];
+  //     const browser = loadVersionBrowser();
+  //     var data = {
+  //       'browser': browser.name.toUpperCase(),
+  //       'p256dh': btoa(String.fromCharCode.apply(null, new Uint8Array(subscribe.getKey('p256dh')))),
+  //       'auth': btoa(String.fromCharCode.apply(null, new Uint8Array(subscribe.getKey('auth')))),
+  //       'name': 'XXXXX',
+  //       'registration_id': registration_id,
+  //     };
+  //     console.log('----------------подписываемся на указаный сервер----------------')
+  //       const response = await saveSubscription(data)
+  // }
   
-  async function saveSubscription(data) {
-      console.log('                     Делаем запрос на сервер                          ')
-     await api.profileApi
-            .gettNotificationsServiceWorker(data)
-            .then(res=>{
-              console.log('----------------------------------------------------------------')
-              console.log(`      --------------подписка прошла успешно---------------      `)
-              console.log('----------------------------------------------------------------')
-            })
-            .catch(err=>console.error(err))
-  }
+  // async function saveSubscription(data) {
+  //     console.log('                     Делаем запрос на сервер                          ')
+  //    await api.profileApi
+  //           .gettNotificationsServiceWorker(data)
+  //           .then(res=>{
+  //             console.log('----------------------------------------------------------------')
+  //             console.log(`      --------------подписка прошла успешно---------------      `)
+  //             console.log('----------------------------------------------------------------')
+  //           })
+  //           .catch(err=>console.error(err))
+  // }
   return {
     onClickAskUserPermission,
     onClickSusbribeToPushNotification,
@@ -192,7 +185,7 @@ export default function usePushNotifications() {
     pushServerSubscriptionId,
     onClickSendNotification,
     userConsent,
-    userSubscription,
+    // userSubscription,
     error,
     loading
   };

@@ -33,8 +33,6 @@ export const registration = store => {
             type: obj.type,
             email: obj.email,
         }
-            console.log('param: checkKey', param)
-
             return {
                 checkKey: apiUser
                             .checkKey(param)
@@ -97,8 +95,6 @@ export const registration = store => {
                 }
             });
         }
-        debugger
-       console.log('path: close modal store', path)
        !!path && success === false && userValues === null && role ===null? window.location.href = path : (
         store.dispatch('modal/update',{
             show: false,
@@ -106,21 +102,10 @@ export const registration = store => {
             addClass: false, 
           })
        )
-            // setTimeout(store.dispatch('warrningGoToPath',path), 2000)
-            // : null
-    //    if (role === ROLE.RETAIL){
-    //             //попап ввода ключа
-    //     }else{
-    //         window.location.href = path;
-    //     }
     };
 
     store.on('getNewSubmitCode', ({getNewSubmitCode},obj) => {
-        console.log('obj getNewSubmitCode:', obj)
-        // 1) {'type': 'restore'} - восставвления пароля
-        // 2) {'type': 'resend'} - переслать еще раз
         let path = obj.type === 'restore'? '/catalog' : '';
-
         const param = {
             email: obj.email,
             path: path,

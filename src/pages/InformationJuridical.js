@@ -16,12 +16,6 @@ import { getCookie } from '../utils';
 const InformationJuridical = (props) => {
   const { cabinet_menu, create_shop, cabinet_site_menu, profile, breadcrumbs = [], page_info, components } = props;
   const { user = {}, shop = {}, role, passport, organization, links, balance, front_admin } = profile;
-
-  console.log('page_info',profile.role);
-  console.log('components***',page_info.components);
-
-
-
   const { is_has_shop, shop_link } = shop;
   const { username = '' } = user;
   const { dispatch } = useStoreon();
@@ -36,7 +30,6 @@ const InformationJuridical = (props) => {
   const openModalFeedbackReedFile = (file) => { 
    
     const renderPage = (props) => {
-        console.log('props:', props)
         return (
             <>
                 {props.canvasLayer.children}

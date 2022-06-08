@@ -35,7 +35,6 @@ const Card = ({
   review_videos,
   setModalStates,
 }) => {
-  console.log('created_at', created_at)
 
   const widthScreen = window.innerWidth;
   const getPlusPhoto = () => {

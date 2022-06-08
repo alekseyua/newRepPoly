@@ -467,7 +467,6 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
     if (!selectedCartItem.length) {
       return setTooltipNoSelectedProductsOpen(true);
     }
-    console.log('selectedCartItem:', selectedCartItem)
     confirmDeleteCartItem(() => {
       apiCart
         .multipleDeleteFromCart({ items: selectedCartItem })
@@ -481,7 +480,6 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
         })
         .catch((err) => {
           closeModal();
-          console.log('reject error', err);
           let errMessage = {
             path: null,
             success: null,
@@ -536,7 +534,6 @@ const textConditionPayPart_2 =  components[0].children[1].content.replace(/<p>|<
 const {opt_minimum_price} = dataBalance;
 
 const handleGoToOrder = () => {
-  console.log('запускаем спинер:')
   dispatch('spinner')
 }
   return (

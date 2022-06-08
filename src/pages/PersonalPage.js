@@ -16,7 +16,6 @@ const PersonalPage = (props) => {
     site_configuration,
   } = props;
   const history = useHistory();  
-  console.log('profile:', profile)
   let  user = {}, shop = null, role, passport, organization, links, id, balance;
   let is_has_shop, shop_link ;
   let username; 
