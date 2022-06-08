@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { GxButton, GxIcon } from '@garpix/garpix-web-components-react';
 import classNames from 'classnames';
 import style from '../styles/index.module.scss';
@@ -14,7 +14,6 @@ const OrderingPayButtons = ({ payment_methods = [], setActiveVariantPayments,dat
           if (dataBalance >= total_cost){
             if(el.id!==1){
             return (
-
               <GxButton
                 variant="text"
                 key={el.id}
@@ -29,12 +28,6 @@ const OrderingPayButtons = ({ payment_methods = [], setActiveVariantPayments,dat
                 {el.title}
                 
                 { !el.active?
-                  // <>
-                  //     <span></span>
-                  //     <span></span>
-                  //     <span></span>
-                  //     <span></span>
-                  // </>
                   null
                   : <GxIcon
                   slot="icon-left"
@@ -59,12 +52,6 @@ const OrderingPayButtons = ({ payment_methods = [], setActiveVariantPayments,dat
                 >
                   {el.title}
                   { !el.active?
-                  // <>
-                  //     <span></span>
-                  //     <span></span>
-                  //     <span></span>
-                  //     <span></span>
-                  // </>
                   null
                   : <GxIcon
                   slot="icon-left"

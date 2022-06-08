@@ -1,5 +1,5 @@
 import React from 'react';
-import { GxButton, GxIcon } from '@garpix/garpix-web-components-react';
+import { GxButton, GxIcon, GxTooltip } from '@garpix/garpix-web-components-react';
 import classNames from 'classnames';
 import style from '../styles/index.module.scss';
 import {statusSend} from '../../../images';
@@ -11,6 +11,10 @@ const OrderingDeliveryVariantsBtn = ({ deliveryVariant = [], setActiveVariantPay
       <div className={style['ordering__button_wrap']}>
         {deliveryVariant.map((el) => {
           return (
+          <GxTooltip 
+            content="сдесь можно выбрать почтовую службу"
+            placement="top-start"
+          >
             <GxButton
               key={el.id}
               id={el.id}
@@ -22,19 +26,6 @@ const OrderingDeliveryVariantsBtn = ({ deliveryVariant = [], setActiveVariantPay
               })}
             >
               {el.title}
-              {/* { true?
-                  <>
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                  </>
-                  : <GxIcon
-                  slot="icon-left"
-                  src={statusSend}
-                  className="cabinet_orders_details__base_info__icon"
-                />
-              } */}
               { idEnableBtn === el.id?
                 <GxIcon
                   slot="icon-left"
@@ -44,6 +35,7 @@ const OrderingDeliveryVariantsBtn = ({ deliveryVariant = [], setActiveVariantPay
                 :null
               }
             </GxButton>
+          </GxTooltip>
           );
         })}
       </div>

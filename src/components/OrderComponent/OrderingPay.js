@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import OrderingViews from '../../Views/OrderingViews';
 
 const OrderingPay = ({ payment_methods, setFieldValue, role, dataBalance, total_cost }) => {
 
-  const [paymentsVariant, setpaymentsVariant] = useState(payment_methods);
+  const [paymentsVariant, setpaymentsVariant] = useState([]);
   const [stateMarquee, setStateMarquee] = useState(true)
+
+  useEffect(()=>{
+    payment_methods = payment_methods.map(el=>({
+      ...el,
+      active: true
+    }))
+    if(dataBalance >= total_cost){
+      setFieldValue('payment_methods', 3)
+    }else{
+      setFieldValue('payment_methods', 1)
+    }
+    setpaymentsVariant(payment_methods)
+  },[payment_methods])
+
   const setActiveVariantPayments = (event) => {
     setStateMarquee(!stateMarquee)
     const id = Number(event.target.id);
- 
+    console.log({id})
     const newPaymentsVariant = paymentsVariant.map((el) => {
       if (el.id === id) {
         setFieldValue('payment_methods', el.id);
@@ -40,7 +54,6 @@ const OrderingPay = ({ payment_methods, setFieldValue, role, dataBalance, total_
         dataBalance={dataBalance}
         total_cost={total_cost}
       />
-         {stateMarquee? <marquee scrollamount="10"><span className="marquee-btn">Выберите способ оплаты.</span></marquee> : <div style={{color: '	#7CFC00', fontSize: "14px"}}>Спасибо за Ваш выбор</div>}
     </OrderingViews.OrderingPaySection>
   );
 };

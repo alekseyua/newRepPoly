@@ -100,7 +100,6 @@ const OrderingDelivery = ({
           ) : null}
         </React.Fragment>
       ) : null} */}
-      {stateMarquee? <marquee scrollamount="8"><span class="marquee-btn">Выберите способ доставки.</span></marquee> : <div style={{color: '	#7CFC00', fontSize: "14px"}}>Спасибо за Ваш выбор</div>}
 
     </OrderingViews.OrderingDeliverySection>
   );

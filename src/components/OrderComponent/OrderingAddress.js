@@ -115,7 +115,6 @@ const OrderingAddress = ({
         ?null
         :<OrderingViews.OrderingAddressAddBtn onClick={decorOpenModalAddAddress} />
     }
-         {stateMarquee? <marquee scrollamount="12"><span class="marquee-btn">Выберите адрес доставки.</span></marquee> : <div style={{color: '	#7CFC00', fontSize: "14px"}}>Спасибо за Ваш выбор</div>} 
 
     </OrderingViews.OrderingAddress>
   );

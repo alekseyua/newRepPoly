@@ -449,7 +449,8 @@
       }
       &[checked] {
         &::part(checked-icon) {
-          color: black;
+          // color: black;
+          color: #02ff39;
         }
       }
       &::part(checked-icon) {

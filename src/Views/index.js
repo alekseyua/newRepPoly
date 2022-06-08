@@ -358,8 +358,8 @@ if ( profile === undefined ){
         cabinet_menu={cabinet_menu} 
         currencies={currencies}
       />
-      <button onClick={heandlerKeyOn}> Включить уведомления</button>
-      <button onClick={heandlerKeyOff}>Выключить уведомления</button>
+      {/* <button onClick={heandlerKeyOn}> Включить уведомления</button>
+      <button onClick={heandlerKeyOff}>Выключить уведомления</button> */}
 
       <Helmet>
         <title>{title}</title>

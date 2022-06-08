@@ -8,6 +8,7 @@ import { ROLE } from '../../const';
 import style from './styles/index.module.scss';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import useDebounce from '../../#lifehack/Hooks/UseDebounce';
 
 const defaultProductData = {
   brand: 'brand',
@@ -37,11 +38,11 @@ const ProductHorizontalCard = ({
 }) => {
 
   const { brand, color, id: productId, in_stock_count, size, title, image } = product;
-
+  const [textInput, setTextInput] = useState(0)
   const [countProducts, setCountProducts] = useState(qty);
   const [stateAction, setStateAction] = useState();
   const [select, setSelect] = useState(selected)
-
+  let debounceDeployInput = useDebounce(textInput, 300);
   useEffect(() => {
     qty !== countProducts?setCountProducts(qty):null
   }, [qty])
@@ -83,8 +84,9 @@ const ProductHorizontalCard = ({
       :null
     setCountProducts(value)
     updateQty(value);
+  }
 
-  } 
+    
 const changeState = (e) =>{
   console.log(`changeState`, e)
 }

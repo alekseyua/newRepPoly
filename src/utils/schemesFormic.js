@@ -432,6 +432,7 @@ export const feedbackSheme = () => {
       .required('Обязательное поле!'),
   });
 };
+
 export const confirmEmail = (errorsMessenge) => {
   return Yup.object().shape({
     email: Yup.string()

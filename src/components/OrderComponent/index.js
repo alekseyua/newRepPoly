@@ -600,7 +600,7 @@ const OrderComponent = ({
                             values={values.payment_methods}
                             payment_methods={payment_methods}
                             role={role}
-                            dataBalance={dataBalance.balance}
+                            dataBalance={dataBalance.balance} 
                             total_cost={cart_contentOrder.price}
                           />
 
