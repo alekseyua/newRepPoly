@@ -9,8 +9,13 @@ const ChatFieldAdmin = ({
   created_at = 'date',
   message = 'messenge',
   videos = [],
-  images = [],
+  images = [], 
+  openModalImage,
+  openModalVideo,
 }) => {
+
+
+
   return (
     <div
       className={classNames({
@@ -29,7 +34,13 @@ const ChatFieldAdmin = ({
         <div className={style['cabinet_orders_details__chatmessage-image_wrapper']}>
           {images.map((el, i) => {
             return (
-              <div className={style['cabinet_orders_details__chatmessage-preview_image']}>
+              <div 
+              key={i+'img'}
+                onClick={() => {
+                  openModalImage(el.image);
+                }}
+              className={style['cabinet_orders_details__chatmessage-preview_image']}
+              >
                 <img
                   className={style['cabinet_orders_details__chatmessage-image']}
                   src={el.image_thumb}
@@ -41,7 +52,12 @@ const ChatFieldAdmin = ({
           })}
           {videos.map((el, i) => {
             return (
-              <div className={style['cabinet_orders_details__chatmessage-preview_viedo']}>
+              <div 
+                onClick={(e) => {
+                  openModalVideo(el.video, el.video_preview);
+                }}
+                className={style['cabinet_orders_details__chatmessage-preview_viedo']}
+              >
                 <img
                   className={style['cabinet_orders_details__chatmessage-image']}
                   src={el.video_preview}

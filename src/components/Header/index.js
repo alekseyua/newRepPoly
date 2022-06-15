@@ -20,11 +20,9 @@ export default ({
   cabinet_menu,
   site_configuration,
   currencies,
-  testProps,
 }) => {
   const { userPage } = useStoreon('userPage');
-  const role = userPage.profile;
-  // const { page_type_search } = userPage.site_configuration;
+  const {role} = userPage.profile;
   const { promotionsAdds, dispatch } = useStoreon('promotionsAdds');
   const [offsetTop, setOffsetTop] = useState(124);
   const [isScrolled, setScrolled] = useState(false);
@@ -36,21 +34,9 @@ export default ({
   });
 // ==========================================================================================================
 const {
-  // userConsent,
-  // pushNotificationSupported,
-  // userSubscription,
   onClickAskUserPermission,
   onClickSusbribeToPushNotification,
-  onClickSendSubscriptionToPushServer,
-  // pushServerSubscriptionId,
-  // onClickSendNotification,
-  // error,
-  // loading
 } = usePushNotifications();
-  // onClickAskUserPermission            - получение разрешения
-  // onClickSusbribeToPushNotification   - подписаться на уведомления
-  // onClickSendSubscriptionToPushServer - отправить подписку на сервер
-  // onClickSendNotification             - отправить уведомление
 
   useEffect(()=>{
     const startRegistration = async () =>{
@@ -63,6 +49,8 @@ const {
 
 // ==========================================================================================================
   const handleChangeSearchValue = (e) => {
+    console.log('click 32')
+
     const value = e.target.value;
     setSearchState((prevState) => ({
       ...prevState,
@@ -82,25 +70,17 @@ const {
       });
   };
   const handleClickSearchBtn = () => {
+    console.log('click test')
     //  window.location.href = page_type_search;
   };
   const handleClickSearchRoot = () => {
+    console.log('click 3')
     setSearchState((prevState) => ({
       ...prevState,
       search: '',
       openDropDown: false,
       results: [],
     }));
-  };
-  const onScroll = (offsetTop) => {
-    let currentPosition = window.pageYOffset;
-    if (currentPosition >= offsetTop) {
-      // downscroll code
-      if (!isScrolled) setScrolled(true);
-    } else {
-      // upscroll code
-      setScrolled(false);
-    }
   };
 
   const decSetOffsetTop = (offset) => {
@@ -112,15 +92,10 @@ const {
       setScrolled(true);
       decSetOffsetTop(62);
     }
-  }, []);
-
-  const heandlerClick = () => {
-    ///askUserPermission()
-  }
+  }, [headerModClosed]);
 
   return (
     <header>
-      {/* <button onClick={heandlerClick} >push me for test</button> */}
       <MainPromotion announce={announce} role={role} />
       <div
         className={classNames({
@@ -130,6 +105,7 @@ const {
           deactive: headerModClosed,
         })}
       >
+        
         <TopHeader
           isActiveSubmenuBg={isActiveSubmenuBg}
           setActiveSubmenuBg={setActiveSubmenuBg}

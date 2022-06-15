@@ -35,7 +35,7 @@ const LangAndCurrencies = ({
         })}
       >
         <div
-          dataintro="step2"
+          dataintro="step5" 
           ref={clickOutRef}
           slot="trigger"
           className={classNames({

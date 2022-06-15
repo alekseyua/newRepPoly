@@ -186,6 +186,7 @@
   "enterPassword": "Укажите пароль",
   "tooltipDatausername": "Указанный никнейм будет отображаться для всех остальных пользователей  в зашифрованном виде: Ю***",
   "tooltipDataPassword": "0-9, спец. символы, латиница в двух регистрах",
+  "tooltipDataConfirmPassword": "введённые данные должны совподать с введённым паролем",
   "internetAdvertising": "Реклама в интернете",
   "fromSocialNetworks": "Из соц.сетей",
   "fromFrends": "От знакомых",

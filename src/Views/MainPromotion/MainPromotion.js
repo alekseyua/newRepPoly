@@ -39,9 +39,10 @@ const MainPromotion = ({ announce, role }) => {
         content: null,
       });
     }
-  }, []);
+  }, [announce]);
 
-  if (role !== ROLE.WHOLESALE || role !== ROLE.DROPSHIPPER) return null;
+  // console.log({role})
+  // if (role !== ROLE.WHOLESALE || role !== ROLE.DROPSHIPPER) return null;
   if (!isOpen) return null;
 
   let arrInitialData = new Array(5)
@@ -56,22 +57,12 @@ const MainPromotion = ({ announce, role }) => {
       <GxGrid fixed={true}>
         <ul className={style['main-promotion__list']}>
           <li className={style['main-promotion__list-item']}>
-            <motion.NavLink
-              animate={{
-                x : [ -1600, 1600],
-                scale: arrInitialData,
-                y:-5
-              }}
-              transition={{
-                duration : 50,
-                repeat : Infinity
-                // ease: "easeOut"
-              }}
+            <NavLink
               target={isTargetBlank(announce?.target_blank)}
               to={announce?.url ? announce?.url : '#'}
             >
               <div dangerouslySetInnerHTML={{ __html: announce?.content }}></div>
-            </motion.NavLink>
+            </NavLink>
           </li>
         </ul>
       </GxGrid>

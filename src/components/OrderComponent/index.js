@@ -762,6 +762,9 @@ const OrderComponent = ({
                     enabled={getEnabledToPayments(values, errors)} 
                     setStyleCar={setStyleCar} 
                     styleCar={styleCar}
+                    selectedAdress={values.selectedAdress}
+                    variant={values.variant}
+                    payment_methods={values.payment_methods}
                   />
 
                   <CartViews.BlockRightSide mt={20} mb={20}>

@@ -15,7 +15,7 @@ import {
 } from '../../utils/schemesFormic';
 import Select from '../../Views/Select';
 
-const SocialMediaCompanyData = ({ onSaveFormData, initialValues, role}) => {
+const SocialMediaCompanyData = ({ onSaveFormData, initialValues, role, serverError,activeSpinner}) => {
   const errorsMessenge = {
     requiredField: Text({ text: 'requiredField' }),
     invalidInn: Text({ text: 'invalidInn' }),
@@ -109,12 +109,16 @@ const SocialMediaCompanyData = ({ onSaveFormData, initialValues, role}) => {
               label={Text({ text: 'other' })}
               helpText={errors.other ? <ErrorField message={errors.other} /> : null}
               data-cy={'registration_facebook_pageID'}
-            ></Input>
+            >
+
+            </Input>
+            <AuthorizationAndRegViews.ErrorBlock helpText={serverError} />
             <AuthorizationAndRegViews.ErrorBlock helpText={errors.error} />
             <Button
               variant={'black_btn_full_width'}
               type={'submit'}
               data-cy={'registration_button_step_3'}
+              className={activeSpinner}
             >
               <Text text={'registration'} />
             </Button>

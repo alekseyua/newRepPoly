@@ -17,7 +17,6 @@ async function permission (){
 }
 
   export async function register() {
-   // debugger;
     const isLocalhost = Boolean(
       window.location.hostname === 'localhost' ||
         // [::1] is the IPv6 localhost address.
@@ -38,24 +37,24 @@ async function permission (){
         return;
       }
       window.addEventListener('load', () => {
-        const swUrl = `sw.js`;
+        const swUrl = `${publicUrl.origin}/sw.js`;
   
-        if (isLocalhost) {
-          // This is running on localhost. Lets check if a service worker still exists or not.
-          checkValidServiceWorker(swUrl);
+        // if (isLocalhost) {
+        //   // This is running on localhost. Lets check if a service worker still exists or not.
+        //   checkValidServiceWorker(swUrl);
   
-          // Add some additional logging to localhost, pointing developers to the
-          // service worker/PWA documentation.
-          navigator.serviceWorker.ready.then(() => {
-            console.log(
-              'This web app is being served cache-first by a service ' +
-                'worker. To learn more, visit https://goo.gl/SC7cgQ'
-            );
-          });
-        } else {
+        //   // Add some additional logging to localhost, pointing developers to the
+        //   // service worker/PWA documentation.
+        //   navigator.serviceWorker.ready.then(() => {
+        //     console.log(
+        //       'This web app is being served cache-first by a service ' +
+        //         'worker. To learn more, visit https://goo.gl/SC7cgQ'
+        //     );
+        //   });
+        // } else {
           // Is not local host. Just register service worker
           registerValidSW(swUrl);
-        }
+        // }
       });
     }
   }
@@ -68,7 +67,7 @@ async function permission (){
       console.log('регистрация service worker прошла успешно:')
       const updateRegistrationSw = await registration.update();
       await subscribeUser(updateRegistrationSw)
-      console.log('обноваление service worker прошла успешно:', updateRegistrationSw)
+      // console.log('обноваление service worker прошла успешно:', updateRegistrationSw)
       }catch(e){
         console.log('Ошибка в регистрации service worker' + e.name + ":" + e.message)
       }

@@ -188,7 +188,6 @@ const OrderDetailsPersonalPageComponent = ({
                   return (
                     <OrderDetailsPersonalPageViews.WrapperWhoosaleCard key={i} brand={el.title}>
                       {el.items.map((item) => {
-                        console.log({item})
                         return (
                           <OrderDetailsPersonalPageViews.Card
                             {...item}

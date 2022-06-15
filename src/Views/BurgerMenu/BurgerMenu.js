@@ -5,6 +5,7 @@ import Navigation  from "./Navigation";
 import MenuToggle  from "./MenuToggle";
 import styles from "./styles.module.scss";
 import Modal from '../../Views/ModalCreator';
+import { useStoreon } from "storeon/react";
 
 const sidebar = {
     open: (height = 1000) => ({
@@ -30,6 +31,7 @@ const sidebar = {
 };
 
 const BurgerMenu = ({ itemIds, site_configuration }) => {
+    const {toggleBurgerMenu}=useStoreon('toggleBurgerMenu');
     const [isOpen, toggleOpen] = useCycle(false, true);
     const containerRef = useRef(null);
     const { height } = useDimensions(containerRef);
@@ -37,6 +39,11 @@ const BurgerMenu = ({ itemIds, site_configuration }) => {
       const body = document.querySelector('body');
       body.style.overflow = isOpen ? 'hidden' : 'auto';
     }, [isOpen])
+
+    useEffect(()=>{
+        toggleBurgerMenu === 2 || toggleBurgerMenu === 1 ? toggleOpen() : null
+    },[toggleBurgerMenu])
+
     return (
         <motion.nav
         

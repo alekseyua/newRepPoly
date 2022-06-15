@@ -63,7 +63,7 @@ const UserRoutingPanel = ({
           <div className={style['cabinet-sidebar__userrole']}>{checkRole(role)}</div>
         </div>
       </div>
-      <div className={style['cabinet-sidebar__balancerow']}>
+      <div className={style['cabinet-sidebar__balancerow']} dataintro="step8">
         <div className={style['cabinet-sidebar__balanceblock']}>
           <div className={style['cabinet-sidebar__balancelabel']}>
             <Text text={'balance'} />:
@@ -79,7 +79,7 @@ const UserRoutingPanel = ({
           </Button> */}
         </div>
       </div>
-      <div className={style['cabinet-sidebar__menu']}>
+      <div className={style['cabinet-sidebar__menu']}  dataintro="step9">
         {cabinet_menu.map((el) => {
           return (
             <NavLink

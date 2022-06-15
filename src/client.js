@@ -16,7 +16,6 @@ const store = createStoreon(storeonParams);
 
 const { lang, } = window.__initLang__;
 const INITIAL_DATA = window.__INITIAL_DATA__.page;
-// console.log({INITIAL_DATA})
 let token = getCookie('ft_token');
 const BaseApp = () => {
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Layout from '../Views';
 import InformationViews from '../Views/InformationViews';
 import Title from '../Views/Title';
@@ -12,6 +12,8 @@ import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
 import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
 import { ROLE } from '../const';
 import { getCookie } from '../utils';
+import * as serviceWorker from '../serviceWorker';
+
 
 const InformationJuridical = (props) => {
   const { cabinet_menu, create_shop, cabinet_site_menu, profile, breadcrumbs = [], page_info, components } = props;
@@ -19,6 +21,7 @@ const InformationJuridical = (props) => {
   const { is_has_shop, shop_link } = shop;
   const { username = '' } = user;
   const { dispatch } = useStoreon();
+
   const closeModal = () => {
     dispatch('modal/update', {
       show: false,

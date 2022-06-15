@@ -106,7 +106,6 @@ class Api extends AbstractBaseApi {
       queryParams,
       axiosParams,
       );
-      
       const page = res.data;
       const pageType = page.type;
 

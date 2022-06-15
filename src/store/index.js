@@ -310,9 +310,23 @@ export const reqestIdProduct = store => {
 //данные увидомления
     //*?????*********получаем ID товара для запроса************* */
     export const notificationCount = store => {
-      store.on('@init', () => ( {notificationCount:null} ));
-      store.on('notificationCount/update', ({ notificationCount }, obj) => {
-        return {notificationCount : obj}
+      let noIsRead = 0;
+      let allNoticeCount = 0;
+      let isRead = 0;
+      store.on('@init', () => ( {notificationCount: 0} ));
+      store.on('notification/set', ({nitifications}, notice)=>{
+        allNoticeCount = notice.lenght; // 83
+        noIsRead = notice.filter(is_read => !is_read.is_read ? is_read : null);
+        noIsRead = +noIsRead.length;// 81
+        isRead = allNoticeCount - noIsRead
+        console.log('noIsRead: 1 = ', noIsRead)
+        return {notificationCount : noIsRead}
+      })
+      store.on('notificationCount/update', ({ notificationCount }, obj = 0 ) => {
+        console.log({notificationCount})
+        console.log('obj*** =', obj);
+        let operationIncDesc = notificationCount + obj
+        return {notificationCount : operationIncDesc}
       })
     }
 
@@ -444,10 +458,17 @@ export const stateUpdateBalance = store => {
   })
 }
 
+export const toggleBurgerMenu = store => {
+  store.on('@init', () => ({ toggleBurgerMenu: 0 }));
+  store.on('toggleBurgerMenu/set', ({ stoggleBurgerMenu }, obj) => {
+    return { toggleBurgerMenu: obj }
+  })
+}
 
 
 export const storeonParams = [
-chatMessage,
+  toggleBurgerMenu,
+  chatMessage,
   notifications,
   spinner,
   mapusagesite,

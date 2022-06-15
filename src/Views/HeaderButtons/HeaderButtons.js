@@ -64,13 +64,7 @@ const HeaderButtons = ({
   const { role, user, status }        = userPage.profile;
   const {in_cart} = stateCountCart;
 
-  
 
-
-
-  // useEffect(()=>{
-  //   setCountInCar(stateCountCart.in_cart)
-  // },[stateCountCart.in_cart])
 
   const handleClickSearchBtn = () => {
     setSearchInputShow((prevState) => !prevState);
@@ -196,6 +190,7 @@ const HeaderButtons = ({
             </GxButton>
             {/* //!catalog */}
             <NavLink
+              dataintro={"step6"}
               to={page_type_catalog}
               className={classNames({
                 [style['header-buttons__icon']]: true,

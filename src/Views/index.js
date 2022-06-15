@@ -1,5 +1,5 @@
 
-import React, { useState, useCallback, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback} from 'react';
 import { Helmet } from 'react-helmet';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -9,23 +9,20 @@ import ButtonScrollTopComponent from '../components/ButtonScrollTopComponent';
 import { useStoreon } from 'storeon/react';
 import Modal from '../Views/ModalCreator';
 import Cookie from './Cookie/Cookie';
-
+import {ROLE} from '../const';
 import introJs from 'intro.js';
 import 'intro.js/introjs.css';
-import "intro.js/themes/introjs-dark.css";
+//import "intro.js/themes/introjs-nassim.css";
+// import "intro.js/themes/introjs-royal.css";
+// import "intro.js/themes/introjs-nazanin.css";
+// import "intro.js/themes/introjs-flattener.css";
+import "intro.js/themes/introjs-modern.css";
 
 import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
 import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
 import { checkLocalStorage, getCookie } from '../utils';
-import ModalContentViews from '../Views/ModalContentViews';
-import { Formik } from 'formik';
-import { GxForm } from '@garpix/garpix-web-components-react';
-import cogoToast from 'cogo-toast';
 import ModalPreviewFile from './ModalContentViews/ModalPreviewFile';
-import api from '../api'
-
-import {PUSH_SERVER_PUBLICK_KEY} from '../const';
-import {urlB64ToUint8Array, subscribeUser, pushManager} from '../#lifehack/Notification/push-notifications';
+import { useHistory } from 'react-router-dom';
 
 
 const Layout = ({
@@ -44,143 +41,316 @@ const Layout = ({
   role_configuration,
   currencies,
   year,
-  policy,
 }) => {
 const { userPage, dispatch } = useStoreon('userPage');
 const { stateCountCart } = useStoreon('stateCountCart')
-const { notice } = useStoreon('notice');
-
 let { profile } = userPage;
+const history = useHistory()
+const {role, user, id} = profile;
 const [modalStates, setModalStates] = useState(Modal.defaultModalStates);
-const [ timerViewTour, setTimerViewTour ] = useState(false);
-
-
+// ******************************************************************************
+const urlChatItem = `wss://back.ftownpl.com:8443/ws/notifications/${id}/?token=$${getCookie('ft_token')}`;
 const ws = useRef(null);
-const [isPaused, setIsPaused] = useState(false);
-const [data, setData] = useState([]);
-const [statusSocket, setStatusSocket] = useState("");
-
-
-
-     const initialStateIntro = {
-      // stepsEnabled: true,
-      // initialStep: 0,
-      steps: [
-        {
-          element: '[dataintro="step1"]',
-          title: "здесь назовём наш слайд",
-          intro: "Вот так будет выглядит инструкция для знакомства с сайтом",
-          position: 'bottom-right-aligned',
-          highlightClass: 'myHighlightClass',
-        },
-  
-        {
-          element: '[dataintro="step2"]',
-          title: "сдесь ещё както назавём наш слайд",
-          intro: <div><img
-                  width="100%"
-                  alt="pattern"
-                  src="https://i.giphy.com/media/ujUdrdpX7Ok5W/giphy.webp"
-                ></img>
-                <p>здесь мы раскажем про выбор валюты</p>
-                </div>
-        },
-
-        {
-          element: '[dataintro="step3"]',
-          intro: "Вот сдесь мы можем расказать что будет делать эта кнопка, и слайд к примеру без названия",
-          position: 'top',
-        },
-
-      ],
-      // disableInteraction: true,
-      //hintsEnabled: true,
-      // hints: [
-      //   {
-      //     element: '[data-py-id="step3"]',
-      //     hint: "Hello hint",
-      //     hintPosition: "middle-right"
-      //   }
-      // ]
+const [isState, setIsState] = useState(false);
+useEffect(() => {
+  if ( role !== ROLE.UNREGISTRED){
+    const newWS = () => {
+      ws.current = new WebSocket(urlChatItem); // создаем ws соединение
+    } 
+    if(!!getCookie('ft_token')){
+      newWS()
+      ws.current.onopen = () =>{                  
+        setIsState(!isState)
+        gettingData();
+      }
+      ws.current.onclose = () => {
+        setTimeout(newWS(),3000);
+        setIsState(!isState)        
+      }
     }
-  
-    const [state, setState] = useState({});
+    return () => ws.current.close(); // кода меняется isState - соединение закрывается
+  }
+}, [ws]);
+
+const gettingData = useCallback(() => {
+  if (!ws.current) return;    
+  ws.current.onmessage = e => {                //подписка на получение данных по вебсокету
+    const message = JSON.parse(e.data);
+    console.log({message})
+    if(message?.notifications !== undefined){
+      dispatch('notification/set', message?.notifications)
+    }
+    if(message?.notification !== undefined){
+      console.log('message.notification = ',message?.notification)
+      dispatch('notificationCount/update', 1); //message?.notification?.all_count); 
+    }   
+  }; 
+  return ()=>{
+    ws.current.close(); // кода меняется isState - соединение закрывается
+  }
+}, [isState]);
+// ws://91.218.229.240:8001/ws/notifications/(id юзера)/"
+// ******************************************************************************
     useEffect(()=>{
-      // const timerView = setTimeout(()=>{
-        const tourFromsite = () => {
-          introJs().setOptions({
-            steps: [
-              {
-                element: '[dataintro="step1"]',
-                title: "здесь назовём наш слайд",
-                intro: "Вот так будет выглядит инструкция для знакомства с сайтом",
-                position: 'bottom-right',
-                highlightClass: 'dataintro-step1',
-              },
-        
-              {
-                element: '[dataintro="step2"]',
-                title: "сдесь ещё както назавём наш слайд",
-                intro: `<div><img
-                        width="100%"
-                        alt="pattern"
-                        src="https://i.giphy.com/media/ujUdrdpX7Ok5W/giphy.webp"
-                      ></img>
-                      <p>здесь мы раскажем про выбор валюты</p>
-                      </div>`,
-                highlightClass: 'dataintro-step2',
-              },
-      
-              {
-                element: '[dataintro="step3"]',
-                intro: "Вот сдесь мы можем расказать что будет делать эта кнопка, и слайд к примеру без названия",
-                position: 'top',
-                highlightClass: 'dataintro-step3',
+      if (role === ROLE.UNREGISTRED && (history.location.pathname === '/ru'  || history.location.pathname === '/en')){
+        const timerView = setTimeout(()=>{
+          const tourFromsite = () => {
+            introJs().setOptions({
+              steps: [
+                {
+                  element: '[dataintro="step1"]',
+                  intro: "Нажмите, чтобы посмотреть коллекцию",
+                  position: 'bottom-left',
+                  highlightClass: 'dataintro-step1',
+                },
 
-              },
-      
-            ],
-            overlayOpacity: 0.5,
-            // dontShowAgain: true,
-           
+                {
+                  element: '[dataintro="step2"]',
+                  intro: "Стань обладательницей личного кабинета. Регистрация на сайте.",
+                  position: 'bottom-right',
+                  highlightClass: 'dataintro-step2',
+                },
 
-          }).onbeforeexit(function () {
-            let questions = confirm("Ещё будете  знакомится с сайтом? В ЛК можно изминить статус");
-            if(!!questions){
-              return localStorage.setItem('tour',false)
+                {
+                  element: '[dataintro="step3"]',
+                  intro: "Узнай, как работаем сегодня",
+                  position: 'bottom-right',
+                  highlightClass: 'dataintro-step3',
+                },
+
+                {
+                  element: document.querySelector('.ct-toast'),
+                  intro: "Мой потрясающий админ с прекрасным чувством  юмора",
+                  position: 'bottom-right',
+                  highlightClass: 'dataintro-step4',
+                },
+
+                {
+                  element: '[dataintro="step5"]',
+                  intro: "Выбирай удобную валюту",
+                  position: 'bottom-right',
+                  highlightClass: 'dataintro-step5',
+                },
+       
+              ],
+              overlayOpacity: 0.8,
+              nextLabel: 'вперёд',
+              prevLabel: 'назад',
+            })
+            .onchange(()=>{
+              if (introJs.instances[0]._currentStep == "0") {
+                !!document.querySelector('.ct-toast')? document.querySelector('.ct-toast').style = 'opacity: 0.3' : null;
+              }
+              if (introJs.instances[0]._currentStep == "2") {
+                dispatch('toggleBurgerMenu/set', 1)
+                dispatch('toggleBurgerMenu/set', 0)
+              } 
+              if (introJs.instances[0]._currentStep == "3") {
+                dispatch('toggleBurgerMenu/set', 2)
+                !!document.querySelector('.ct-toast')? document.querySelector('.ct-toast').style = 'opacity: 1' : null;
+                dispatch('toggleBurgerMenu/set', 0)
+              }
+              if (introJs.instances[0]._currentStep == "4") {
+                dispatch('toggleBurgerMenu/set', 0)
+                !!document.querySelector('.ct-toast')? document.querySelector('.ct-toast').style = 'opacity: 0' : null;
+              } 
+            })
+            .onbeforeexit(function () {
+              let questions = confirm("Приятного шопинга в мире моды");
+              if(!!questions){
+                return localStorage.setItem('tour',false)
+              }else{
+
+              }
+              return //localStorage.setItem('tour',false)
+            })
+            .start();
+
+          }  
+          const tourFromsiteReg1 = () => {
+            introJs().setOptions({
+              steps: [
+                {
+                  element: '[dataintro="step1"]',
+                  intro: "Нажмите, чтобы посмотреть коллекцию",
+                  position: 'bottom-left',
+                  highlightClass: 'dataintro-step1',
+                },
+
+                {
+                  element: '[dataintro="step2"]',
+                  intro: "Стань обладательницей личного кабинета. Регистрация на сайте.",
+                  position: 'bottom-right',
+                  highlightClass: 'dataintro-step2',
+                },
+
+                {
+                  element: '[dataintro="step3"]',
+                  intro: "Узнай, как работаем сегодня",
+                  position: 'bottom-right',
+                  highlightClass: 'dataintro-step3',
+                },
+
+                {
+                  element: document.querySelector('.ct-toast'),
+                  intro: "Мой потрясающий админ с прекрасным чувством  юмора",
+                  position: 'bottom-right',
+                  highlightClass: 'dataintro-step4',
+                },
+
+                {
+                  element: '[dataintro="step5"]',
+                  intro: "Выбирай удобную валюту",
+                  position: 'bottom-right',
+                  highlightClass: 'dataintro-step5',
+                },
+
+                {
+                  element: '[dataintro="step6"]',
+                  intro: "Нажмите, чтобы выбрать и купить",
+                  position: 'bottom-left',
+                  highlightClass: 'dataintro-step1',
+                },
+      
+              ],
+              overlayOpacity: 0.5,
+              nextLabel: 'вперёд',
+              prevLabel: 'назад',
+              doneLabel: 'закрыть',
+            })
+            .onchange(()=>{
+              if (introJs.instances[0]._currentStep == "0") {
+                !!document.querySelector('.ct-toast')? document.querySelector('.ct-toast').style = 'opacity: 0.3' : null;
+              } 
+              if (introJs.instances[0]._currentStep == "2") {
+                dispatch('toggleBurgerMenu/set', 1)
+                dispatch('toggleBurgerMenu/set', 0)
+
+              } 
+              if (introJs.instances[0]._currentStep == "3") {
+                dispatch('toggleBurgerMenu/set', 2)
+                !!document.querySelector('.ct-toast')? document.querySelector('.ct-toast').style = 'opacity: 1' : null;
+                dispatch('toggleBurgerMenu/set', 0)
+
+              }
+              if (introJs.instances[0]._currentStep == "4") {
+                dispatch('toggleBurgerMenu/set', 0)
+
+                !!document.querySelector('.ct-toast')? document.querySelector('.ct-toast').style = 'opacity: 0' : null;
+              } 
+            })
+            .onbeforeexit(function () {
+              let questions = confirm("Приятного шопинга в мире моды");
+              if(!!questions){
+                return localStorage.setItem('tourReg1',false)
+              }else{
+
+              }
+              return //localStorage.setItem('tour',false)
+            }).start();
+          }  
+          if(checkLocalStorage('tour')){
+            if( JSON.parse(localStorage.getItem('tour').toLowerCase()) ){
+              return window.visualViewport.width <= 1366 ? tourFromsiteReg1() :  tourFromsite();
             }
             return
-
-          }).start();
-        }  
-        
-        if(checkLocalStorage('tour')){
-          if( JSON.parse(localStorage.getItem('tour').toLowerCase()) ){
-            return  tourFromsite();
+          } else {
+            return window.visualViewport.width <= 1366 ? tourFromsiteReg1() : tourFromsite();
           }
-          return
-        } else {
-          tourFromsite();
-        }
-      
-      // },4000);
-      // return () => clearTimeout(timerView);
-    },[])
+        
+        },4000);
+      }
 
-    const {
-      stepsEnabled,
-      steps,
-      initialStep,
-      hintsEnabled,
-      hints
-    } = state;
-  
-    const onExit = () => {
-      setState(() => ({ 
-        ...state,
-        stepsEnabled: false 
-      }));
-    };
+      if (role !== ROLE.UNREGISTRED  && history.location.pathname === '/catalog'){
+        const timerView = setTimeout(()=>{
+
+          const tourFromsiteReg2 = () => {
+            introJs().setOptions({
+              steps: [
+                {
+                  element: '[dataintro="step7"]',
+                  intro: "Назад в Нарнию.",
+                  position: 'left',
+                  highlightClass: 'dataintro-step2',
+                },
+      
+              ],
+              overlayOpacity: 0.5,
+            }).onbeforeexit(function () {
+              let questions = confirm("Приятного шопинга в мире моды");
+              if(!!questions){
+                return localStorage.setItem('tourReg1',false)
+              }else{
+
+              }
+              return //localStorage.setItem('tour',false)
+            }).start();
+          } 
+
+          if(checkLocalStorage('tourReg1')){
+            if( JSON.parse(localStorage.getItem('tourReg1').toLowerCase()) ){
+              return tourFromsiteReg2();
+            }
+            return
+          } else {
+            return tourFromsiteReg2();
+          }
+        
+        },4000);
+      }
+
+
+      if (role !== ROLE.UNREGISTRED  && history.location.pathname === '/profile'){
+          setTimeout(()=>{
+          const tourFromsiteReg3 = () => {
+            introJs().setOptions({
+              steps: [
+                {
+                  element: '[dataintro="step8"]',
+                  intro: "Доступный баланс в выбранной валюте",
+                  position: 'bottom-left',
+                  highlightClass: 'dataintro-step1',
+                },
+                
+                {
+                  element: '[dataintro="step9"]',
+                  intro: "Посмотри разделы управления личным кабинетом",
+                  position: 'bottom-right',
+                  highlightClass: 'dataintro-step2',
+                },
+                
+                {
+                  element: '[dataintro="step10"]',
+                  intro: "Здесь можешь создавать адреса доставки своих заказов",
+                  position: 'bottom-right',
+                  highlightClass: 'dataintro-step2',
+                },
+      
+              ],
+              overlayOpacity: 0.5,
+            }).onbeforeexit(function () {
+              let questions = confirm("Приятного шопинга в мире моды");
+              if(!!questions){
+                return localStorage.setItem('tourReg2',false)
+              }else{
+
+              }
+              return //localStorage.setItem('tour',false)
+            }).start();
+          }  
+
+          if(checkLocalStorage('tourReg2')){
+            if( JSON.parse(localStorage.getItem('tourReg2').toLowerCase()) ){
+              return tourFromsiteReg3();
+            }
+            return
+          } else {
+            tourFromsiteReg3();
+          }
+        
+        },4000);
+      }
+    },[])
 
     useEffect(()=>{
       dispatch('modal/update', {
@@ -247,102 +417,6 @@ if ( profile === undefined ){
         )
     })
   }
-
-
-  const [statePushMamager, setStatePushManager] = useState(false)
-  const options = {
-    userVisibleOnly: true,
-    applicationServerKey: PUSH_SERVER_PUBLICK_KEY,
-  };
-  //===============================================================================
-  const heandlerKeyOn = async () => {
-
-      const permissionNotice = await permission();
-      if (permissionNotice !== 'denied') {
-       const resSubscribe = await subscribePush();
-       console.log({resSubscribe})
-       if (!!resSubscribe) setStatePushManager(false)
-      }      
-
-  };
-  const heandlerKeyOff = () => {
-    const getSubscribeNotice = async () =>{
-      try {
-        const readyWork = await navigator.serviceWorker.ready
-        const subscribe = await readyWork.pushManager.getSubscription();
-        console.log('subscribe', !!subscribe)
-        const unsubscribe = await subscribe.unsubscribe()
-          console.log({unsubscribe})
-          if (!!subscribe) {
-            setStatePushManager(false)
-          }else{
-            setStatePushManager(true)
-          }
-        }catch(e){
-          console.error(`Ошибка: ${e.name} = ${e.message}`);
-        }
-      }
-      getSubscribeNotice()
-  };
-
-  async function permission (){
-    try{
-      const workerContainerInstance = await navigator.serviceWorker.getRegistration();
-      return await workerContainerInstance.pushManager.permissionState(options)
-    }
-    catch(e){
-      console.error(`Ошибка: ${e.name} = ${e.message}`);
-    }
-  }
-  async function subscribePush(){
-    try{
-      const workerContainerInstance = await navigator.serviceWorker.getRegistration();
-      console.log({workerContainerInstance})
-      if (workerContainerInstance !== undefined){
-        subscribeUser(workerContainerInstance)
-      }
-    }
-    catch(e){
-      console.error(`Ошибка: ${e.name} = ${e.message}`);
-    }
-  }
-
-  useEffect(()=>{
-    setStatePushManager(true)
-    // const getSubscribeNotice = async () =>{
-    // const readyWork = await navigator.serviceWorker.ready
-    // const subscribe = await readyWork.pushManager.getSubscription();
-    // console.log('subscribe', !!subscribe)
-    //   if (!!subscribe) {
-    //     setStatePushManager(false)
-    //   }else{
-    //     setStatePushManager(true)
-    //   }
-    // }
-    // getSubscribeNotice()
-  },[])
-
-  useEffect(() => {
-    // console.log('sheck render page header')
-    // const subscribePush = async () => {
-    //   const permissionNotice = await permission();
-    //   if (permissionNotice !== 'denied') {
-    //    const resSubscribe = await subscribe();
-    //    if (!!resSubscribe) setStatePushManager(false)
-    //   }      
-    // }
-
-    // console.log('statePushMamager', statePushMamager)
-
-    // if (statePushMamager) {
-    //   console.log('gogogogogogo')
-    //   setTimeout(()=>subscribePush,3000)
-    // }
-  }, [statePushMamager])
-
-  //===============================================================================
-
-
 
   return (
     <>

@@ -19,7 +19,7 @@ const history = useHistory()
   return ( 
     <div className={style['wrapper-info']}>
       <div className={style['wrapper-info__messenge']}>
-        <GxIcon src={!!success ? successAlertIcon : errorAlertIcon} />
+        <GxIcon className={style['wrapper-info__messenge--icon']} src={!!success ? successAlertIcon : errorAlertIcon} />
         <span>{content}</span>
       </div>
       <GxButton onClick={handerGoto} className={style['productreviews__form-submit-btnlage']} data-cy={`close_modal_review`}>

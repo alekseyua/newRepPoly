@@ -143,7 +143,7 @@ const Combine = (props) => {
   const { dispatch } = useStoreon();
   const setRoleConfiguration = (page) => {
     dispatch('userPage/add', page);
-    dispatch('notificationCount/update', page.notifications);
+    //dispatch('notificationCount/update', page.notifications);
     dispatch('role_configuration/update', page.role_configuration);
   };
 
@@ -173,7 +173,7 @@ const Combine = (props) => {
           if (pageType === undefined || pageType === null) {
             return null;
           }
-
+          
           const Page = PAGE_TYPES[pageType];
           if (!Page) {
             const DevPage = PAGE_TYPES['development-page'];
@@ -184,7 +184,7 @@ const Combine = (props) => {
               // window.location.reload()
           }
           !!page ? setRoleConfiguration(page) : null;
-          return <Page {...page} {...props} />;
+          return <Page {...{...page, ...props}} />;
         }}
     </Fetcher>
   );

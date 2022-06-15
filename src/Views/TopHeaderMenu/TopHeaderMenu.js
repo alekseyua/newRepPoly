@@ -78,7 +78,7 @@ const TopHeaderMenu = ({ header_menu = [], handlerActiveDropDownMenuItem, classM
     <>
 
 
-    <div className={classNameBlock} dataintro="step1">
+    <div className={classNameBlock}>
         
       <ul className={style['top-header-menu__list']}>
         {header_menu.map((el, i) => {
@@ -106,7 +106,10 @@ const TopHeaderMenu = ({ header_menu = [], handlerActiveDropDownMenuItem, classM
                 [style['parent']]: el.children.length !== 0,
               })}
             >
-              <div className={style['top-header-menu__li-item']}>
+              <div 
+                className={style['top-header-menu__li-item']}
+                dataintro={el.id === 5? "step3" : ""}
+              >
                 
                 {el.children.length ? (
                   <p>{el.title}</p>

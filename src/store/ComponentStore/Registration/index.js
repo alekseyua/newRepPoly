@@ -1,8 +1,6 @@
 import api from "../../../api";
 import ModalSubmitCode from "../../../components/Auth/ModalSubmitCode";
-import { ROLE } from "../../../const";
 import ModalContentViews from "../../../Views/ModalContentViews";
-
 const apiUser = api.userApi;
 
 export const registration = store => {
@@ -80,7 +78,7 @@ export const registration = store => {
                     store.dispatch('keyRegistration/set', param)
             })
             .catch((err) => {
-                if (err.response) {
+            if (err.response) {
                 const data = err.response.data;
                 let error = false;
                 for (const key in data) {
@@ -95,7 +93,8 @@ export const registration = store => {
                 }
             });
         }
-       !!path && success === false && userValues === null && role ===null? window.location.href = path : (
+
+       !!path && success === false && userValues === null && role === null? window.location.href = path : (
         store.dispatch('modal/update',{
             show: false,
             content: null,
@@ -140,6 +139,7 @@ export const registration = store => {
            type: obj.type,
            ...obj.userValues,
         }
+        
         return (
             store.dispatch('modal/update', {
             content: (
@@ -159,7 +159,6 @@ export const registration = store => {
     })
 
     store.on('finallyRegistration/set', ({finallyRegistration}, obj)=>{
-      debugger
       store.dispatch('modal/update',{
         show: false,
         content: null,

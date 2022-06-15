@@ -25,10 +25,10 @@ const OrderingAddressItem = ({
 }) => {
 
   return (
-    <GxTooltip 
-      content="сдесь можно выбрать адрес доставки"
-      placement="top-start"
-    >
+    // <GxTooltip 
+    //   content="сдесь можно выбрать адрес доставки"
+    //   placement="top-start"
+    // >
       <GxRadio
         // checked={selectedAdress === id ? true : null}
         id={id}
@@ -56,9 +56,7 @@ const OrderingAddressItem = ({
           :null
         }
       </GxRadio>
-    </GxTooltip>
-
-
+    // </GxTooltip>
   );
 };
 

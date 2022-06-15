@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { GxButton, GxIcon, GxDropdown } from '@garpix/garpix-web-components-react';
 import { userIcon } from '../../images/index';
@@ -11,22 +11,17 @@ import { useStoreon } from 'storeon/react';
 const DropDownMenuAccount = ({
   profile,
   cabinet_menu,
-  isScrolled,
-  cabinet_data,
   page_type_account,
   page_type_auth,
   page_type_reg,
   page_home,
 }) => {
   const { notificationCount } = useStoreon('notificationCount');
-  const { noticeCount } = useStoreon('noticeCount')
-  const [countNotify, setCountNotify] = useState(null);
-  useEffect(()=>{
-    setCountNotify(cabinet_data?.notifications)
-  },[cabinet_data?.notifications])
-  return (
-    <GxDropdown className={styleDropDown['wrapper']} hoist distance={20} skidding={-138}>
+
+  return (              
+    <GxDropdown className={styleDropDown['wrapper']} hoist distance={20} skidding={-138} dataintro={"step7"}>
       <GxButton
+        dataintro="step2"
         slot="trigger"
         variant="text"
         className={classNames({
@@ -43,7 +38,6 @@ const DropDownMenuAccount = ({
               [style['empty']]: !(!!notificationCount),
             })}
           >
-            {/* {cabinet_data?.notifications} */}
             {notificationCount}
           </div>
         ) : null}

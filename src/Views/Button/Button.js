@@ -16,6 +16,7 @@ import changeRole from './styles/changeRole.module.scss';
 import linkBtn from './styles/LinkBtn.module.scss';
 import notFoundBtn from './styles/NotFound.module.scss';
 import customClassNameDisactiv from './styles/disactive.module.scss';
+import spinnerLine from './styles/SpinnerlineAround.module.scss'; // нужно продумать
 
 
 import classNames from 'classnames';
@@ -88,7 +89,6 @@ const Button = ({
   disabled = false,
   ...props
 }) => {
-  
   const customClassName = classNames({
     [getVariantStyleBtn(variant)]: variant !== 'none',
     [className]: !!className,
@@ -122,7 +122,11 @@ const Button = ({
           iconLeft={iconLeft}
           iconRight={iconRight}
 
-        >
+        > 
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
           {iconLeft ? <gx-icon slot="icon-left" src={iconLeft}></gx-icon> : null}
           {children}
           {iconRight ? <gx-icon slot="icon-right" src={iconRight}></gx-icon> : null}

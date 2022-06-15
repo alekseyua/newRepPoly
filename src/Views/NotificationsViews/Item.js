@@ -10,6 +10,7 @@ const Item = ({
   checkEnable,
   setAllCheckEnableChange,
   allCheckEnableChange,
+  setAllCheckEnableChangeIsRead,
   el,
 }) => {
   const { id } = el;
@@ -31,12 +32,24 @@ const Item = ({
     const getArrayNotificationDel = (items, inputvalue) => {
       let res = [];
      return res = items.reduce((acc, item) => {
+        console.log('item:', item)
         if (inputvalue === item) return acc
         acc.push(item)
         return acc
       }, [])
     }
-
+    // удаление из массива элемента при select=false
+    const getArrayNotificationDelIsRead = (items, inputvalue) => {
+      let res = [];
+    return res = items.reduce((acc, item) => {
+        if(item.is_read){
+          if (inputvalue === item) return acc
+          acc.push(item)
+          return acc
+        }
+      }, [])
+    }
+    
     return (
       <div className={style['cabinet_notifications__item']}>
         <div className={style['cabinet_notifications__item_wrapper']}>
@@ -49,6 +62,7 @@ const Item = ({
                 setSelect(!select)
               } else {
                 setAllCheckEnableChange(getArrayNotificationDel(allCheckEnableChange, value))
+                setAllCheckEnableChangeIsRead(getArrayNotificationDelIsRead(allCheckEnableChange, value))                
                 setSelect(!select)
               }
             }

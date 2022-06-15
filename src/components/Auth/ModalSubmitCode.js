@@ -10,6 +10,8 @@ import Text from '../Text';
 
 const ModalSubmitCode = ({ emailUser = null, resetUserPassword, initialValues, path = null, setNextStep = null,setValues = null, regist = false}  ) => {
   const { dispatch } = useStoreon();
+  const [activeSpinner, setActiveSpinner] = useState('')
+
   const handleSubmit = (params, { setFieldError }) => {   
     params = {
       ...params,
@@ -19,12 +21,14 @@ const ModalSubmitCode = ({ emailUser = null, resetUserPassword, initialValues, p
     }
     const param = {
       ...initialValues, 
-      submit_code: params.submit_code,
+      submit_code: params.submit_code.trim(),
       email: emailUser? emailUser : params.email
     }
-      regist? 
+      regist?( 
+        setActiveSpinner('spinner-line'),
         dispatch('checkKey',params) 
-        : (
+        ): (
+          setActiveSpinner('spinner-line'),
           setNextStep(),
           sessionStorage.setItem('submit_code',params.submit_code),          
           resetUserPassword(param)
@@ -58,7 +62,7 @@ const ModalSubmitCode = ({ emailUser = null, resetUserPassword, initialValues, p
                 helpText={errors.submitCode ? <ErrorField message={errors.submitCode} /> : null}
               />
               <br/>
-              <Button variant={'black_btn_full_width'} type={'submit'}>
+              <Button variant={'black_btn_full_width'} type={'submit'} className={activeSpinner}>
                 отправить код
               </Button>
               <AuthorizationAndRegViews.ModalSubmitCodeView postKeyFromMail={postKeyFromMail}/>

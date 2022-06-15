@@ -163,9 +163,10 @@ const btnAddOrderItems = async (el) => {
 
 const btnDelOrder = (data) => {
     const params = {
-     order_id : data.id,    
+      order_id : data.id,    
     }
-
+    
+    console.log({params})
    api
    .orderApi
    .cancelOrder(params)

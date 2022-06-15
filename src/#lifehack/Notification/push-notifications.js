@@ -40,7 +40,8 @@ function sendNotification() {
  *
  */
 function registerServiceWorker() {
-  return navigator.serviceWorker.register("/sw.js");
+  console.log('register servise worker file')
+  return navigator.serviceWorker.register("sw.js");
 }
 
 /**
@@ -57,6 +58,7 @@ async function createNotificationSubscription() {
     applicationServerKey: pushServerPublicKey
   });
 }
+
 
 
 async function unSubscriptionNotification() {

@@ -1,7 +1,6 @@
 import BaseApiForSocket from './BaseApiForSocket';
 
 class SocketApi extends BaseApiForSocket {
-  debugger
   constructor(BASE_URI_FOR_SOCKET) {
     super(BASE_URI_FOR_SOCKET);
   }

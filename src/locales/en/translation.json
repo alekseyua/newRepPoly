@@ -183,6 +183,7 @@
   "enterPassword": "Please enter your password",
   "tooltipDatausername": "The specified username will be displayed for all other users encrypted: Yu ***",
   "tooltipDataPassword": "0-9, special characters, Latin in two registers",
+  "tooltipDataConfirmPassword": "the entered data must match the entered password",
   "internetAdvertising": "Internet advertising",
   "fromSocialNetworks": "From social networks",
   "fromFriends": "From friends",

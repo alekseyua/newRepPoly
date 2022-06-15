@@ -29,13 +29,6 @@ const publicFolder = process.env.NODE_ENV==='production' ? process.env.RAZZLE_PU
 // NativeModules.ReactLocalization = {
 //   language: 'en',
 // };
-const dummyDb = { subscription: null } //dummy in memory store
-const saveToDatabase = async subscription => {
-  // Since this is a demo app, I am going to save this in a dummy in memory store. Do not do this in your apps.
-  // Here you should be writing your db logic to save it.
-  dummyDb.subscription = subscription
-}
-// The new /save-subscription endpoint
 
 server
   .disable('x-powered-by')
@@ -51,6 +44,7 @@ server
     const url = req.originalUrl;
     const query = req.query;
     const activeRoute = Object.entries(PATHS).find(([key, value]) => matchPath(url, value))[1];
+    console.log('activeRoute:', activeRoute)
     const auth_token = req.cookies[api.AUTH_TOKEN_KEY];
     const axiosParams = auth_token 
     ? {       
@@ -60,7 +54,9 @@ server
     
    const lang = determineUserLang(req.acceptsLanguages(), req.path);
    let currentLangs = Object.keys(supportedLangs).filter((lang) => lang === url.split('/')[1]);
+   console.log('currentLangs:', currentLangs)
    let currentLang = currentLangs[0] ? currentLangs[0] : lang;
+    console.log('currentLang:', currentLang)
     api.setLanguage(currentLang);
     // let lang = "ru"
     // let currentLang='ru';
@@ -78,7 +74,6 @@ server
               <Switch>
                 <Route path="/:locale">
                   <App lang={currentLang} />
-                   {/* <BaseApp lang={currentLang}/> */}
                 </Route>
                 <Redirect to="/ru" />
               </Switch>
@@ -87,6 +82,7 @@ server
          );
 
          const helmet = Helmet.renderStatic();
+        //  console.log({'JSON.stringify(initData)':JSON.stringify(initData)})
          if (context.url) {
            res.redirect(context.url);
         } else {
@@ -96,11 +92,12 @@ server
               <head>
                   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                   <meta charset="utf-8" />
-
+                  <link rel="manifest" href="/manifest.json">
                   ${helmet.title.toString()}
                   ${helmet.meta.toString()}
                   ${helmet.link.toString()}
                   <meta name="viewport" content="width=device-width, initial-scale=1">
+
                   ${`<script>window.__INITIAL_DATA__ = ${JSON.stringify(initData)
                     .replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gim, '')
                     .replace(/</g, '\\\u003c')}</script>`}
@@ -109,7 +106,10 @@ server
                     defaultLang: lang,
                   })}</script>`}
         
-                   ${assets.client.css ? `<link rel="stylesheet" href="${assets.client.css}">` : ''}
+                  ${assets.client.css ? `<link rel="stylesheet" href="${assets.client.css}">` : ''}
+                 
+
+                   
                   ${
                     process.env.NODE_ENV === 'production'
                       ? `<script src="${assets.client.js}" defer></script>`
@@ -190,3 +190,6 @@ export default server;
 // либо лезть на сервер и генерировать страницу с очисткой кук по HTTP-протоколу.
 
 //                  <link rel="manifest" href="/manifest.json">
+
+// ${assets.client.css ? `<link rel="stylesheet" href="${assets.client.css}">` : ''}
+// ${assets.client.css ? `<link rel="preload" href="${assets.client.css}" as="style">` : ''}

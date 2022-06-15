@@ -22,7 +22,6 @@ const OrderingPay = ({ payment_methods, setFieldValue, role, dataBalance, total_
   const setActiveVariantPayments = (event) => {
     setStateMarquee(!stateMarquee)
     const id = Number(event.target.id);
-    console.log({id})
     const newPaymentsVariant = paymentsVariant.map((el) => {
       if (el.id === id) {
         setFieldValue('payment_methods', el.id);

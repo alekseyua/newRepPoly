@@ -12,15 +12,19 @@ const NotificationsComponent = ({ }) => {
   const initialFilters = {};
   const [checkEnable, setCheckEnable] = useState(false);
   const [allCheckEnableChange, setAllCheckEnableChange] = useState([]);
+  const [allCheckEnableChangeIsRead, setAllCheckEnableChangeIsRead] = useState([]);
   const { notificationCount, dispatch } = useStoreon('notificationCount');
-
+  
+  console.log('allCheckEnableChangeIsRead:', allCheckEnableChangeIsRead)
   // отправляем массив выделеных элементов для замены статуса
   const heandlerReed = () => {
     apiProfile
-      .postNotificationsReed({
+      .postNotificationsReed({ 
         'ids': allCheckEnableChange
       })
       .then((res) => {
+        console.log('heandlerReed:')
+        dispatch('notificationCount/update',(allCheckEnableChange.length)?(-(allCheckEnableChange.length)) : null);
         updateDataForm()
       })
       .catch((err) => console.error(`err test reques ${err}`));
@@ -34,7 +38,8 @@ const NotificationsComponent = ({ }) => {
       })
       .then((res) => {
         updateDataForm()
-        dispatch('notificationCount/update',(notificationCount-allCheckEnableChange.length)?notificationCount-allCheckEnableChange.length:null)
+        console.log('delete:')
+        dispatch('notificationCount/update',(allCheckEnableChange.length)?(-(allCheckEnableChange.length)) : null);
         setCheckEnable(false) 
         setAllCheckEnableChange([])
       })
@@ -54,13 +59,6 @@ const NotificationsComponent = ({ }) => {
     window.addEventListener('blur', eventBlur);
     return () => window.removeEventListener('blur',eventBlur);
   },[])
-
-  useEffect(()=>{    
-    const eventBlur = () => console.log('test good')
-    window.addEventListener('message', eventBlur);
-    return () => window.removeEventListener('message',eventBlur);
-  },[])
-  
 
   useEffect(()=>{    
     const eventBlur = () => updateDataForm();
@@ -99,12 +97,25 @@ const NotificationsComponent = ({ }) => {
             newData,
           } = data;
           // пробигаемся по масиву сообщений и создаём новый массив с id
-          updateArrForm = (setAllCheckEnableChange) => {
+          updateArrForm = (setAllCheckEnableChange,setAllCheckEnableChangeIsRead) => {
             let checkAllId = []
             for (let i = 0; i < results.length; i++) {
+              console.log({results})
               !checkEnable ? checkAllId.push(results[i].id) : null
             }
-           setAllCheckEnableChange(checkAllId)
+          //   let checkAllIdIsRead = []
+          //   // res = results.filter(is_read => !is_read.is_read ? is_read : null);
+          //   for (let i = 0; i < results.length; i++) {
+          //     console.log({results})
+          //     console.log('checkEnable:', checkEnable)
+          //     debugger;
+          //     let res = !results[i].is_read? results[i].id : null
+          //     console.log('res:', res)
+          //     !checkEnable && !!res ? checkAllIdIsRead.push(res) : null
+          //   }
+          //   console.log('checkAllIdIsRead:', checkAllIdIsRead)
+          //   setAllCheckEnableChange(checkAllId)
+          //   setAllCheckEnableChangeIsRead(checkAllIdIsRead)
           }
           // обновляем форму с данными
           updateDataForm = () => {
@@ -126,6 +137,7 @@ const NotificationsComponent = ({ }) => {
                       key={el.id}
                       setAllCheckEnableChange={setAllCheckEnableChange}
                       allCheckEnableChange={allCheckEnableChange}
+                      setAllCheckEnableChangeIsRead={setAllCheckEnableChangeIsRead}
                       isRead={el.is_read}
                       date={el.created_at}
                       message={el.message}

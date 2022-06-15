@@ -5,7 +5,6 @@ import Text from "../../components/Text";
 
 const WishlistProduct = ({ product, addToCart } = {}) => {
   const handleAddToCart = () => {
-    debugger;
     addToCart();
   };
 

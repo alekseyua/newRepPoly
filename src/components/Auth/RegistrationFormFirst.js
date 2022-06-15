@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GxForm, GxIcon } from '@garpix/garpix-web-components-react';
 import { Formik } from 'formik';
 import Input from '../../Views/Input';
@@ -10,7 +10,9 @@ import { signUpFirstFormSchema } from '../../utils/schemesFormic';
 import AuthorizationAndRegViews from '../../Views/AuthorizationAndRegViews';
 import { toolTipIcon } from '../../images';
 
-const RegistrationFormFirst = ({ onSaveFormData, initialValues, setNextStep }) => {
+const RegistrationFormFirst = ({ onSaveFormData, initialValues, activeSpinner }) => {
+console.log('activeSpinner = ',activeSpinner)
+
   const errorsMessenge = {
     requiredField: Text({ text: 'requiredField' }),
     shortLastName: Text({ text: 'short.last.name' }),
@@ -24,7 +26,7 @@ const RegistrationFormFirst = ({ onSaveFormData, initialValues, setNextStep }) =
     username: 'Некоректный никнейм',
     symbol: 'Поле не должно содержать спец. символы',
   };
-  
+
   return (
     <Formik
       validationSchema={signUpFirstFormSchema(errorsMessenge)}
@@ -106,11 +108,15 @@ const RegistrationFormFirst = ({ onSaveFormData, initialValues, setNextStep }) =
               }}
             />
             {/* {errors.iAgreeDataProcessing ? <Error message={errors.requiredField} /> : null} */}
+            
             <Button
               variant={'black_btn_full_width'}
               type={'submit'}
               data-cy={'registration_button'}
+              className={activeSpinner}
+
             >
+
               <Text text={'saveAndContinue'} />
             </Button>
           </GxForm>

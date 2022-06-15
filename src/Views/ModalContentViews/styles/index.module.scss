@@ -53,6 +53,10 @@
       line-height: 25px;
       color: var(--gx-color-primary);
       margin-bottom: 30px;
+      &--icon{
+        width: 160px;
+        margin-right: 10px;
+      }
     }
   }
 }

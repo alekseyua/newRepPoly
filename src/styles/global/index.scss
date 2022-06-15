@@ -405,6 +405,8 @@ header {
     padding-left: 66px;
     padding-right: 58px;
     padding-bottom: 63px;
+    overflow: auto;
+    height: 90vh;
     @include mobile {
       top: 50px;
       padding: 0px 20px;
@@ -1044,7 +1046,9 @@ div#viewer.pdfViewer {
   }
 
   .dataintro-step1{
-    background-color: rgba(252, 185, 176, 0.514);
+    width: 200px;
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0.514);
     border: 2px dotted #820c78;
   }
 
@@ -1057,12 +1061,83 @@ div#viewer.pdfViewer {
     background-color: rgba(51, 50, 50, 0.24);
     border: 2px dotted #4bb95e;
   }
+  .dataintro-step4{
+    background-color: rgba(51, 50, 50, 0.24);
+    border: 2px dotted #4bb95e;
+  }
+  .dataintro-step5{
+    background-color: rgba(51, 50, 50, 0.24);
+    border: 2px dotted #4bb95e;
+  }
 
   .marquee-btn{
     font-size: 18px;
     color: rgba(245, 138, 124, 0.678);
   }
 
+
+
+
+  .introjs-tooltipbuttons,
+  .introjs-tooltiptext,
+  .introjs-bullets,
+  .introjs-tooltip-header{
+    background-color: #fee9eb;
+    color:rgb(0, 0, 0);
+    &>a,h1,div{
+      color:rgb(0, 0, 0);
+    }
+  }
+  .introjs-nextbutton{
+    color:rgb(0, 0, 0);
+  }
+  .introjs-prevbutton{
+    color:rgb(0, 0, 0);
+  }
+
+  .spinner-line{
+    // position: relative;
+    &>span {
+        position: absolute;
+        display: block;
+    }
+    &>span:nth-child(1) {
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, $pi2);
+        animation: btn-anim1 1s linear infinite;
+    }
+    &>span:nth-child(2) {
+        top: -100%;
+        right: 0;
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(180deg, transparent, $pi2);
+        animation: btn-anim2 1s linear infinite;
+        animation-delay: .25s
+    }
+    &>span:nth-child(3) {
+        bottom: 0;
+        right: -100%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(270deg, transparent, $pi2);
+        animation: btn-anim3 1s linear infinite;
+        animation-delay: .5s
+    }
+    &>span:nth-child(4) {
+        bottom: -100%;
+        left: 0;
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(360deg, transparent, $pi2);
+        animation: btn-anim4 1s linear infinite;
+        animation-delay: .75s
+    }
+}
+  
 
   @media (max-width: 680px) {
     .juridical-block {

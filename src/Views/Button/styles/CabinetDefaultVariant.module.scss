@@ -17,7 +17,7 @@
         @extend %text-btn;
         width: 100%;
         min-width: 180px;
-
+        overflow: hidden;
         &:hover {
             background: #4B444B;
             color: $w;

@@ -26,7 +26,6 @@ const DetailProduct = ({ product, addToCart, addToWishlist, removeFromWishlist }
   }, []);
 
   const submitAddToCart = (params) => {
-    debugger;
     addToCart(params);
   };
 

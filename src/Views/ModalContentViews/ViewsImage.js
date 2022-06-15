@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import style from './styles/index.module.scss';
 
-const ViewsImage = ({ image, url = '' }) => {
+const ViewsImage = ({ image, url = '#' }) => {
 
   return (
     <div className={style['preview-image']}>

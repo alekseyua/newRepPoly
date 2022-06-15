@@ -106,7 +106,7 @@ const Chat = ({ order_id, setModalStates }) => {
   useEffect(() => {
         const newWS = () => {
           ws.current = new WebSocket(urlChatItem); // создаем ws соединение
-        }
+        } 
         if(!!getCookie('ft_token')){
           newWS()
           ws.current.onopen = () =>{                  

@@ -1,11 +1,11 @@
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { useStoreon } from 'storeon/react';
 import Combine from './pages/Combine';
-import { PATHS, DEFAULT_CURRENCIES, ONE_YEARS, COOKIE_KEYS } from './const';
+import { PATHS, DEFAULT_CURRENCIES, ONE_YEARS, COOKIE_KEYS, ROLE } from './const';
 import { IntlProvider } from 'react-intl';
 import locales from './locales';
 import api from './api';
-import { getCookie, setCookie } from './utils';
+import { checkLocalStorage, getCookie, setCookie } from './utils';
 
 import '/node_modules/swiper/swiper.scss';
 import '/node_modules/video-react/dist/video-react.css';
@@ -13,7 +13,7 @@ import '@garpix/garpix-web-components/dist/garpix-web-components/garpix-web-comp
 import './styles/index.scss';
 import { ReactNotifications } from 'react-notifications-component';
 import "react-notifications-component/dist/theme.css";
-import React, {useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState } from 'react';
 import cogoToast from 'cogo-toast';
 //the function to call the push server: https://github.com/Spyna/push-notification-demo/blob/master/front-end-react/src/utils/http.js
 import {
@@ -37,14 +37,13 @@ const App = ({ lang, pageServer }) => {
   const history = useHistory();
   const { statusRequstOrderCountryPayment } = useStoreon('statusRequstOrderCountryPayment');
   const [notice, setNotice] = useState(null)
-  
-
-  
+  const [updateData, setUpdateData] = useState(pageServer)
   api.setLanguage(lang);
   const { stateValuePoly } = useStoreon('stateValuePoly');
   let currency = getCookie(COOKIE_KEYS.CURRENCIES);
   let token = getCookie('ft_token');
-  const deleteTag = (data) => data.replace(/<a.*?>|<\/a>/isg,''); 
+  const [stateStatus, setStateStatus] = useState(null)
+  const deleteTag = (data) => data.replace(/<a.*?>|<\/a>/isg,'');
   if(pageServer !== undefined){
     setCookie('id_profile',pageServer?.profile?.id)    
   }
@@ -55,65 +54,96 @@ const App = ({ lang, pageServer }) => {
       : null
   },[warrningGoToPath])
 
+  useEffect(()=>{
+    if(pageServer?.profile?.role === ROLE.UNREGISTRED){
+      setTimeout(()=>{
+        if(checkLocalStorage('tour')){
+          if( JSON.parse(localStorage.getItem('tour').toLowerCase()) ){
+            return setNotice('Мы всегда на связи! Администратор будет сообщать Вам о любых изменениях в заказах, через уведомления на сайте')
+          }
+          return
+        } else {
+          setNotice('Мы всегда на связи! Администратор будет сообщать Вам о любых изменениях в заказах, через уведомления на сайте')
+        }
+      },3000)
+    }
+  },[])
+
+  useEffect(()=>{
+    setStateStatus(pageServer?.profile?.status)
+  },[pageServer])
+
+  // useEffect(()=>{
+  //   if( pageServer?.profile?.role !== ROLE.RETAIL || pageServer?.profile?.role !== ROLE.UNREGISTRED ){
+  //     console.log('request active user 1', pageServer?.profile?.status)
+  //     const timer = setInterval(()=>{
+  //       console.log('request active stateStatus 2', stateStatus)
+  //       if(stateStatus === 1){
+  //         const params = {0: `/${window.location.pathname}`}
+  //         api
+  //           .updatePage(params)
+  //           .then(res=>{
+  //           console.log('res:', res.page)
+  //           const result = {
+  //             pageServer,
+  //             ...res.page
+  //           }
+  //           console.log('result:', result)
+  //           setStateStatus(res.page.profile.status)
+  //           setUpdateData(result)
+  //           let errMessage = {
+  //             path: '/profile',
+  //             success: 'Администратором было активирована учётнач запись',
+  //             fail : null,
+  //           };
+  //           dispatch('warrning/set',errMessage);
+  //           })
+  //           .catch(err=>console.log('err update'))
+  //       }
+  //     // return clearInterval(timer);
+  //     },2000)
+  //   }
+  // },[pageServer])
+
+  useEffect(() => {
+    console.log('notice------',notice)
+      if(notice !== null){
+       const { hide } = cogoToast.success(notice, {
+          position: 'top-center',
+          heading: `Уведомление `,
+          hideAfter: 90,
+          onClick: (e) => hide()
+        }
+        );
+        if(pageServer.profile.role !== ROLE.UNREGISTRED){
+          dispatch('stateUpdateBalance/update', !stateUpdateBalance)
+        }
+        setNotice(null)
+      }
+  },[notice]) 
+
   if (!!token){
-    // useEffect(() => {
-    //   if (isPushNotificationSupported()) {
-    //     registerServiceWorker().then(() => {
-    //     });
-    //   }
-    // }, []);
-    // подписываемся
-    useEffect(() => {
-      // const getExixtingSubscription = async () => {
-      //   const existingSubscription = await getUserSubscription();
-      //   if(!!existingSubscription){
-      //    await console.log('Вы подписаны на уведомления ') 
-      //   }else{
-      //    const subscribe = await createNotificationSubscription();
-      //    await pushManager(subscribe)
-      //   }
-      // };
-      // getExixtingSubscription();
-  
-    }, []);
-
-
 // =========================================================================================
 
-    useEffect(()=>{    
-      if(navigator.serviceWorker){
-        navigator.serviceWorker.addEventListener('message', event => {
-          const {msg} = event.data
-          setNotice(deleteTag(msg))
-          });
+    useEffect(()=>{
+      if (navigator.serviceWorker){
+          const  listener =  event => {
+            console.log('event: снаружи 1', event)
+            if (event.data && event.data.type === 'SKIP_WAITING') {
+              console.log('event: внутри 2', event)            
+              self.skipWaiting();
+            }
+            const {msg} = event.data
+            console.log('msg : 1', msg)
+            debugger
+            setNotice(msg)
+            }
+          navigator.serviceWorker.addEventListener('message', listener)
+
+          return removeEventListener('message', listener);
       }
     },[])
-    useEffect(() => {
-      console.log(notice)
-      // const timerNotice = setTimeout(() => {
-        //changeStatusNotyIsNew(notice.id)
-        if(notice !== null){
-          const { hide } = cogoToast.success(notice, {
-            position: 'top-right',
-            bar: {
-              size: '2px',
-              style: 'dotted',
-              color: '#с3с3'
-            },
-            heading: `Уведомление `,
-            hideAfter: 90,
-            // toastContainerID: v4(),
-            onClick: (e) => {
-              // changeStatusNotyIsNew(notice.id)
-              // changeStatusNotyIsRead(notice.id)
-              hide();
-            }
-          }
-          );
-        }
-      // }, [3000])
-      // return clearTimeout(timerNotice);
-    }, [notice])
+    
     //********************************************************************************* */ 
 
     useEffect(() => {
@@ -134,10 +164,7 @@ const App = ({ lang, pageServer }) => {
         }
         )
     }, [stateCountRestart, updateCurrenssies])
-    // consollis.log('stateValuePoly.stateCart**********', stateValuePoly.stateCart);
-
     //********************************************************************************* */ 
-
     useEffect(() => {
       api
         .getUserBalance({
@@ -149,7 +176,6 @@ const App = ({ lang, pageServer }) => {
             stateCurrency: false,
             statePayment: false,
           })
-          // setBalance(res)
         })
         .catch(err => {
           console.error(`ERROR BALANCE ${err}`)
@@ -213,7 +239,7 @@ const App = ({ lang, pageServer }) => {
     //********************************************************************************* */ 
 
   }else{
-    console.log('unregister service worker')
+    // console.log('unregister service worker')
     //serviceWorker.unregister();
   }
   useEffect(() => {

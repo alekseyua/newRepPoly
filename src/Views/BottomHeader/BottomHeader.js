@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useStoreon } from 'storeon/react';
 import style from './bottomHeader.module.scss';
 import Logo from '../Logo';
 import classNames from 'classnames';
 import HeaderButtons from '../HeaderButtons';
 import BottomHeaderMenu from '../BottomHeaderMenu';
-import RelativeBurgerBtn from './RelativeBurgerBtn';
 
 const BottomHeader = ({
   main_menu,
   isScrolled,
-  header_menu,
   site_configuration,
   profile,
   cabinet_menu,
@@ -44,7 +42,6 @@ const BottomHeader = ({
           
           <div className={style['bottom-header__group-menu']}>
             <BottomHeaderMenu isScrolled={isScrolled} main_menu={main_menu} />
-            {/* <RelativeBurgerBtn header_menu={header_menu} /> */}
           </div>
         </div>
         <HeaderButtons

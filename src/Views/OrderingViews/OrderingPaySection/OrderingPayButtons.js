@@ -1,10 +1,9 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { GxButton, GxIcon } from '@garpix/garpix-web-components-react';
 import classNames from 'classnames';
 import style from '../styles/index.module.scss';
-import { ROLE } from '../../../const';
-import Icon from '../../../#lifehack/Icomoon/Icon';
 import {statusSend} from '../../../images';
+
 const OrderingPayButtons = ({ payment_methods = [], setActiveVariantPayments,dataBalance,total_cost }) => {
 
   if (payment_methods.length) {

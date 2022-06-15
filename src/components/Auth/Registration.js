@@ -19,6 +19,7 @@ import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
 import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
 import { getCookie } from '../../utils';
 
+
 const apiUser = api.userApi;
 const initialState = {
   step: 0,
@@ -64,22 +65,15 @@ const initialValues = {
   vk: '',
   instagram: '',
   other: '',
+  error: '',
 };
 
 const Registration = ({ history, site_configuration, setModalStates }) => {
   const { page_type_auth, page_type_catalog } = site_configuration;
-  const [serverError, setServerError] = useState([]);
   const [state, setState] = useState(initialState);
   const [values, setValues] = useState(initialValues);
   const {dispatch} = useStoreon();
-  const [key, setKey] = useState("");
-  const hideModal = () => {
-    dispatch('modal/update', {
-      show: false,
-      content: null,
-      addClass: false,
-    });
-  }
+  const [activeSpinner, setActiveSpinner] = useState('')
 
   const registration = (newValues, setFieldError, step) => {
     let params = serializeDataRegistration(newValues, state.role);
@@ -98,34 +92,35 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
         dispatch('finallyRegistration/set',params)
       })
       .catch((err) => {
+        setActiveSpinner('')
         if (err.response) {
           const data = err.response.data;
           let error = false;
           for (let key in data) {
             const element = Array.isArray(data[key]) ? data[key][0] : data[key];
             if (step === 1) {
-              if (initialValuesFirstStep.hasOwnProperty(key)) {
+              if (values.hasOwnProperty(key)) {
                 setFieldError(key, element);
-                error = true;
+                key === 'email' || key === 'phone' || key === 'whereDidYouHearAboutService' || key === 'password' ? error = true : error = false;
               }
             } else if (step === 2) {
-              if (initialValuesMiddleStep.hasOwnProperty(key)) {
+              if (values.hasOwnProperty(key)) {
+                setFieldError(key, element);
+                key === 'error' ? error = true : error = false;
+              }
+            }else {
                 setFieldError(key, element);
                 error = true;
-              }
-            } else {
-              setFieldError(key, element);
-              error = true;
-              openModalFinallyRegistration(false);
             }
+
           }
           let errMessage = {
             path: '/',
-            success: '',
+            success: 'Учётная запись добавлена, необходимо подтвердить почту',
             fail : data?.detail,
           };
-          data?.detail? dispatch('warrning/set',errMessage) :null;
-          if (!error && step !== state.allSteps) setNextStep();
+          //data?.detail? dispatch('warrning/set',errMessage) :null;
+          if (error && step !== state.allSteps) setNextStep();
         }
       });
   };
@@ -135,6 +130,7 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
     if (step >= 0) {
       registration(newValues, setFieldError, step);
     } else {
+      setActiveSpinner('')
       setNextStep();
     }
   };
@@ -145,6 +141,8 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
       ...values,
       ...data
     });
+
+    setActiveSpinner('spinner-line');
     nextStepOrSubmitRegData(data, setFieldError);
   };
 
@@ -172,7 +170,7 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
       role: role,
       content: 'Учётная запись добавлена, необходимо подтвердить почту',
     }
-    dispatch('finallyRegistration/set',params)
+    dispatch('finallyRegistration/set', params)
   };
 
 
@@ -273,28 +271,23 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
                   <RegistrationFormFirst
                     initialValues={values}
                     onSaveFormData={onSaveFormData}
-                    setPrevStep={setPrevStep}
-                    setNextStep={setNextStep}
+                    activeSpinner={activeSpinner}
                   />
                 ),
                 2: (
                   <RegistrationFormBaseInfo
                     initialValues={values}
-                    serverError={serverError}
                     role={role}
                     onSaveFormData={onSaveFormData}
-                    setPrevStep={setPrevStep}
-                    setNextStep={setNextStep}
+                    activeSpinner={activeSpinner}
                   />
                 ),
                 3: (
                   <SocialMediaCompanyData
                     initialValues={values}
-                    serverError={serverError}
                     role={role}
                     onSaveFormData={onSaveFormData}
-                    setPrevStep={setPrevStep}
-                    setNextStep={setNextStep}
+                    activeSpinner={activeSpinner}
                   />
                 ),
               }[step] || (

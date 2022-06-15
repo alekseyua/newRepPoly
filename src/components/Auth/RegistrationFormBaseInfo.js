@@ -19,11 +19,11 @@ const RegistrationFormBaseInfo = ({
   initialValues,
   role,
   serverError,
-  setNextStep,
+  activeSpinner,
 }) => {
   const getIconSuccess = (error, value) => {
     // !!errors.password || !!!values.password ? toolTipIcon : successIcon;
-    if (!!error || value === '') {
+    if (!!error || value === '' || value === undefined) {
       return toolTipIcon;
     } else {
       return successIcon;
@@ -112,7 +112,12 @@ const RegistrationFormBaseInfo = ({
               >
                 <GxIcon slot={'suffix'} src={getIconSuccess(errors.password, values.password)} />
               </Input>
-            </AuthorizationAndRegViews.WrapperInputForTooltip>
+            </AuthorizationAndRegViews.WrapperInputForTooltip >
+
+            <AuthorizationAndRegViews.WrapperInputForTooltip
+              content={Text({ text: 'tooltipDataConfirmPassword' })}
+              trigger={'hover'}
+            >
             <Input
               className={'input-mt_20'}
               value={values.confirm_password}
@@ -128,7 +133,11 @@ const RegistrationFormBaseInfo = ({
                 errors.confirm_password && touched.confirm_password? <ErrorField message={errors.confirm_password} /> : null
               }
               data-cy={'registration_confirm_password'}
-            />
+            >
+              <GxIcon slot={'suffix'} src={getIconSuccess( errors.confirm_password, values.confirm_password)} />
+            </Input>
+            </AuthorizationAndRegViews.WrapperInputForTooltip >
+
             <Select
               className={'select-mb_30'}
               value={values.whereDidYouHearAboutService}
@@ -187,6 +196,7 @@ const RegistrationFormBaseInfo = ({
               variant={'black_btn_full_width'}
               type={'submit'}
               data-cy={'button_registration'}
+              className={activeSpinner}
             >
               {role === ROLE.RETAIL ? (
                 <Text text={'registration'} />

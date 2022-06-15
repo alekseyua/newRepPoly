@@ -4,11 +4,10 @@ import PersonalPageViews from '../../Views/PersonalPageViews';
 import ModalAddAddress from './ModalAddAddress';
 import Text from '../Text';
 import modalStyle from '../../Views/ModalCreator/modalCreator.module.scss';
-import { GxForm, GxIcon, GxModal } from '@garpix/garpix-web-components-react';
+import { GxIcon, GxModal } from '@garpix/garpix-web-components-react';
 import Spinner from '../../Views/DefaultAuthText/Spinner';
 import Input from '../../Views/Input';
 import { searchIcon } from '../../images';
-import Button from '../../Views/Button';
 
 const apiOrder = api.orderApi;
 const initialState = {
@@ -120,44 +119,47 @@ const DeliveryAddresses = ({ profileId }) => {
           initialData={modalStates.initialData}
         />
       </GxModal>
-      <PersonalPageViews.HeaderFormDefaultTitle title={Text({ text: 'address.delivery' })} />
-      <PersonalPageViews.FormBlockContent>
-        <PersonalPageViews.FormGroup>
-          <Input
-            value={search}
-            name={'searchAddress'}
-            autocomplete={'off'}
-            onGx-input={handleChangeSearchInput}
-            clearable
-            className={''}
-            helpText={''}
-            label={''}
-            placeholder={'Поиск по адресу'}
-            inputmode={'search'}
-          >
-            <GxIcon src={searchIcon} alt="search" slot={'prefix'}></GxIcon>
-          </Input>
-        </PersonalPageViews.FormGroup>
+      <div  dataintro="step10">
+        <PersonalPageViews.HeaderFormDefaultTitle title={Text({ text: 'address.delivery' })} />
+        <PersonalPageViews.FormBlockContent>
+          <PersonalPageViews.FormGroup>
 
-        <PersonalPageViews.AdresesWrapper>
-          <PersonalPageViews.AddAdress onClick={createAddress} />
-          {state.isLoad ? <Spinner /> : null}
-          {state.addresses.map((el) => {
-            return (
-              <PersonalPageViews.Address
-                {...el}
-                id={el.id}
-                key={el.id}
-                address={`${el.post_code}, ${el.street}`}
-                userFullName={`${el.first_name} ${el.last_name} ${el.middle_name}`}
-                phone={el.phone}
-                changeAddress={changeAddress}
-                deleteAddress={deleteAddress}
-              />
-            );
-          })}
-        </PersonalPageViews.AdresesWrapper>
-      </PersonalPageViews.FormBlockContent>
+            <Input
+              value={search}
+              name={'searchAddress'}
+              autocomplete={'off'}
+              onGx-input={handleChangeSearchInput}
+              clearable
+              className={''}
+              helpText={''}
+              label={''}
+              placeholder={'Поиск по адресу'}
+              inputmode={'search'}
+            >
+              <GxIcon src={searchIcon} alt="search" slot={'prefix'}></GxIcon>
+            </Input>
+          </PersonalPageViews.FormGroup>
+
+          <PersonalPageViews.AdresesWrapper>
+            <PersonalPageViews.AddAdress onClick={createAddress} />
+            {state.isLoad ? <Spinner /> : null}
+            {state.addresses.map((el) => {
+              return (
+                <PersonalPageViews.Address
+                  {...el}
+                  id={el.id}
+                  key={el.id}
+                  address={`${el.post_code}, ${el.street}`}
+                  userFullName={`${el.first_name} ${el.last_name} ${el.middle_name}`}
+                  phone={el.phone}
+                  changeAddress={changeAddress}
+                  deleteAddress={deleteAddress}
+                />
+              );
+            })}
+          </PersonalPageViews.AdresesWrapper>
+        </PersonalPageViews.FormBlockContent>
+      </div>
     </PersonalPageViews.WrapperForm>
   );
 };
