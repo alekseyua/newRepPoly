@@ -308,23 +308,14 @@ export const reqestIdProduct = store => {
 
 //--------------------31.03.2022--------------------------------
 //данные увидомления
-    //*?????*********получаем ID товара для запроса************* */
     export const notificationCount = store => {
-      let noIsRead = 0;
       let allNoticeCount = 0;
-      let isRead = 0;
       store.on('@init', () => ( {notificationCount: 0} ));
       store.on('notification/set', ({nitifications}, notice)=>{
-        allNoticeCount = notice.lenght; // 83
-        noIsRead = notice.filter(is_read => !is_read.is_read ? is_read : null);
-        noIsRead = +noIsRead.length;// 81
-        isRead = allNoticeCount - noIsRead
-        console.log('noIsRead: 1 = ', noIsRead)
-        return {notificationCount : noIsRead}
+        allNoticeCount = notice.length; // 83
+        return {notificationCount : +allNoticeCount}
       })
       store.on('notificationCount/update', ({ notificationCount }, obj = 0 ) => {
-        console.log({notificationCount})
-        console.log('obj*** =', obj);
         let operationIncDesc = notificationCount + obj
         return {notificationCount : operationIncDesc}
       })

@@ -18,12 +18,11 @@ const Cookie = ({policy, openModalFeedbackReedFile}) => {
 
     const applyCookie = () => {
         setCookie(COOKIE_KEYS.POLICY,'false');
-        setStatePolicy(false);
-        
+        setStatePolicy(false);        
     }
 
     useEffect(()=>{
-        const timerPause = setTimeout(()=>setStatePolicy(cookiePolicy) , 7000)
+        const timerPause = setTimeout(()=>setStatePolicy(cookiePolicy) , 2000)
         return ()=>clearTimeout(timerPause)
     },[])
 

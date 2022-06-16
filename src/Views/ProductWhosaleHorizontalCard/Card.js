@@ -45,8 +45,7 @@ const Card = ({
         id: id,
         selected: selected,
         qty: qty,
-        oldQty: countProducts,
-        is_collection : true
+        oldQty: countProducts
       });      
    
   };

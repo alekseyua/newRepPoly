@@ -18,6 +18,7 @@ import styleModal from '../../Views/ModalCreator/modalCreator.module.scss';
 import { useHistory } from 'react-router-dom';
 import Popupe from '../Popupe';
 import { ROLE } from '../../const'
+import { checkLocalStorage } from '../../utils';
 
 const AsyncWorldStandardSizesChart = AsyncComponent(() => {
   return import('../../Views/WorldStandardSizesChart');
@@ -363,13 +364,21 @@ const SectionProdPage = ({
   const addToCart = ({ count = 1, openModalSucces, color, size }) => {
     let realColor = color ? color : colorsn.id;
     let realSize = size ? size : sizesn.id;
-    const params = {
+    let params = {
       product: productId,
       color: realColor,
       size: realSize,
       qty: count || 1,
       is_collection: collectionsHook,
     };
+
+    console.log('params: 1 - ', params)
+    if (checkLocalStorage('numOrder')){
+        const addItemInNumOrder = localStorage.getItem('numOrder'); 
+        console.log('addItemInNumOrder:', addItemInNumOrder)
+        role === ROLE.WHOLESALE? params = Object.assign({},params, {add_product: true}) : null;
+        console.log('params:2 - ', params)
+    }
     apiCart
       .addToCart(params)
       .then((res) => {

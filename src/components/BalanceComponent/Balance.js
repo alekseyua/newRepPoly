@@ -30,6 +30,8 @@ const Balance = ({ setModalStates, role }) => {
     orderApi
       .getRandomRequizites()
       .then((res) => {
+        console.log('getRandomRequizites res:', res)
+
         setModalStates({
           content: <PayModalContent 
                       closeModal={closeModal} 

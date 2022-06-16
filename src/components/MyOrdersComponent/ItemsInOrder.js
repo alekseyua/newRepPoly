@@ -50,20 +50,9 @@ const tableHeaderData = [
       content: (
         <MyOrderViews.ThData>
           Статус
-          {/* <GxTooltip content="This is a tooltip">
-            <Link to="#" className="cabinet-table__thlink">
-              <GxIcon src={infoWhite} alt="table__thlink" />
-            </Link> 
-         </GxTooltip> */}
         </MyOrderViews.ThData>
       ),
     },
-    // {
-      // content: el.status.status === 'in_process' ? <MyOrderViews.ThData>Добавить в заказ</MyOrderViews.ThData> : el.status.status === 'payment_waiting' ? <MyOrderViews.ThData>Отменить заказ</MyOrderViews.ThData> : null
-    // },
-    // {
-    //   content: <MyOrderViews.ThData>Отменить заказ</MyOrderViews.ThData>,
-    // },
   ],
 ];
 
@@ -80,9 +69,6 @@ const createName = ({ first_name, last_name, middle_name }) => {
 const createTdForTable = (data = [], currenssies) => {
   let results = [];
   data.forEach((el,i) => {
-    // el.status.status === 'in_process'?
-    // setStateActiveBtn([...stateActiveBtn,'disabled'])
-    // :setStateActiveBtn([...stateActiveBtn,null])
     let tr = [];
     //!date
     tr.push({
@@ -128,17 +114,14 @@ const createTdForTable = (data = [], currenssies) => {
     tr.push({
       attr: { 'data-label': el.status.status === 'payment_waiting' ? 'Отменить заказ' : 'Добавить' },
       content: (
-        // <MyOrderViews.TdStatusData  />
         <GxButton 
-          type="submit" 
+          type="submit"
+          disabled={el.status.status === 'payment_waiting'? !el.can_cancel : false } 
           variant='default' 
           onClick={(e)=> {
-            el.status.status === 'payment_waiting' ? btnDelOrder(el) : btnAddOrderItems(el)
+           el.status.status === 'payment_waiting' ? el.can_cancel? btnDelOrder(el): null : btnAddOrderItems(el)
           }}
-          // disabled={el.status.status === 'payment_waiting' ? null : "disable"}
-          // el.status.status === 'in_process' ||  || el.status.status === 'payment_in_stock' 
         >
-          {/* ожидается оплата", товар оплачен или в сборе  in_process , payment_waiting */}
           {el.status.status === 'payment_waiting' ? 'Отменить' : 'Добавить'}
         </GxButton>
       ),
@@ -165,8 +148,6 @@ const btnDelOrder = (data) => {
     const params = {
       order_id : data.id,    
     }
-    
-    console.log({params})
    api
    .orderApi
    .cancelOrder(params)
@@ -211,26 +192,6 @@ const btnDelOrder = (data) => {
     });
   };
 
-  const openModalAddReview = () => {
-    setModalStates({
-      content: (
-        <ModalContentViews.ModalWrapper>
-          <ModalContentViews.CloseBtn closeModal={closeModal} />
-          <ModalContentViews.ContentBlock>
-            <ModalContentViews.CenterPosition>
-              <AddReview.ModalAddReview
-                openModalFinalyAddReview={openModalFinalyAddReview}
-                profile={profile}
-                closeModal={closeModal}
-              />
-            </ModalContentViews.CenterPosition>
-          </ModalContentViews.ContentBlock>
-        </ModalContentViews.ModalWrapper>
-      ),
-      show: true,
-      addClass: 'modal-review',
-    });
-  };
   const setDefaultTableBlock = () => {
     setTableBodyData([
       [
@@ -251,7 +212,6 @@ const btnDelOrder = (data) => {
 
   useEffect(() => {
     setDefaultTableBlock();
-    /*  return setDefaultTableBlock(); */
   }, []);
   // *****************************************************   
   useEffect(()=>{
@@ -285,7 +245,6 @@ const btnDelOrder = (data) => {
         }
         dataUpdateCheck?executeUpdate():null;
         // *****************************************************
-
         let newResults = createTdForTable(results, currenssies);
         let tableData = [...tableBodyData, ...newResults];
 

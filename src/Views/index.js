@@ -76,12 +76,10 @@ const gettingData = useCallback(() => {
   if (!ws.current) return;    
   ws.current.onmessage = e => {                //подписка на получение данных по вебсокету
     const message = JSON.parse(e.data);
-    console.log({message})
     if(message?.notifications !== undefined){
       dispatch('notification/set', message?.notifications)
     }
     if(message?.notification !== undefined){
-      console.log('message.notification = ',message?.notification)
       dispatch('notificationCount/update', 1); //message?.notification?.all_count); 
     }   
   }; 
@@ -221,6 +219,8 @@ const gettingData = useCallback(() => {
             .onchange(()=>{
               if (introJs.instances[0]._currentStep == "0") {
                 !!document.querySelector('.ct-toast')? document.querySelector('.ct-toast').style = 'opacity: 0.3' : null;
+                !!document.querySelector('.index-module__cookie__wrapper___3W46b')? document.querySelector('.index-module__cookie__wrapper___3W46b').style = 'opacity: 0' : null;
+                
               } 
               if (introJs.instances[0]._currentStep == "2") {
                 dispatch('toggleBurgerMenu/set', 1)
@@ -241,6 +241,8 @@ const gettingData = useCallback(() => {
             })
             .onbeforeexit(function () {
               let questions = confirm("Приятного шопинга в мире моды");
+              !!document.querySelector('.index-module__cookie__wrapper___3W46b')? document.querySelector('.index-module__cookie__wrapper___3W46b').style = 'opacity: 1' : null;
+
               if(!!questions){
                 return localStorage.setItem('tourReg1',false)
               }else{
@@ -256,12 +258,11 @@ const gettingData = useCallback(() => {
             return
           } else {
             return window.visualViewport.width <= 1366 ? tourFromsiteReg1() : tourFromsite();
-          }
-        
+          }        
         },4000);
       }
 
-      if (role !== ROLE.UNREGISTRED  && history.location.pathname === '/catalog'){
+      if (role !== ROLE.UNREGISTRED  && history.location.pathname === '/information/juridical'){
         const timerView = setTimeout(()=>{
 
           const tourFromsiteReg2 = () => {
@@ -298,7 +299,6 @@ const gettingData = useCallback(() => {
         
         },4000);
       }
-
 
       if (role !== ROLE.UNREGISTRED  && history.location.pathname === '/profile'){
           setTimeout(()=>{

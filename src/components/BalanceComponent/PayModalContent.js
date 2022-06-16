@@ -85,9 +85,10 @@ const PayModalContent = ({
             dispatch('warrning/set',errMessage);
           })
           .catch((err) => {
-            if (!!err) {
-              setStateClickSend(false)
-              const data = err.response.data;
+            console.log('err:', err)
+            const data = err?.response?.data;
+            setStateClickSend(false)
+            if (!!data) {
               for (const key in data) {
                 const element = Array.isArray(data[key]) ? data[key][0] : data[key];
                 if (initialValues.hasOwnProperty(key)) {

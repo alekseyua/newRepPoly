@@ -49,14 +49,10 @@ const OrderDetailsPersonalPageComponent = ({
   const { currenssies, dispatch } = useStoreon('currenssies');
   const { stateUpdateBalance } = useStoreon('stateUpdateBalance');
 
-
-
-  const getOrderItem = () => {
-  
+  const getOrderItem = () => {  
     orderApi
       .getOrderItems({ order_id: id })
       .then((res) => {
-        console.log({res})
         if (res.length === 0) history.push('orders')
         setOrderItems(res);
         !!res[0]?.items?getAmountGoods(res) : null
@@ -98,8 +94,17 @@ const OrderDetailsPersonalPageComponent = ({
       .then(res => {
         setEnableBtn(!enableBtn)
         setState(!state)
+        //сдесь необходимо выйте на уровень вверх при удалении последнего товара в заказе
+        console.log('orderItems.length : orderItemLength 1',orderItems.length, '2-',orderItemLength)
+        orderItems.length === 1 || orderItemLength === 1 ? history.goBack() : null;
+
       })
-      .catch(err => console.log('ERROR btnDelOrder dont work', err));
+      .catch(err =>{ 
+        console.log('ERROR btnDelOrder dont work', err)
+        console.log('orderItems.length : orderItemLength 1',orderItems.length, '2-',orderItemLength)
+        orderItems.length === 1 || orderItemLength === 1 ? history.goBack() : null;
+      }
+        );
   }
 
     useEffect(()=>{

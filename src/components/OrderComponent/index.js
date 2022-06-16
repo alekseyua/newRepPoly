@@ -741,23 +741,28 @@ const OrderComponent = ({
                       }
                     </CartViews.Text>
                   </CartViews.BlockRightSide>
-                  <div className={style['old-order']}>
-                    <GxTooltip
-                      content="Добавить товары к существующему заказу "
-                      placement="top"
-                    >
-                      <Select
-                        onFocus={focuseSelector}
-                        autoFocus
-                        variant="black"
-                        value={statusFildValue}
-                        placeholder="Добавить товары к существующему заказу"
-                        options={options}
-                        onGx-change={changeStatusOrder}
-                        className='old-order__list'
-                      ></Select>
-                    </GxTooltip>
-                  </div>
+                  
+                  {  !(role === ROLE.WHOLESALE)?
+                        <div className={style['old-order']}>
+                          <GxTooltip
+                            content="Добавить товары к существующему заказу "
+                            placement="top"
+                          >
+                            <Select
+                              onFocus={focuseSelector}
+                              autoFocus
+                              variant="black"
+                              value={statusFildValue}
+                              placeholder="Добавить товары к существующему заказу"
+                              options={options}
+                              onGx-change={changeStatusOrder}
+                              className='old-order__list'
+                            ></Select>
+                          </GxTooltip>
+                        </div>
+                      :null
+                  }
+
                   <OrderCar  
                     enabled={getEnabledToPayments(values, errors)} 
                     setStyleCar={setStyleCar} 

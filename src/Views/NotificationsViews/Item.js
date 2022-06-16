@@ -10,7 +10,6 @@ const Item = ({
   checkEnable,
   setAllCheckEnableChange,
   allCheckEnableChange,
-  setAllCheckEnableChangeIsRead,
   el,
 }) => {
   const { id } = el;
@@ -62,7 +61,6 @@ const Item = ({
                 setSelect(!select)
               } else {
                 setAllCheckEnableChange(getArrayNotificationDel(allCheckEnableChange, value))
-                setAllCheckEnableChangeIsRead(getArrayNotificationDelIsRead(allCheckEnableChange, value))                
                 setSelect(!select)
               }
             }

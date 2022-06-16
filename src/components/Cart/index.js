@@ -195,7 +195,7 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
       } else if (!(!!Object.keys(resultsIs_pack).length) && !!Object.keys(resultsIn_stock_pack).length) {
         goodsInPack = [...resultsIn_stock_pack]
       }
-
+//add_product: true
       //длелаем чтобы выделяло элементы +
       Object.keys(goodsInPack).length && fullItemCartCheckedState ?
         goodsInPack = goodsInPack.map(res => {
@@ -295,13 +295,14 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
         goodsInPack =  [];
 
         //       // *-*-*-*-*-*-*-*-*-*-*-*-*-*
-      goods = {
-        collectiion: collectionGoods,
-        is_pack: goodsInPack,
-        in_stock: inStockNoInpackNoInCollec,
-        other_goods: resultsNoIs_packAndNoIsCollec //res.cartitem_set
-      }
-      
+        goods = {
+          collectiion: collectionGoods,
+          is_pack: goodsInPack,
+          in_stock: inStockNoInpackNoInCollec,
+          other_goods: resultsNoIs_packAndNoIsCollec //res.cartitem_set
+        }
+        console.log('goods:', goods)
+        
       setGoodsStateOpt(goods)
       // проверяем наличее чеков у всех карточек, создаём новый массив и отправляем запрос на бэк
       if (fullItemCartCheckedState) {
@@ -503,7 +504,13 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
   // при нажатии + или - в корзине происходит добавление или удаление товара
   // ДОДЕЛАТЬ << is_performed >>
   const updateProductFromCart = (data = []) => {
-    // обнавляем состояние карзины на сервере и в хранилище если обшибка допилить выдать попап и обновлять карзину
+    // добавление к существующему заказу на опте
+    const valuesObj = data[0]
+    if (checkLocalStorage('numOrder')){
+      const addItemInNumOrder = localStorage.getItem('numOrder'); 
+      role === ROLE.WHOLESALE? data = [Object.assign({},valuesObj,{add_product: true})] : null
+    }
+
     apiCart
       .updateCartData([...data])
       .then((res) => {

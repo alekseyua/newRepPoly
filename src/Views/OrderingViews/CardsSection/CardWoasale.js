@@ -20,12 +20,14 @@ const CardWoasale = ({
   
   const changeAgreement = (e, id,qty) => {
     const checked = e.target.checked;
+    role === ROLE.WHOLESALE? params = {...params, "add_product": "True"} : null;
+        console.log('params:', params)
     apiCart
     .updateCartData([
       {
           id: id,
           change_agreement: checked,
-          qty: qty
+          qty: qty,
         },
       ]) 
       .then(res=>{
