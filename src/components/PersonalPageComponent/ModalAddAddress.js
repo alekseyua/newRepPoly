@@ -8,6 +8,7 @@ import { Formik } from 'formik';
 import { changeAddAddressSchema } from '../../utils/schemesFormic';
 import Text from '../Text';
 import ErrorField from '../../Views/ErrorField';
+import PhoneField from '../../Views/PhoneField';
 
 const apiOrder = api.orderApi;
 const defaultParamsInitData = {
@@ -122,7 +123,7 @@ const ModalAddAddress = ({
     })
     .catch(err=>console.error(`ERROR getCountry`,err));
   }, []);
-  
+
   return (
     <Formik
       enableReinitialize
@@ -185,33 +186,24 @@ const ModalAddAddress = ({
                     />
                   </PersonalPageViews.FormGroup>
                   <PersonalPageViews.FormGroup>
-                    <Input
-                      value={values.phone}
+                    <PhoneField
+                      variant={'varian-input'}
+                      value={values.phone} 
                       name={'phone'}
-                      autocomplete={'off'}
-                      onGx-input={handleChange}
-                      className={errors.phone && touched.phone ? 'error' : ''}
-                      helpText={
-                        errors.phone && touched.phone ? <ErrorField message={errors.phone} /> : null
-                      }
-                      label={Text({ text: 'mobPhone' })}
                       placeholder={Text({ text: 'enterPhone' })}
+                      autocomplete={'off'}
+                      label={Text({ text: 'mobPhone' })}
+                      onGx-change={(e) => {
+                        setFieldValue('phone', e.detail.formattedValue);
+                      }}
+                      className={errors.phone && touched.phone ? 'error' : ''}
+                      helpText={errors.phone && touched.phone? <ErrorField message={errors.phone} /> : null}
                       data-cy={'modal_add_address_phone'}
                     />
                   </PersonalPageViews.FormGroup>
                 </PersonalPageViews.FormColl>
                 <PersonalPageViews.FormColl>
                   <PersonalPageViews.FormGroup>
-                    {/* <GxSelect>
-                      {countryOptions.map((el, i) => {
-                        const { title, value } = el;
-                        return (
-                          <GxMenuItem key={i} value={value}>
-                            {title}
-                          </GxMenuItem>
-                        );
-                      })}
-                    </GxSelect> */}
                     <Select
                       className={'select-default'}
                       value={values.country}
@@ -250,9 +242,7 @@ const ModalAddAddress = ({
                       name={'city'}
                       onGx-input={handleChange}
                       className={errors.city && touched.city ? 'error' : ''}
-                      helpText={
-                        errors.city && touched.city ? <ErrorField message={errors.city} /> : null
-                      }
+                      helpText={errors.city && touched.city ? <ErrorField message={errors.city} /> : null}
                       label={Text({ text: 'city' })}
                       placeholder={Text({ text: 'enter.city' })}
                       data-cy={'modal_add_address_city'}
@@ -282,11 +272,7 @@ const ModalAddAddress = ({
                           name={'houseNumber'}
                           onGx-input={handleChange}
                           className={errors.houseNumber && touched.houseNumber ? 'error' : ''}
-                          helpText={
-                            errors.houseNumber && touched.houseNumber ? (
-                              <ErrorField message={errors.houseNumber} />
-                            ) : null
-                          }
+                          helpText={errors.houseNumber && touched.houseNumber ? ( <ErrorField message={errors.houseNumber} />) : null}
                           label={Text({ text: 'house.number' })}
                           placeholder={Text({ text: 'enter.house.number' })}
                           data-cy={'modal_add_address_house_number'}

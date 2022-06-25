@@ -9,9 +9,9 @@ import Text from '../Text';
 import { signUpFirstFormSchema } from '../../utils/schemesFormic';
 import AuthorizationAndRegViews from '../../Views/AuthorizationAndRegViews';
 import { toolTipIcon } from '../../images';
+import Error from '../../Views/Error';
 
 const RegistrationFormFirst = ({ onSaveFormData, initialValues, activeSpinner }) => {
-console.log('activeSpinner = ',activeSpinner)
 
   const errorsMessenge = {
     requiredField: Text({ text: 'requiredField' }),
@@ -34,7 +34,7 @@ console.log('activeSpinner = ',activeSpinner)
       onSubmit={onSaveFormData}
     >
       {({ handleSubmit, handleChange, handleBlur, setFieldValue, values, errors, touched }) => {
-
+        console.log('errors',errors)
         return (
           <GxForm noValidate onGx-submit={handleSubmit}>
             <Input
@@ -96,6 +96,7 @@ console.log('activeSpinner = ',activeSpinner)
                 <GxIcon slot={'suffix'} src={toolTipIcon} />
               </Input>
             </AuthorizationAndRegViews.WrapperInputForTooltip>
+            <div>
             <CheckBox
               checked={values.iAgreeDataProcessing}
               name={'iAgreeDataProcessing'}
@@ -106,9 +107,10 @@ console.log('activeSpinner = ',activeSpinner)
                 if (checked === null) return;
                 setFieldValue('iAgreeDataProcessing', checked);
               }}
-            />
-            {/* {errors.iAgreeDataProcessing ? <Error message={errors.requiredField} /> : null} */}
-            
+              />
+              {/* {values.iAgreeDataProcessing ? <ErrorField message={errors.iAgreeDataProcessing} /> : null} */}
+            {errors.iAgreeDataProcessing && touched.iAgreeDataProcessing ? <Error message={!!errors.iAgreeDataProcessing?'необходимо соглассие на обработку данных': null} /> : null}
+            </div>
             <Button
               variant={'black_btn_full_width'}
               type={'submit'}

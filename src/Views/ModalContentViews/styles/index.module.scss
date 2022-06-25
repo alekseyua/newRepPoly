@@ -395,9 +395,11 @@
     }
     &--active{
       .warning_wrapper__grid{
+        // overflow-y: auto;
         max-height: 100%;
+        padding: 0 15px 15px;
       }
-      transition: all 2s ease-out;
+      // transition: all 2s ease-out;
       font-size: 14px;
       justify-content: left;
       align-items: center;
@@ -405,8 +407,9 @@
       border-radius: 2px;
       padding: 15px;
       position: relative;
-      max-height: 100%;
+      // max-height: 100%;
       cursor: pointer;
+
       .arrow-8 {
         position: absolute;
         width: 15px;

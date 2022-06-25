@@ -46,7 +46,7 @@ const CheckBox = ({
       disabled={disabled}
       name={name}
       label={label}
-      colorField={colorField}
+      colorField={colorField} 
       {...props}
     >
       {colorField ? (

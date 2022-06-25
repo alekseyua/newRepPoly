@@ -44,13 +44,15 @@ export const registration = store => {
                                 store.dispatch('finallyRegistration/set', param);
                             }
                             )
-                            .catch(err=>{          
-                                console.log(`ERROR `,err.response)
+                            .catch(err=>{
+                                if (err.response.status === 400){
+                                    store.dispatch('requestErr', err.response?.data?.error_auth[0])
+                                }
+                                console.log(err.response)
                             }
                             )
-            }
         }
-    )
+    })
 
     const closeModal = (obj) => {
         const {path, success = false, userValues = null, role = null, content = null} = obj;

@@ -1,34 +1,27 @@
 import React from 'react';
 import { ROLE, COOKIE_KEYS } from '../../const';
-import { removeCookie, getCookie } from '../../utils';
+import { removeCookie } from '../../utils';
 import AccessCheck from './AccessCheck';
 import RejectedAccount from './RejectedAccount';
 import Unregistred from './Unregistred';
 import Retailer from './Retailer';
 import Dropshipper from './Dropshipper';
 import Wholesale from './Wholesale';
-import { useHistory} from 'react-router-dom'
 import { useStoreon } from 'storeon/react';
 import ModalContentViews from '../../Views/ModalContentViews';
 import ModalSubmitCode from '../Auth/ModalSubmitCode';
-import api from '../../api';
-/**
- * на основе роли выберет нужный контент
- * @param {*} param0
- */
+
 const ContentDropDownAccount = ({
   profile,
   cabinet_menu,
-  page_type_account,
   page_type_auth,
   page_type_reg,
-  page_home,
 }) => {
-  const apiUser = api.userApi;
-  const { role, user = {}, shop = { is_has_shop: false }, status } = profile;
+  const { role, user = {}, shop = { is_has_shop: false }} = profile;
   const { first_name = 'Имя', last_name = 'Фамилия', email = '', checkEmail = false } = user;
-  const history = useHistory();
-  const {dispatch} = useStoreon();
+  const {dispatch, statuStorage} = useStoreon('statuStorage');
+  const {userPage} = useStoreon('userPage');
+
   const logOut = () => {
     removeCookie(COOKIE_KEYS.AUTH);
     removeCookie(COOKIE_KEYS.POLICY);
@@ -60,6 +53,8 @@ const ContentDropDownAccount = ({
       addClass: 'modal-success_error',
     });
   };
+
+  
   const variantDropDown = {
     accessCheck: (
       <AccessCheck
@@ -86,8 +81,7 @@ const ContentDropDownAccount = ({
       <Retailer
         first_name={first_name}
         last_name={last_name}
-        cabinet_menu={cabinet_menu}
-        
+        cabinet_menu={userPage.cabinet_menu}        
         logOut={logOut}
         page_type_auth={page_type_auth}
       />
@@ -96,7 +90,7 @@ const ContentDropDownAccount = ({
       <Dropshipper
         first_name={first_name}
         last_name={last_name}
-        cabinet_menu={cabinet_menu}
+        cabinet_menu={userPage.cabinet_menu}
         shop={shop}
         logOut={logOut}
       />
@@ -105,13 +99,13 @@ const ContentDropDownAccount = ({
       <Wholesale
         first_name={first_name}
         last_name={last_name}
-        cabinet_menu={cabinet_menu}
+        cabinet_menu={userPage.cabinet_menu}
         shop={shop}
         logOut={logOut}
       />
     ),
   };
-  switch (status) {
+  switch (statuStorage) {
     case 0:
       return variantDropDown.unregistred;
     case 1:

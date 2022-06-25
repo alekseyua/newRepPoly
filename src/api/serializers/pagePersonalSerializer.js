@@ -6,8 +6,7 @@ const pagePersonalSerializer = (page) => {
   return {
     ...page_info,
     ...init_state,
-    site_configuration: siteConfigurationSerializer(init_state?.site_configuration),   
-    
+    site_configuration: siteConfigurationSerializer(init_state?.site_configuration),
     cart: profile?.cart,
     notifications: profile?.notifications,
     user_role: profile?.user_role,

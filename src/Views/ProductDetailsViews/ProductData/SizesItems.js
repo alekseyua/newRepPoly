@@ -26,8 +26,9 @@ const SizesItems = ({
   product_rcAmount,
 }) => {
   const [selectedSizeList, setselectedSizeList] = useState(false);
-  const { userPage } = useStoreon('userPage')
-  const { role, status } = userPage.profile;
+  const { userPage } = useStoreon('userPage');
+  const {statuStorage} = useStoreon('statuStorage');
+  const { role } = userPage.profile;
   const [ gropsSizes, setGropsSizes ] = useState([]);
   const [clickDelay, setClickDelay] = useState(null)
   useEffect(() => {
@@ -249,7 +250,7 @@ const SizesItems = ({
 
           </div>
             {/* кнопка  Иформация по открытым сборам*/}
-          { status !== 0 || status !== 2 ?(
+          { statuStorage !== 0 || statuStorage !== 2 ?(
           collections && listCollectionsHook.length !== 0 ?
           (<div className={style['prodpage-range__wrap-mb']}>
             <div className={style['prodpage-range__wrap-btn']}>

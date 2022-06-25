@@ -5,11 +5,12 @@ import { useStoreon } from 'storeon/react';
 import api from '../../api';
 import AuthorizationAndRegViews from '../../Views/AuthorizationAndRegViews';
 import Button from '../../Views/Button';
+import ErrorField from '../../Views/ErrorField';
 import Input from '../../Views/Input';
 import Text from '../Text';
 
 const ModalSubmitCode = ({ emailUser = null, resetUserPassword, initialValues, path = null, setNextStep = null,setValues = null, regist = false}  ) => {
-  const { dispatch } = useStoreon();
+  const { dispatch, requestErr } = useStoreon('requestErr');
   const [activeSpinner, setActiveSpinner] = useState('')
 
   const handleSubmit = (params, { setFieldError }) => {   
@@ -26,15 +27,19 @@ const ModalSubmitCode = ({ emailUser = null, resetUserPassword, initialValues, p
     }
       regist?( 
         setActiveSpinner('spinner-line'),
+        dispatch('requestErr',null),
         dispatch('checkKey',params) 
         ): (
           setActiveSpinner('spinner-line'),
           setNextStep(),
+          dispatch('requestErr',null),
           sessionStorage.setItem('submit_code',params.submit_code),          
           resetUserPassword(param)
           );
   };
-
+  useEffect(()=>{
+        !!requestErr? setActiveSpinner('') : null;
+  },[requestErr])
   const postKeyFromMail = () => {
     dispatch('getNewSubmitCode', {email: initialValues.email, type: 'resend'});
   }
@@ -59,7 +64,7 @@ const ModalSubmitCode = ({ emailUser = null, resetUserPassword, initialValues, p
                 placeholder={'Введите код'}
                 label={''}
                 onGx-input={handleChange}
-                helpText={errors.submitCode ? <ErrorField message={errors.submitCode} /> : null}
+                helpText={!!requestErr ? <ErrorField message={requestErr} /> : null}
               />
               <br/>
               <Button variant={'black_btn_full_width'} type={'submit'} className={activeSpinner}>

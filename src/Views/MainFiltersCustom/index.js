@@ -51,7 +51,6 @@ const MainFiltersCustom = ({ filters = [], selectItem, seletedItem, setStatusSel
 
   useEffect(() => {
     const newFiltersList = filters.map((el) => {
-      // debugger;
       if (seletedItem) {
         if (seletedItem.id === el.id) {
           return {

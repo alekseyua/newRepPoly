@@ -106,7 +106,7 @@ const initialStateIntro = {
 
 ``````plagin for work VS CODE``````
 1) Auto Rename Tag 
-2) Auto Import 
+2) Auto Import  
 3) Beautify
 4) Better Comments
 5) Bracket Pair Colorizer 2

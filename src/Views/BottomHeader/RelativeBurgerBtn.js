@@ -1,29 +1,14 @@
-import React, { useState } from 'react';
-import { GxHamburger } from '@garpix/garpix-web-components-react';
-import TopHeaderMenu from '../TopHeaderMenu';
+import React from 'react';
 import style from './bottomHeader.module.scss';
 import BurgerMenu from '../BurgerMenu/BurgerMenu';
+import { useStoreon } from 'storeon/react';
 
-const RelativeBurgerBtn = ({ header_menu, site_configuration }) => {
-  const [classModificator, setClassModificator] = useState('hidden');
-  const handlerDropDown = (e) => {
-    setClassModificator(e.detail.isActive ? 'visible' : 'hidden');
-  };
+const RelativeBurgerBtn = () => {
+  const { userPage } = useStoreon('userPage');
+  const {header_menu, site_configuration} = userPage;
   return (
     <div className={style['bottom-header__burger-wrapper']}>
-
       <BurgerMenu itemIds={header_menu[4].children} site_configuration={site_configuration}/>
-
-      {/* <GxHamburger onGxShow={handlerDropDown} className={style['bottom-header__burger-button']}>
-        Кнопка
-      </GxHamburger> */}
-      {classModificator === 'visible' ? (
-        <TopHeaderMenu
-          classModificator={classModificator}
-          handlerActiveDropDownMenuItem={() => {}}
-          header_menu={header_menu}
-        />
-      ) : null}
     </div>
   );
 };

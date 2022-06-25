@@ -166,14 +166,14 @@ const RegistrationFormBaseInfo = ({
                 label={Text({ text: 'other' })}
                 onBlur={handleBlur}
                 helpText={
-                  errors.otherWhereDidHearAbout && touched.otherWhereDidHearAbout ? (
+                  errors.otherWhereDidHearAbout && touched.otherWhereDidHearAbout? (
                     <ErrorField message={errors.otherWhereDidHearAbout} />
                   ) : null
                 }
                 data-cy={'another_field'}
               />
             ) : null}
-            {errors.receiveNewsletters ? <Error message={errors.receiveNewsletters} /> : null}
+
             <CheckBox
               checked={values.receiveNewsletters}
               onGx-change={(e) => {
@@ -184,14 +184,12 @@ const RegistrationFormBaseInfo = ({
               label={Text({ text: 'receiveNewsletters' })}
               data-cy={'registration_checkbox_drop'}
             />
+            {errors.receiveNewsletters && touched.receiveNewsletters? <Error message={errors.receiveNewsletters} /> : null}
+
             {role === ROLE.RETAIL ? (
               <AuthorizationAndRegViews.ErrorBlock helpText={serverError} />
             ) : null}
-            {
-              //!!errors? errors?.map(err=>console.log({err})) : null
-              // errors.email ? <ErrorField message={errors.email} /> : null
-            
-            }
+
             <Button
               variant={'black_btn_full_width'}
               type={'submit'}

@@ -187,7 +187,8 @@ const Card = ({
                   {status.id !== 'payment_waiting' &&
                   status.id !== 'paid' &&
                   status.id !== 'packaging' &&
-                  status.id !== 'sended' ? (
+                  status.id !== 'sended' &&
+                  status.id !== 'ordered'? (
                     <GxIcon
                       slot="icon-left"
                       src={getIconFromStatus(status.id)}
@@ -197,8 +198,8 @@ const Card = ({
                     <span className={style['cabinet_orders_icon-payment']}>💳</span>
                   ) : status.id === 'paid' ? (
                     <span className={style['cabinet_orders_icon-paid']}>✔️</span>
-                  ) :status.id === 'ordered'?(
-                    <span className={style['cabinet_orders_icon-paid']}>✔️</span>
+                  ) :status.id === 'ordered' ? (
+                    <span className={style['cabinet_orders_icon-paid']}>✅</span>
                   ) :status.id === 'packaging' ? (
                     <span className={style['cabinet_orders_icon-packaging']}>🛍</span>
                   ) : status.id === 'sended' ? (
@@ -225,7 +226,6 @@ const Card = ({
                 отменить
               </button>
             ) : null}
-            {/* 🗑️ отменить */}
           </div>
         </div>
       </div>

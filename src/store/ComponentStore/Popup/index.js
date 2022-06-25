@@ -10,13 +10,13 @@ export const popupWarrning = store => {
             addClass: false, 
         });
         
-        return store.dispatch('warrningGoToPath', path)
+        return store.dispatch('warrningGoToPath', path);
     };
 
-    store.on('@init', () => ({warrning : '' }))
+    store.on('@init', () => ({warrning : '' }));
     store.on('warrningGoToPath',({warrningGoToPath},obj)=>{
         return {warrningGoToPath: obj}
-    })
+    });
     store.on('warrning/set', ({warrning}, obj) => {
         return (
             store.dispatch('modal/update', {
@@ -44,6 +44,12 @@ export const popupWarrning = store => {
             addClass: 'modal-success_error',        
             })
     )
+    });
+
+    store.on('@init', () => ({requestErr : null }));
+    store.on('requestErr', ({requestErr}, obj) =>  {
+        console.log('requestErr obj:', obj)
+        return {requestErr: obj}
     })
 }
 

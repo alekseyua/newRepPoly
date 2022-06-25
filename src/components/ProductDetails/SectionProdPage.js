@@ -79,6 +79,7 @@ const SectionProdPage = ({
 }) => {
   
   const history = useHistory();
+  const {statuStorage} = useStoreon('statuStorage');
   const { stateCountCart, dispatch } = useStoreon('stateCountCart');
   const { stateCountRestart } = useStoreon('stateCountRestart')
   const { stateCountWish } = useStoreon('stateCountWish')
@@ -342,7 +343,6 @@ const SectionProdPage = ({
   newProduct_sku = mediaHook;
   const getColorForMedia = (colorData) => {
     setMediaFirstHook(media)
-    //debugger
     let arr = Array.from(product_skuHook);
 
     let newArr = arr.map(item => ({
@@ -591,7 +591,7 @@ const SectionProdPage = ({
                       currenssies={currenssies}
                       pricesHook={pricesHook}
                       product_rcAmount={product_rcAmount}
-                      status={status}
+                      status={statuStorage}
                     />
                     <AsyncControlButtons
                       countProduct={in_stock_countHook}
@@ -608,7 +608,7 @@ const SectionProdPage = ({
                       setChangeColorBtn={setChangeColorBtn}
                       role={role}
                       productId={productId}
-                      status={status}
+                      status={statuStorage}
                     />
                     {!modalView ? (
                       <ProductDetailsViews.DeliveryInfo

@@ -8,8 +8,6 @@ import classNames from 'classnames';
 import usePushNotifications from '../../#lifehack/Notification/usePushNotifications';
 
 
-
-
 export default ({
   headerModClosed,
   header_menu = [],
@@ -107,23 +105,16 @@ const {
       >
         
         <TopHeader
-          isActiveSubmenuBg={isActiveSubmenuBg}
           setActiveSubmenuBg={setActiveSubmenuBg}
-          header_menu={header_menu}
           cabinet_data={cabinet_data}
-          profile={profile}
-          cabinet_menu={cabinet_menu}
           site_configuration={site_configuration}
           currencies={currencies}
         />
         <BottomHeader
-          site_configuration={site_configuration}
-          profile={profile}
-          cabinet_menu={cabinet_menu}
           cabinet_data={cabinet_data}
           isScrolled={isScrolled}
-          header_menu={header_menu}
           main_menu={main_menu}
+          site_configuration={site_configuration}
           onChangeSearchInput={handleChangeSearchValue}
           onClickSearchBtn={handleClickSearchBtn}
           onClickSearchRoot={handleClickSearchRoot}

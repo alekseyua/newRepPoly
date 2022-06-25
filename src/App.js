@@ -13,17 +13,9 @@ import '@garpix/garpix-web-components/dist/garpix-web-components/garpix-web-comp
 import './styles/index.scss';
 import { ReactNotifications } from 'react-notifications-component';
 import "react-notifications-component/dist/theme.css";
-import React, {useCallback, useEffect, useRef, useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import cogoToast from 'cogo-toast';
-//the function to call the push server: https://github.com/Spyna/push-notification-demo/blob/master/front-end-react/src/utils/http.js
-import {
-  isPushNotificationSupported,
-  registerServiceWorker,
-  createNotificationSubscription,
-  getUserSubscription,
-  pushManager,
 
-} from "./#lifehack/Notification/push-notifications";
 
 
 
@@ -34,17 +26,20 @@ const App = ({ lang, pageServer }) => {
   const { updateCurrenssies } = useStoreon('updateCurrenssies');
   const { stateUpdateBalance } = useStoreon('stateUpdateBalance');
   const { warrningGoToPath } = useStoreon('warrningGoToPath');
+  const {notificationCount} = useStoreon('notificationCount');
+
   const history = useHistory();
   const { statusRequstOrderCountryPayment } = useStoreon('statusRequstOrderCountryPayment');
   const [notice, setNotice] = useState(null)
-  const [updateData, setUpdateData] = useState(pageServer)
   api.setLanguage(lang);
   const { stateValuePoly } = useStoreon('stateValuePoly');
   let currency = getCookie(COOKIE_KEYS.CURRENCIES);
   let token = getCookie('ft_token');
   const [stateStatus, setStateStatus] = useState(null)
   const deleteTag = (data) => data.replace(/<a.*?>|<\/a>/isg,'');
-  if(pageServer !== undefined){
+
+  if(pageServer !== undefined){    
+    dispatch('statuStorage/set',pageServer?.profile?.status)
     setCookie('id_profile',pageServer?.profile?.id)    
   }
   
@@ -56,16 +51,11 @@ const App = ({ lang, pageServer }) => {
 
   useEffect(()=>{
     if(pageServer?.profile?.role === ROLE.UNREGISTRED){
-      setTimeout(()=>{
-        if(checkLocalStorage('tour')){
-          if( JSON.parse(localStorage.getItem('tour').toLowerCase()) ){
-            return setNotice('Мы всегда на связи! Администратор будет сообщать Вам о любых изменениях в заказах, через уведомления на сайте')
-          }
-          return
-        } else {
-          setNotice('Мы всегда на связи! Администратор будет сообщать Вам о любых изменениях в заказах, через уведомления на сайте')
-        }
-      },3000)
+        setTimeout(()=>{
+          if(!(checkLocalStorage('tourReg1') || checkLocalStorage('tour'))){
+              return setNotice('Мы всегда на связи! Администратор будет сообщать Вам о любых изменениях в заказах, через уведомления на сайте')
+          } 
+        },500)
     }
   },[])
 
@@ -135,7 +125,6 @@ const App = ({ lang, pageServer }) => {
             }
             const {msg} = event.data
             console.log('msg : 1', msg)
-            debugger
             setNotice(msg)
             }
           navigator.serviceWorker.addEventListener('message', listener)
@@ -189,7 +178,8 @@ const App = ({ lang, pageServer }) => {
     }, [
       updateCurrenssies,
       stateValuePoly.statePayment,
-      stateUpdateBalance
+      stateUpdateBalance,
+      notificationCount
     ])
 
     //********************************************************************************* */ 

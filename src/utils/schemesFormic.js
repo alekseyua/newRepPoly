@@ -211,13 +211,13 @@ export const changeAddAddressSchema = (errorsMessenge) => {
       .required(errorsMessenge.requiredField),
     patronymic: Yup.string()
       .nullable()
-      .max(20, errorsMessenge.maxLengthField)
-      .required(errorsMessenge.requiredField),
-    phone: Yup.string()
+      .max(20, errorsMessenge.maxLengthField),
+      // .required(errorsMessenge.requiredField),
+    phone: Yup.string() 
       .nullable()
-      .max(20, errorsMessenge.maxLengthField)
-      .matches(phoneRegExp, errorsMessenge.phone)
-      .required(errorsMessenge.requiredField),
+      .max(20, errorsMessenge.maxLengthField),
+      // .matches(phoneRegExp, errorsMessenge.phone)
+      // .required(errorsMessenge.requiredField),
     country: Yup.string().nullable().required(errorsMessenge.requiredField),
     postcode: Yup.string()
       .nullable()

@@ -7,13 +7,8 @@ import style from './styles/index.module.scss';
 import { Link } from 'react-router-dom';
 import { motion } from "framer-motion"
 const Card = ({
-  cart,
-  comment,
-  conditions,
   id,
   hideSales,
-  old_price,
-  price,
   product,
   total_item_price,
   condition = '',
@@ -30,7 +25,7 @@ const Card = ({
   cartitem_setUrl = '#',
   url
 }) => {
-  const { brand, color, id: producId, image, in_stock_count, size, title } = product;
+  const { brand, color, image, in_stock_count, size, title } = product;
 
   const [countProducts, setCountProducts] = useState()
   const [select, setSelect] = useState()
@@ -41,13 +36,14 @@ const Card = ({
 },[selected])
 
   const updateQty = (qty) => {
-    updateProductFromCart({
+    setTimeout(()=>{
+      updateProductFromCart({
         id: id,
         selected: selected,
         qty: qty,
         oldQty: countProducts
-      });      
-   
+      });
+    },1000)
   };
   const decCounterProduct = () => {
     if (countProducts <= 1) return;
@@ -71,9 +67,10 @@ const Card = ({
     in_stock_count?
       (value >= in_stock_count)? value = in_stock_count : value
       :null
-    setCountProducts(value)
+    setCountProducts(value);
       updateQty(value);
   }
+
   return (
     <motion.div
       initial={{

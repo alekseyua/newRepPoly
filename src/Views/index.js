@@ -12,42 +12,30 @@ import Cookie from './Cookie/Cookie';
 import {ROLE} from '../const';
 import introJs from 'intro.js';
 import 'intro.js/introjs.css';
-//import "intro.js/themes/introjs-nassim.css";
-// import "intro.js/themes/introjs-royal.css";
-// import "intro.js/themes/introjs-nazanin.css";
-// import "intro.js/themes/introjs-flattener.css";
 import "intro.js/themes/introjs-modern.css";
-
 import Viewer, { Worker } from '@phuocng/react-pdf-viewer';
 import '@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css';
 import { checkLocalStorage, getCookie } from '../utils';
 import ModalPreviewFile from './ModalContentViews/ModalPreviewFile';
 import { useHistory } from 'react-router-dom';
+import api from '../api';
 
 
-const Layout = ({
-  headerModClosed = false,
+const Layout = ({...props}) => {
+const {headerModClosed = false,
   main = false,
   responsive = false,
   children,
   title = 'Main title',
   description = '',
-  main_menu,
-  cabinet_menu, 
-  header_menu,
-  footer_menu,
-  announce,
-  site_configuration,
-  role_configuration,
-  currencies,
-  year,
-}) => {
+} = props;
 const { userPage, dispatch } = useStoreon('userPage');
 const { stateCountCart } = useStoreon('stateCountCart')
 let { profile } = userPage;
 const history = useHistory()
-const {role, user, id} = profile;
+const {role, id} = profile;
 const [modalStates, setModalStates] = useState(Modal.defaultModalStates);
+const [contentPage, setContentPage] = useState(props);
 // ******************************************************************************
 const urlChatItem = `wss://back.ftownpl.com:8443/ws/notifications/${id}/?token=$${getCookie('ft_token')}`;
 const ws = useRef(null);
@@ -68,7 +56,12 @@ useEffect(() => {
         setIsState(!isState)        
       }
     }
-    return () => ws.current.close(); // кода меняется isState - соединение закрывается
+    return () => {
+      const fd = new FormData()
+      fd.set('disconnect', true)
+      ws.current.send(fd);
+      ws.current.close(); // кода меняется isState - соединение закрывается
+    }
   }
 }, [ws]);
 
@@ -84,12 +77,16 @@ const gettingData = useCallback(() => {
     }   
   }; 
   return ()=>{
+      const fd = new FormData();
+      fd.set('disconnect', true)
+      ws.current.send(fd);
     ws.current.close(); // кода меняется isState - соединение закрывается
   }
 }, [isState]);
 // ws://91.218.229.240:8001/ws/notifications/(id юзера)/"
 // ******************************************************************************
     useEffect(()=>{
+      
       if (role === ROLE.UNREGISTRED && (history.location.pathname === '/ru'  || history.location.pathname === '/en')){
         const timerView = setTimeout(()=>{
           const tourFromsite = () => {
@@ -137,7 +134,7 @@ const gettingData = useCallback(() => {
             })
             .onchange(()=>{
               if (introJs.instances[0]._currentStep == "0") {
-                !!document.querySelector('.ct-toast')? document.querySelector('.ct-toast').style = 'opacity: 0.3' : null;
+                !!document.querySelector('.ct-toast')? document.querySelector('.ct-toast').style = 'opacity: 0' : null;
               }
               if (introJs.instances[0]._currentStep == "2") {
                 dispatch('toggleBurgerMenu/set', 1)
@@ -156,6 +153,7 @@ const gettingData = useCallback(() => {
             .onbeforeexit(function () {
               let questions = confirm("Приятного шопинга в мире моды");
               if(!!questions){
+                !!document.querySelector('.ct-toast')? document.querySelector('.ct-toast').style = 'opacity: 0' : null;
                 return localStorage.setItem('tour',false)
               }else{
 
@@ -218,7 +216,7 @@ const gettingData = useCallback(() => {
             })
             .onchange(()=>{
               if (introJs.instances[0]._currentStep == "0") {
-                !!document.querySelector('.ct-toast')? document.querySelector('.ct-toast').style = 'opacity: 0.3' : null;
+                !!document.querySelector('.ct-toast')? document.querySelector('.ct-toast').style = 'opacity: 0' : null;
                 !!document.querySelector('.index-module__cookie__wrapper___3W46b')? document.querySelector('.index-module__cookie__wrapper___3W46b').style = 'opacity: 0' : null;
                 
               } 
@@ -241,25 +239,18 @@ const gettingData = useCallback(() => {
             })
             .onbeforeexit(function () {
               let questions = confirm("Приятного шопинга в мире моды");
+              !!document.querySelector('.ct-toast')? document.querySelector('.ct-toast').style = 'opacity: 0' : null;
               !!document.querySelector('.index-module__cookie__wrapper___3W46b')? document.querySelector('.index-module__cookie__wrapper___3W46b').style = 'opacity: 1' : null;
 
               if(!!questions){
                 return localStorage.setItem('tourReg1',false)
-              }else{
-
               }
-              return //localStorage.setItem('tour',false)
             }).start();
           }  
-          if(checkLocalStorage('tour')){
-            if( JSON.parse(localStorage.getItem('tour').toLowerCase()) ){
-              return window.visualViewport.width <= 1366 ? tourFromsiteReg1() :  tourFromsite();
-            }
-            return
-          } else {
+          if(!(checkLocalStorage('tourReg1') || checkLocalStorage('tour'))){
             return window.visualViewport.width <= 1366 ? tourFromsiteReg1() : tourFromsite();
           }        
-        },4000);
+        },2000);
       }
 
       if (role !== ROLE.UNREGISTRED  && history.location.pathname === '/information/juridical'){
@@ -280,24 +271,16 @@ const gettingData = useCallback(() => {
             }).onbeforeexit(function () {
               let questions = confirm("Приятного шопинга в мире моды");
               if(!!questions){
-                return localStorage.setItem('tourReg1',false)
-              }else{
-
+                return localStorage.setItem('tourReg2',false)
               }
-              return //localStorage.setItem('tour',false)
             }).start();
           } 
 
-          if(checkLocalStorage('tourReg1')){
-            if( JSON.parse(localStorage.getItem('tourReg1').toLowerCase()) ){
-              return tourFromsiteReg2();
-            }
-            return
-          } else {
+          if(!checkLocalStorage('tourReg2')){
             return tourFromsiteReg2();
           }
         
-        },4000);
+        },2000);
       }
 
       if (role !== ROLE.UNREGISTRED  && history.location.pathname === '/profile'){
@@ -332,23 +315,14 @@ const gettingData = useCallback(() => {
               let questions = confirm("Приятного шопинга в мире моды");
               if(!!questions){
                 return localStorage.setItem('tourReg2',false)
-              }else{
-
               }
-              return //localStorage.setItem('tour',false)
             }).start();
           }  
 
-          if(checkLocalStorage('tourReg2')){
-            if( JSON.parse(localStorage.getItem('tourReg2').toLowerCase()) ){
-              return tourFromsiteReg3();
-            }
-            return
-          } else {
+          if(!checkLocalStorage('tourReg3')){
             tourFromsiteReg3();
-          }
-        
-        },4000);
+          }        
+        },2000);
       }
     },[])
 
@@ -417,23 +391,51 @@ if ( profile === undefined ){
         )
     })
   }
+  const heandlerKeyOn = () => {
+    const params = {0: `/${window.location.pathname}`}
+
+          api
+            .updatePage(params)
+            .then(res=>{
+            console.log('res:', res.page) 
+            const result = {
+              ...userPage,
+              ...res.page,
+              ...{title: "WOW?"},
+              title_ru: "WOW 2?",
+              cart: 25,
+            }
+            dispatch('userPage', result)
+            setContentPage(result)
+            // let errMessage = {
+            //   path: '/profile',
+            //   success: 'Администратором было активирована учётнач запись',
+            //   fail : null,
+            // };
+            // dispatch('warrning/set',errMessage);            
+            })
+            .catch(err=>console.log('err update'))
+
+            // console.log('userPage', userPage);
+
+  }
 
   return (
     <>
     
       <Header
         headerModClosed={headerModClosed}
-        header_menu={header_menu}
-        main_menu={main_menu}
-        site_configuration={userPage.site_configuration}
-        announce={announce}
-        cabinet_data={cabinet_data}
-        profile={profile}
-        cabinet_menu={cabinet_menu} 
-        currencies={currencies}
+        header_menu={contentPage.header_menu}
+        main_menu={contentPage.main_menu}
+        site_configuration={contentPage.site_configuration}
+        announce={contentPage.announce}
+        cabinet_data={contentPage.cabinet_data}
+        profile={contentPage.profile}
+        cabinet_menu={contentPage.cabinet_menu} 
+        currencies={contentPage.currencies}
       />
-      {/* <button onClick={heandlerKeyOn}> Включить уведомления</button>
-      <button onClick={heandlerKeyOff}>Выключить уведомления</button> */}
+      {/* <button onClick={heandlerKeyOn}> Включить уведомления</button> */}
+      {/* <button onClick={heandlerKeyOff}>Выключить уведомления</button> */}
 
       <Helmet>
         <title>{title}</title>
@@ -449,17 +451,17 @@ if ( profile === undefined ){
        <ButtonScrollTopComponent/>
       </main>
       <Footer
-        year={year}
-        policy_1={site_configuration?.public_offer_1}
-        policy_2={site_configuration?.public_offer_1}
-        footer_menu={footer_menu}
-        role_configuration={role_configuration}
-        site_configuration={site_configuration}
-        profile={profile}
+        year={contentPage.year}
+        policy_1={contentPage.site_configuration?.public_offer_1}
+        policy_2={contentPage.site_configuration?.public_offer_1}
+        footer_menu={contentPage.footer_menu}
+        role_configuration={contentPage.role_configuration}
+        site_configuration={contentPage.site_configuration}
+        profile={contentPage.profile}
         openModalFeedbackReedFile={openModalFeedbackReedFile}
       />
 
-      <Cookie openModalFeedbackReedFile={openModalFeedbackReedFile} policy={site_configuration.policy}/>
+      <Cookie openModalFeedbackReedFile={openModalFeedbackReedFile} policy={contentPage.site_configuration.policy}/>
     </> 
   );
 };

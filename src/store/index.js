@@ -7,6 +7,7 @@ import { mapusagesite } from './ComponentStore/MapUsageSite';
 import { spinner } from './ComponentStore/SpinnerStore';
 import { notifications } from './ComponentStore/Notifications';
 import { chatMessage } from './ComponentStore/Chat';
+import { statuStorage } from './ComponentStore/Status';
 
 
 
@@ -458,6 +459,7 @@ export const toggleBurgerMenu = store => {
 
 
 export const storeonParams = [
+  statuStorage,
   toggleBurgerMenu,
   chatMessage,
   notifications,

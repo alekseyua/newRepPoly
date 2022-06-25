@@ -10,12 +10,14 @@ import Input from '../../Views/Input';
 import Text from '../Text';
 
 
-const ModalRestorePassword = ({ initialValues, resetUserPassword,setNextStep }) => {
+const ModalRestorePassword = ({ initialValues, resetUserPassword }) => {
+  const [activeSpinner, setActiveSpinner] = useState('')
   const errorsMessenge = {
     requiredField: Text({ text: 'requiredField' }),
     email: Text({ text: 'notValidEmail' }),
   };
   const handleSubmit = (params, { setFieldError }) => {
+    setActiveSpinner('spinner-line')
     const param = {
       ...initialValues,
       email: params.email,
@@ -56,6 +58,7 @@ const ModalRestorePassword = ({ initialValues, resetUserPassword,setNextStep }) 
                 variant={'black_btn_full_width'}
                 type={'submit'}
                 disabled={!values.email || errors.email}
+                className={activeSpinner}
               >
                 Отправить код
               </Button>

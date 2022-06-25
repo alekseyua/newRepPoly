@@ -48,6 +48,7 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
   const [values, setValues] = useState(null);
   const { page_type_reg, page_type_catalog } = site_configuration;
   const { dispatch } = useStoreon();
+  const [activeSpinner, setActiveSpinner] = useState('')
 
   const errorsMessenge = {
     longUsername: 'Слишком длинный никнейм',
@@ -76,7 +77,7 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
   };
  
   const resetUserPassword = (params, setFieldError) =>{
-  
+    setActiveSpinner('spinner-line')
     setValues( prev => {
       return { ...prev, ...params }      
     })
@@ -136,7 +137,6 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
       addClass: 'modal-success_error',
     });
   };
-// debugger
 
   const openModalRestorePassword = () => {
     setModalStates({
@@ -151,7 +151,7 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
                     <ModalRestorePassword 
                       setNextStep={setNextStep} 
                       initialValues={values} 
-                      resetUserPassword={resetUserPassword}                      
+                      resetUserPassword={resetUserPassword}  
                     />
                   ),
                   2: (
@@ -161,6 +161,7 @@ const Authorization = ({ history, site_configuration, setModalStates }) => {
                       openModalFinallyRestorePassword={openModalFinallyRestorePassword}
                       resetUserPassword={resetUserPassword}
                       setValues={setValues}
+                      activeSpinner={activeSpinner}
                     />
                   ),
                   1: <ModalSubmitCode 

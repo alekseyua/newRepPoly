@@ -1,13 +1,11 @@
 import { GxForm } from '@garpix/garpix-web-components-react';
 import { Formik } from 'formik';
 import React from 'react';
-import api from '../../api';
 import AuthorizationAndRegViews from '../../Views/AuthorizationAndRegViews';
 import Button from '../../Views/Button';
 import Input from '../../Views/Input';
-import Text from '../Text';
 
-const ModalNewPassword = ({ initialValues, setNextStep, resetUserPassword,setValues }) => {
+const ModalNewPassword = ({ initialValues, resetUserPassword,activeSpinner }) => {
   
   const handleSubmit = (params, { setFieldError }) => {
      const param = {
@@ -52,7 +50,11 @@ const ModalNewPassword = ({ initialValues, setNextStep, resetUserPassword,setVal
                   errors.confirm_password && touched.confirm_password? <ErrorField message={errors.confirm_password} /> : null
                 }
               />
-              <Button variant={'black_btn_full_width'} type={'submit'}>
+              <Button 
+                variant={'black_btn_full_width'} 
+                type={'submit'}
+                className={activeSpinner}
+              >
                 Изменить пароль
               </Button>
             </GxForm>

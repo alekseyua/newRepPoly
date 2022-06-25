@@ -1,70 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { GxButton, GxDropdown, GxIcon, GxInput } from '@garpix/garpix-web-components-react';
+import { GxButton, GxIcon } from '@garpix/garpix-web-components-react';
 import LangAndCurrencies from './LangAndCurrencies';
 import DropDownMenuAccount from './DropDownMenuAccount';
 import { NavLink, useHistory } from 'react-router-dom';
 import style from './headerButtons.module.scss';
-import dropDownAccountMenu from './dropDownAccountMenu.module.scss';
-import Input from '../../Views/Input';
-import Wish from './Heart/Wish';
 import Logo from '../Logo';
-import { searchIcon, userIcon, favoriteIcon, cartIcon, catalogIcon } from '../../images/index';
-
-
+import { searchIcon, favoriteIcon, cartIcon, catalogIcon } from '../../images/index';
 import Text from '../../components/Text';
 import SearchPageViews from '../SearchPageViews';
 import { useStoreon } from 'storeon/react';
 import styleWish from './style/styleWish.module.scss';
 
-
-//-------------------------------------------------------
-import api from '../../api';
-// import chalk from 'chalk';
-
-//-------------------------------------------------------
 const HeaderButtons = ({
   lang,
   navigation,
   isScrolled = false,
   cabinet_data,
-  profile,
-  cabinet_menu,
-  site_configuration,
   openDropDown,
   onChangeSearchInput,
   onClickSearchBtn,
   onClickSearchRoot,
   searchResults,
   searchValue,
-  currencies,
   setCurrenciesData,
   currenciesData,
 }) => {
-  
- const {
-    page_type_cart = '#',
-   page_type_account = '#',
-   page_type_auth = '#',
-   page_type_reg = '#',
-   page_type_wishlist = '#',
-   page_type_catalog = '#',
-   page_type_search = '#',
-   page_home = '#',
-  } = site_configuration;
-
+ 
   const { stateCountRestart, dispatch } = useStoreon('stateCountRestart');
+  const {statuStorage} = useStoreon('statuStorage');
   const { stateCountWish } = useStoreon('stateCountWish');
   const { stateCountCart } = useStoreon('stateCountCart');
   const { userPage } = useStoreon('userPage');
   const history = useHistory();
   const [searchInputShow, setSearchInputShow] = useState(false);
-  const [ countInCar, setCountInCar] = useState();
   const searchBgRef = React.createRef(null);
-  const { role, user, status }        = userPage.profile;
+  const {cabinet_menu, profile, site_configuration} = userPage;
+  const { role, user}        = profile;
   const {in_cart} = stateCountCart;
-
-
+  const {
+    page_type_account = '#',
+    page_type_auth = '#',
+    page_type_reg = '#',
+    page_type_wishlist = '#',
+    page_type_catalog = '#',
+    page_home = '#',
+   } = site_configuration;
+ 
 
   const handleClickSearchBtn = () => {
     setSearchInputShow((prevState) => !prevState);
@@ -92,7 +74,7 @@ const HeaderButtons = ({
   const onChangeHandler = () =>{
     dispatch('stateCountRestart/add', !stateCountRestart)
     let params = {};
-      if (status === 1){
+      if (statuStorage === 1){
         if (user.checkEmail){
           params = {
             path: null,
@@ -107,14 +89,14 @@ const HeaderButtons = ({
           }
         }
         dispatch('warrning/set', params)
-    } else if(status === 0){
+    } else if(statuStorage === 0){
       params = {
         path: 'authorization',
         success: null,
         fail: 'Что бы воспользоваться всеми возможностями сотрудничества, необходимо зарегистрироваться',
       }
       dispatch('warrning/set', params)
-    }else if(status === 2){
+    }else if(statuStorage === 2){
       params = {
         path: 'registration',
         success: null,
@@ -125,10 +107,7 @@ const HeaderButtons = ({
       history.push('cart');
     }
   }
-  // =======================================================================================================
 
-        //впосля нужно протестить сколько раз вызывается 36
-  // =======================================================================================================
   return (
     <div
       className={classNames({

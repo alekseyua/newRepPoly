@@ -139,14 +139,6 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
     setIs_performed(stateCountCart.is_performed)
   }, [])
 
-  const setValuesDecoration = (res) => {
-    if (role === ROLE.WHOLESALE) {
-      setValue(serializeCardDataToFormValueWoosale(res.cartitem_set));
-    } else {
-      setValue(serializeCardDataToFormValue(res.cartitem_set));
-    }
-  };
-
   const closeModal = () => {
     
     setmodalStates({
@@ -507,7 +499,6 @@ const Cart = ({ role, checkout_slug, page_type_catalog, components, front_admin 
     // добавление к существующему заказу на опте
     const valuesObj = data[0]
     if (checkLocalStorage('numOrder')){
-      const addItemInNumOrder = localStorage.getItem('numOrder'); 
       role === ROLE.WHOLESALE? data = [Object.assign({},valuesObj,{add_product: true})] : null
     }
 
@@ -576,13 +567,7 @@ const handleGoToOrder = () => {
         <GxCol sizeLg={12} sizeMd={12} sizeSm={12} sizeXl={9} sizeXs={12} className="cart__left">
 
           <Title variant={'cart'} type={'h1'}>
-            <Text text={'shopping.cart'} />: ({
-              //****************************************************************************** */
-              // здесь необходимо просчитать и показать общее количество товара
-              // cartData.cartitem_set.length || cartData.in_stock.length
-              // ?cartData.cartitem_set.length + cartData.in_stock.length
-              // :0})
-              in_cart})
+            <Text text={'shopping.cart'} />: ({in_cart})
           </Title>
           <CartViews.SelectedFilter
             multipleDeleteFromCart={multipleDeleteFromCart}
@@ -599,12 +584,16 @@ const handleGoToOrder = () => {
           <Title variant={'cart-min'} type={'h3'}>
             
             {(role === ROLE.WHOLESALE) ?
-              <>
-              {textConditionPayPart_1}{' '}
-              {!!opt_minimum_price? opt_minimum_price.toFixed() : null}{' '}{currentCurrcensies}
-              {textConditionPayPart_2}
-              {front_admin?<Settings nameComponent={'opt_minimum_price'} /> : null }
-              </>
+              checkLocalStorage('numOrder')?
+                 <>В заказ можно добавить товары, соблюдая условия минимальной закупки по брендам</>
+                :(<>
+                  {textConditionPayPart_1}{' '}
+                  {!!opt_minimum_price? opt_minimum_price.toFixed() : null}{' '}{currentCurrcensies}
+                  {textConditionPayPart_2}
+                  {front_admin?<Settings nameComponent={'opt_minimum_price'} /> : null }
+                  </>
+                  )                
+              
               : null
             }
           </Title>

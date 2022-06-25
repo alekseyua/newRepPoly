@@ -10,8 +10,6 @@ const BottomHeader = ({
   main_menu,
   isScrolled,
   site_configuration,
-  profile,
-  cabinet_menu,
   cabinet_data,
   openDropDown,
   onChangeSearchInput,
@@ -47,8 +45,6 @@ const BottomHeader = ({
         <HeaderButtons
           navigation
           site_configuration={site_configuration}
-          profile={profile}
-          cabinet_menu={cabinet_menu}
           cabinet_data={cabinet_data}
           isScrolled={isScrolled}
           onChangeSearchInput={onChangeSearchInput}

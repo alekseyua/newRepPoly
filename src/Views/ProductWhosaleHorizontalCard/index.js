@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import CartViews from '../CartViews';
 import Card from './Card';
 import style from './styles/index.module.scss';
@@ -12,7 +12,6 @@ const ProductWhosaleHorizontalCard = ({
   isVisibleLine = false,
   updateProductFromCart,
   deleteProductFromCart,
-  cartitem_setUrl,
 }) => {
 
   // let newItems = items.filter(el=>!el.is_pack)

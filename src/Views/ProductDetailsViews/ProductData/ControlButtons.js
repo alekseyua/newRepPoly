@@ -23,10 +23,10 @@ const ControlButtons = ({
   productId,
   is_in_stock,
   in_stock_count,
-  status,
 }) => {
   const history = useHistory();
   const { stateCountCart, dispatch } = useStoreon('stateCountCart');
+  const {statuStorage} = useStoreon('statuStorage');
   const [ countInBtn, setCountInBtn ] = useState()
   const [ stateInStockeBtn, setStateInStockeBtn ] = useState(false)
   useEffect(()=>{ 
@@ -85,7 +85,7 @@ const ControlButtons = ({
   const addToCartProduct = (count, isRemoved = false, productId) => {
    // if (role === ROLE.UNREGISTRED){
 
-      if(status === 0){
+      if(statuStorage === 0){
       const params = {
           path: 'authorization',
           success: null,
@@ -93,7 +93,7 @@ const ControlButtons = ({
         }
         dispatch('warrning/set', params)
       }
-      if(status === 2){
+      if(statuStorage === 2){
         params = {
           path: 'registration',
           success: null,

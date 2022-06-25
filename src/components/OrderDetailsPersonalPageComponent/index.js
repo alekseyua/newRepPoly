@@ -29,7 +29,6 @@ const OrderDetailsPersonalPageComponent = ({
     track_number,
     weight,
     discount,
-    specification,
     delivery_cost, 
     order_cost,
     total_cost,
@@ -48,6 +47,20 @@ const OrderDetailsPersonalPageComponent = ({
   const [ state, setState ] = useState(false);
   const { currenssies, dispatch } = useStoreon('currenssies');
   const { stateUpdateBalance } = useStoreon('stateUpdateBalance');
+
+  const handlerSpecification = async () => {
+    try{
+    const params = {
+      "order_id": id
+    }
+    console.log('params:', params)
+    const specific = await orderApi.getOrderSpecification(params)
+    window.open(specific.specification, "target=_blank")
+    console.log('specific',specific)
+  }catch(err){
+    console.error(err)
+  }
+  }
 
   const getOrderItem = () => {  
     orderApi
@@ -159,7 +172,7 @@ const OrderDetailsPersonalPageComponent = ({
         />
         <OrderDetailsPersonalPageViews.ListTable
           count={role !== ROLE.WHOLESALE ? orderItems.length : orderItemLength}
-          specification={specification}
+          handlerSpecification={handlerSpecification}
         />
         <OrderDetailsPersonalPageViews.CardSectionWrapper>
           <OrderDetailsPersonalPageViews.LeftSideCol>

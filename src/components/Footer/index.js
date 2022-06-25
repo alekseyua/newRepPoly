@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { GxTextarea, GxForm } from '@garpix/garpix-web-components-react';
-import { Formik, ErrorMessage } from 'formik';
+import { Formik } from 'formik';
 import TopFooter from '../../Views/TopFooter';
 import BottomFooter from '../../Views/BottomFooter';
 import ModalContentViews from '../../Views/ModalContentViews';
@@ -165,6 +165,7 @@ export default ({ footer_menu = [], site_configuration, role_configuration, year
                     ></GxTextarea>
                     <Offset offset={'content'} />
                     <input
+                      className={'wrapperBtnFile'}
                       name={'files'}
                       onChange={(e) => {
                         const files = e.currentTarget.files;

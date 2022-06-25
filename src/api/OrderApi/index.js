@@ -96,6 +96,12 @@ export default class OrderApi extends AbstractBaseApi {
     return res.data;
   };
 
+    // order/get_order_specification
+    getOrderSpecification = async (params = {}) => {
+      const res = await this.post(`/order/order/get_order_specification/`, params);
+      return res.data;
+    };
+
   // order/cancel_order_item
   cancelOrder = async (params = {}) => {
     const res = await this.post(`/order/order/cancel_order/`, params);

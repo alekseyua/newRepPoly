@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import LayoutDropDownMenuAccount from '../../Views/LayoutDropDownMenuAccount';
 import DefaultAuthText from '../../Views/DefaultAuthText';
 import DropDownHeaderLK from '../../Views/DropDownHeaderLK';
@@ -17,8 +17,9 @@ const AccessCheck = ({
   role,
   checkEmail,
   }) => {
-  const {dispatch} = useStoreon();
-
+  const {notificationCount, dispatch} = useStoreon('notificationCount');
+  const [timerAccess, setTimerAccess] = useState(true);
+  const [activeSpinner, setActiveSpinner] = useState('')
   const getKeyForAccess = () => {
     const params = {
       email: email,
@@ -29,11 +30,22 @@ const AccessCheck = ({
   }
 
   const checkAccessToAccount = () => {
+    setActiveSpinner('spinner-line');
     if(checkEmail){
-      let errMessage = {};
-      api
+      handlerCheckAccess();
+    }else{
+      getKeyForAccess();
+      openModalKeyRegistration(email);
+    }
+  }
+  
+  const handlerCheckAccess = async () => {
+    let errMessage = {};
+        await api
         .getCurrentUser()
         .then(response=>{
+          setActiveSpinner('');
+          dispatch('statuStorage/set',response?.status);
           !(response?.status === 0 || response?.status === 1 || response?.status === 2)?
             ( errMessage = {
                 path: 'catalog',
@@ -52,14 +64,38 @@ const AccessCheck = ({
             )
         })
         .catch(err=>console.log('err to ', err))
-      //window.location.reload()
-    }else{
-    console.log({email})
-      getKeyForAccess()
-      openModalKeyRegistration(email)
-    }
   }
-  
+
+  useEffect(()=>{
+    let timer = 0;
+    console.log('timerAccess:', timerAccess)
+    timerAccess?(
+      timer = setInterval(async () => {
+       const params = {0: `/${window.location.pathname}`} 
+       try{
+       const getDataPage = await api.updatePage(params)
+       console.log('getDataPage:', getDataPage)
+       dispatch('userPage/add', getDataPage.page)
+       }catch(err){
+         console.log(err) 
+       }
+          const response = await api.getCurrentUser();
+          dispatch('statuStorage/set',response?.status);
+          console.log('response:', response)
+          !(response?.status === 0 || response?.status === 1 || response?.status === 2)?
+            (
+              setTimerAccess(false),
+              clearInterval(timer)
+            )
+            :null
+      }, 30000),    
+      console.log('timerAccess:', timerAccess),
+      !timerAccess? clearInterval(timer): null
+      )
+      :null
+    // console.log('response?.status:', response?.status)
+  },[notificationCount])
+
   return (
     <LayoutDropDownMenuAccount>
       <DropDownHeaderLK.PersonalInfo
@@ -85,14 +121,14 @@ const AccessCheck = ({
       }
       </DefaultAuthText.HelpText>
       { role === ROLE.RETAIL?
-        <Button full variant={'gray_full_width'} onClick={getKeyForAccess}>
+        <Button full variant={'gray_full_width'} onClick={getKeyForAccess} className={activeSpinner}>
           <DefaultAuthText.Spinner slot={'icon-left'} />
           Подтвердить
         </Button>
-        :<Button full variant={'gray_full_width'} to={page_type_auth} onClick={checkAccessToAccount}>
+        :<Button full variant={'gray_full_width'} to={'#'} onClick={checkAccessToAccount} className={activeSpinner}>
           <DefaultAuthText.Spinner slot={'icon-left'} />
           {!checkEmail? 'Подтвердить почту' : 'Проверка доступа'}
-        </Button>      
+        </Button>
       }
       <DropDownHeaderLK.Logout onClick={logOut} />
     </LayoutDropDownMenuAccount>

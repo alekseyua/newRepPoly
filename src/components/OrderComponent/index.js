@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import Title from '../../Views/Title';
 import Text from '../Text';
 import CartViews from '../../Views/CartViews';
 import CheckBox from '../../Views/CheckBox';
 import { Link, useHistory } from 'react-router-dom';
-import { GxCol, GxModal, GxTooltip, GxButton } from '@garpix/garpix-web-components-react';
+import { GxCol, GxModal, GxTooltip } from '@garpix/garpix-web-components-react';
 import OrderingCards from './OrderingCards';
 import { Formik } from 'formik';
 import OrderingPay from './OrderingPay';
@@ -18,10 +18,9 @@ import PayModalContent from '../BalanceComponent/PayModalContent';
 import GoBackToCartModalContent from '../GoBackToCartModalContent';
 import api from '../../api';
 import dayjs from '../../utils/dayjs';
-import { ROLE, STATUS_EQUARING } from '../../const';
+import { ROLE } from '../../const';
 import styleModal from '../../Views/ModalCreator/modalCreator.module.scss';
 import OrderCar from '../../#lifehack/OrderCar/OrderCar';
-import Item from '../../Views/NotificationsViews/Item';
 import Select from '../../Views/Select';
 import style from '../../Views/Select/select.module.scss';
 import { checkLocalStorage } from '../../utils';
@@ -114,6 +113,7 @@ const OrderComponent = ({
       .catch((err) => console.log('response list order ERROR', err));
   }, [updateCurrenssies]);
 
+
   let newListRes = listOrders.filter(el=>el.status?.status === 'in_process');// || el.status?.status === 'payment_waiting');
   const options = newListRes.map((el) => {
     return {
@@ -155,7 +155,6 @@ const OrderComponent = ({
   };
 
   const openModalPay = (order_id, now_balance = null, total_price = null) => {
-    // hideModal();
     orderApi
       .getRandomRequizites()
       .then((res) => {
@@ -177,6 +176,12 @@ const OrderComponent = ({
       })
       .catch((err) => {
         console.error(`ERROR "OrderComponent" openModalPay ${err}`);
+        let errMessage = {
+          path: null,
+          success: null,
+          fail : `ошибка доступа к серверу, проверьте соединение ${err}`,
+        };
+        dispatch('warrning/set',errMessage);
         //history.push('cart')
       });
   };
@@ -216,6 +221,7 @@ const OrderComponent = ({
   const creteOrder = (values) => {
     const date = dayjs(api.language, values.issued_date).format('DD.MM.YYYY');
     checkLocalStorage('productId') ? localStorage.removeItem('productId') : null;
+    checkLocalStorage('numOrder') ? localStorage?.removeItem('numOrder') : null
 
     let params = {
       payment_method: values.payment_methods,
@@ -231,7 +237,6 @@ const OrderComponent = ({
       wait_call: values.waitForCall,
       comment_passport: values.comment,
       comment_order: values.comment_order,
-
       order_cost: cart_contentOrder.price,
       discount: cart_contentOrder.discount,
       total_cost: cart_contentOrder.price,
@@ -343,7 +348,6 @@ const OrderComponent = ({
             alert('HZ who are you');
           }
         }else{
-          // dispatch('spinner');
           orderApi
           .createOrder(params) 
           .then((res) => {
@@ -355,13 +359,13 @@ const OrderComponent = ({
             console.log(`ERROR creteOrder pay BALANCE, ${err}`);
             openModalRejectedOrdering('cart');
           });
-        // history.push('orders');
         }
 
   }
 
   // **************************************************************************************************************************************
     const getEnabledToPayments = (values, errors) => {
+    console.log('values:', values)
     //устанавливаем состояние как делать оплату online(1) или с баланса(3)
     if (!statusFildValue) {
       values.payment_methods === 1 ? setValueStatePay(1) : setValueStatePay(3);
@@ -525,7 +529,6 @@ const OrderComponent = ({
   const onSubmit = (values) => {
     creteOrder(values)
   };
-
 
   return (
     <React.Fragment>

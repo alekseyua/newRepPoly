@@ -53,7 +53,7 @@ const initialValues = {
   firstname: '',
   patronymic: '',
   username: '',
-  iAgreeDataProcessing: true,
+  iAgreeDataProcessing: null,
   email: '',
   phone: '',
   password: '',
@@ -96,23 +96,26 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
         if (err.response) {
           const data = err.response.data;
           let error = false;
+          let status = true
           for (let key in data) {
             const element = Array.isArray(data[key]) ? data[key][0] : data[key];
             if (step === 1) {
-              if (values.hasOwnProperty(key)) {
+              if (initialValuesFirstStep.hasOwnProperty(key)) {
                 setFieldError(key, element);
-                key === 'email' || key === 'phone' || key === 'whereDidYouHearAboutService' || key === 'password' ? error = true : error = false;
+                status = false
+                return error = false
               }
+              (key === 'email' || key === 'phone' || key === 'whereDidYouHearAboutService' || key === 'password') && status ? error = true : error = false;
+              
             } else if (step === 2) {
               if (values.hasOwnProperty(key)) {
                 setFieldError(key, element);
-                key === 'error' ? error = true : error = false;
               }
+              key === 'error' ? error = true : error = false;
             }else {
                 setFieldError(key, element);
                 error = true;
             }
-
           }
           let errMessage = {
             path: '/',
@@ -120,6 +123,7 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
             fail : data?.detail,
           };
           //data?.detail? dispatch('warrning/set',errMessage) :null;
+          
           if (error && step !== state.allSteps) setNextStep();
         }
       });
@@ -161,21 +165,6 @@ const Registration = ({ history, site_configuration, setModalStates }) => {
   };
   
   
-
-  const openModalFinallyRegistration = (data, userValues = null, role) => {
-    const params = {
-      path: '/information/juridical',
-      data: data,
-      userValues: userValues,
-      role: role,
-      content: 'Учётная запись добавлена, необходимо подтвердить почту',
-    }
-    dispatch('finallyRegistration/set', params)
-  };
-
-
-
-
       const openModalFeedbackReedFile = (file) => { 
         const closeModal = () => { 
           dispatch('modal/update', {

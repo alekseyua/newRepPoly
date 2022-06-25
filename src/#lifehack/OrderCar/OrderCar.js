@@ -14,7 +14,7 @@ const OrderCar = ({enabled, styleCar, setStyleCar, selectedAdress, variant, paym
 		<GxTooltip 
 			content={!payment_methods? `У Вас не выбран метод оплаты` : !variant? `У Вас не выбран способ доставки` : !selectedAdress? `У Вас не выбран адрес доставки` : null}
 			placement={"top"}
-			trigger={!(styleCar === 'orderCar')?'hover':null}
+			trigger={!(styleCar === 'orderCar')?'hover': ''}
 		>
 			<div className="oderMain">
 				<button 

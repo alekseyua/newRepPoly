@@ -53,14 +53,15 @@ const ProductHorizontalCard = ({
 
 
   const updateQty = (qty) => {
-
-    updateProductFromCart({
-      id: id,
-      selected: selected,
-      qty: qty,
-      oldQty: countProducts,
-      is_collection: true
-    });
+    setTimeout(()=>{
+      updateProductFromCart({
+        id: id,
+        selected: selected,
+        qty: qty,
+        oldQty: countProducts,
+        is_collection: true
+      });
+    },1000)
   };
   const decCounterProduct = () => {
     if (countProducts <= 1) return;
