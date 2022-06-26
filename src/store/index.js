@@ -3,11 +3,11 @@ import api from '../api';
 import { dataBalance } from './ComponentStore/Balance';
 import { popupWarrning } from './ComponentStore/Popup';
 import { registration } from './ComponentStore/Registration';
-import { mapusagesite } from './ComponentStore/MapUsageSite';
 import { spinner } from './ComponentStore/SpinnerStore';
 import { notifications } from './ComponentStore/Notifications';
 import { chatMessage } from './ComponentStore/Chat';
 import { statuStorage } from './ComponentStore/Status';
+import { getProductDetailsModal } from './ComponentStore/GetProductDetails';
 
 
 
@@ -459,12 +459,12 @@ export const toggleBurgerMenu = store => {
 
 
 export const storeonParams = [
+  getProductDetailsModal,
   statuStorage,
   toggleBurgerMenu,
   chatMessage,
   notifications,
   spinner,
-  mapusagesite,
   registration,
   popupWarrning,
   notificationCount,

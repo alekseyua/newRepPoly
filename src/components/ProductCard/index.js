@@ -114,97 +114,21 @@ const ProductCard = ({
     dispatch('updateWish/add', !updateWish)
 
   };
-  // *********************превю товара***********************************************
-  const [productModalData, setproductModalData] = useState({
-    productId: id,
-    profileId: 0,
-    adding_type: 'item',
-    breadcrumbs: [],
-    reviews_statistic: {},
-    reviewsCount: 1,
-    title: 'title',
-    brand: 'brand',
-    prices: {
-      more_3_item_price: 100,
-      more_5_item_price: 100,
-      old_price: 100,
-      price: 100,
-    },
-    recommended_price: 0,
-    colors: [],
-    sizes: [],
-    is_new: false,
-    in_stock_count: false,
-    is_bestseller: false,
-    is_in_stock: 0,
-    role_configuration: { role: { number: 1 } },// role: { number: 1 } была указана 1 исправил на 0 если не регестрирован
-    is_closeout: false,
-    is_liked: false,
-    media: [],
-    in_cart_count: 0,
-    site_configuration: {},
-    product_rc:'90',
-  });
+  
   const closeModal = () => {
     setisShowModal(false);
     setModalContent({
       content: null,
     });
   };
-
-
   
   const getProductDetails = () => {
-    apiContent
-      .getProduct(id)
-      .then((res) => {
-        setModalContent({
-          content: (
-            <ModalContentViews.ModalWrapper customClassName={'modal-min_wrap'}>
-              <ModalContentViews.CloseBtn closeModal={closeModal} />
-              <ModalContentViews.ContentBlock>
-                <AsyncContentModal
-                  modalView
-                  url={url}
-                  productId={id}
-                  profileId={productModalData.profileId}
-                  adding_type={productModalData.adding_type}
-                  breadcrumbs={productModalData.breadcrumbs}
-                  reviews_statistic={productModalData.reviews_statistic}
-                  reviewsCount={productModalData.reviewsCount}
-                  title={res.title}
-                  brand={ role !== ROLE.RETAIL && role !== ROLE.UNREGISTRED ? res.brand : ''}
-                  prices={res.prices}
-                  recommended_price={productModalData.recommended_price}
-                  colors={res.colors} 
-                  sizes={res.sizes}
-                  review={res.review}
-                  is_new={res.is_new}
-                  in_stock_count={res.in_stock_count}
-                  is_bestseller={res.is_bestseller}
-                  is_in_stock={res.is_in_stock}
-                  role_configuration={role_configuration}
-                  is_closeout={res.is_closeout}
-                  is_liked={res.is_liked}
-                  media={res.media}
-                  in_cart_count={res.in_cart_count}
-                  site_configuration={{}}
-                  profile={profile}
-                  is_collection={res.is_collection}
-                  product_rc={res.product_rc}
-                  article={article}
-                  product_rcAmount={res.minimum_rc}
-                  product_sku={res.product_sku}
-                />
-              </ModalContentViews.ContentBlock>
-            </ModalContentViews.ModalWrapper>
-          ),
-        });
-        // update();
-      })
-      .catch((err) => {
-        closeModal();
-      });
+    const params = {
+      role,
+      id,
+      url,
+    }
+    dispatch('getProductDetailsModal',params);  
   };
   // *************************************************************************************
   useEffect(() => {

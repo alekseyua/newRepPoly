@@ -2,12 +2,14 @@ import classNames from 'classnames';
 import style from './style.module.scss';
 
 const SearchWrapper = ({ children, openSearchInput, onClickSearchRoot, bgRef }) => {
+
   return (
     <div
       className={classNames({
         [style['header-buttons__search-wrapper']]: true,
         [style['header-buttons__search-wrapper--fade-in']]: openSearchInput,
       })}
+      style={{}}
       onClick={onClickSearchRoot}
     >
       <div

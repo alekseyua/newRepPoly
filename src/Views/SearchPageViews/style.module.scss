@@ -33,7 +33,9 @@
     }
     @include mobile {
       right: 0;
-      top: calc(-100vh + 120px);
+      top: calc(-100vh + 150px);
+      z-index: 99999;
+      position: absolute;
     }
     &--fade-in {
       transition: all 0.3s;
@@ -53,7 +55,7 @@
       background-color: rgba(0, 0, 0, 0.5);
       z-index: 99;
       &--active {
-        display: block;
+        // display: block;
       }
       @include tablet-lg {
         background-color: $w;
@@ -116,6 +118,8 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+  border: none;
+  background-color: rgba(240, 195, 195, 0.3);
   &__info {
     display: flex;
     flex-direction: column;

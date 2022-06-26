@@ -47,8 +47,6 @@ const {
 
 // ==========================================================================================================
   const handleChangeSearchValue = (e) => {
-    console.log('click 32')
-
     const value = e.target.value;
     setSearchState((prevState) => ({
       ...prevState,
@@ -67,12 +65,8 @@ const {
         console.log("error", {error});
       });
   };
-  const handleClickSearchBtn = () => {
-    console.log('click test')
-    //  window.location.href = page_type_search;
-  };
+
   const handleClickSearchRoot = () => {
-    console.log('click 3')
     setSearchState((prevState) => ({
       ...prevState,
       search: '',
@@ -110,17 +104,18 @@ const {
           site_configuration={site_configuration}
           currencies={currencies}
         />
-        <BottomHeader
+        <BottomHeader 
           cabinet_data={cabinet_data}
           isScrolled={isScrolled}
           main_menu={main_menu}
           site_configuration={site_configuration}
           onChangeSearchInput={handleChangeSearchValue}
-          onClickSearchBtn={handleClickSearchBtn}
+          // onClickSearchBtn={handleClickSearchBtn}
           onClickSearchRoot={handleClickSearchRoot}
           searchResults={searchState.results}
           searchValue={searchState.search}
           openDropDown={searchState.openDropDown}
+          offsetTop={offsetTop}
         />
       </div>
     </header>

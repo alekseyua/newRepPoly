@@ -8,8 +8,22 @@ import style from './style.module.scss';
 import btnStyle from '../Input/styles/Large.module.scss';
 import defaultBtnStyle from '../Input/styles/Default.module.scss'
 
-const SearchInput = ({ search, onChangeSearchInput, onClickSearchBtn, searchInputShow }) => {
+const SearchInput = ({ search, onChangeSearchInput, searchInputShow,setSearchInputShow, onClickSearchRoot }) => {
   const inputRef = useRef();
+
+  useEffect(() => {
+      const onClick = e => {
+        if(e.target.getAttribute('data-cy') === "header_searche"){
+         return setSearchInputShow(true)
+        }
+          inputRef.current.contains(e.target) || (
+            setSearchInputShow(false),
+            onClickSearchRoot()
+          )
+      }
+      document.addEventListener('click', onClick);
+      return () => document.removeEventListener('click', onClick)
+  }, [])
 
   useEffect(() => {
     if (inputRef.current && searchInputShow) {
@@ -38,9 +52,9 @@ const SearchInput = ({ search, onChangeSearchInput, onClickSearchBtn, searchInpu
       <GxButton
         className={style['header-buttons__search-btn']}
         slot={'suffix'}
-        onClick={onClickSearchBtn}
+        name={'searchIcon'}
       >
-        <GxIcon src={searchIcon} />
+        <GxIcon  src={searchIcon} />
       </GxButton>
     </GxInput>
   );

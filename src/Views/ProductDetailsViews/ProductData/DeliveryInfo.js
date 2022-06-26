@@ -6,8 +6,7 @@ import style from '../styles/index.module.scss';
 import { ROLE } from '../../../const';
 import { Link } from 'react-router-dom';
 
-const DeliveryInfo = ({ description = '', role_configuration }) => {
-  const { number: role } = role_configuration.role;
+const DeliveryInfo = ({ description = '', role }) => {
   
   return (
     <div className={style['prodpage__delivery-info']}> 

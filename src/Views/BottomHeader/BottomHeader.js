@@ -13,10 +13,11 @@ const BottomHeader = ({
   cabinet_data,
   openDropDown,
   onChangeSearchInput,
-  onClickSearchBtn,
+  // onClickSearchBtn,
   onClickSearchRoot,
   searchResults,
   searchValue,
+  offsetTop,
 }) => {
   const { promotionsAdds } = useStoreon('promotionsAdds');
 
@@ -48,11 +49,12 @@ const BottomHeader = ({
           cabinet_data={cabinet_data}
           isScrolled={isScrolled}
           onChangeSearchInput={onChangeSearchInput}
-          onClickSearchBtn={onClickSearchBtn}
+          // onClickSearchBtn={onClickSearchBtn}
           onClickSearchRoot={onClickSearchRoot}
           searchResults={searchResults}
           searchValue={searchValue}
           openDropDown={openDropDown}
+          offsetTop={offsetTop}
         />
       </div>
     </div>

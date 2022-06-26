@@ -564,8 +564,6 @@ const SectionProdPage = ({
                     <AsyncLabels items={lables} />
                     <AsyncPricesContainer
                       prices={pricesHook}
-                      role_configuration={role_configuration}
-                      currenssies={currenssies}
                       recommended_price={recommended_priceHook}
                       in_cart_count={in_cart_countHook}
                     />
@@ -583,7 +581,6 @@ const SectionProdPage = ({
                       collections={collectionsHook}
                       sizes={sizes}
                       listCollectionsHook={listCollectionsHook}
-                      role_configuration={role_configuration}
                       setSizesn={setSizesn}
                       sizesn={sizesn}
                       heandlerPopup={heandlerPopup}
@@ -612,7 +609,7 @@ const SectionProdPage = ({
                     />
                     {!modalView ? (
                       <ProductDetailsViews.DeliveryInfo
-                        role_configuration={role_configuration}
+                        role={role}
                         description={role_configuration.delivery_condition}
                       />
                     ) : null}

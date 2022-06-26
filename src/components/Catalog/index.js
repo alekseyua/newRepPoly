@@ -38,7 +38,7 @@ const AsyncTypeProductFilters = AsyncComponent(() => {
 const AsyncBrandsFilters = AsyncComponent(() => {
   return import('./BrandsFilters');
 });
-
+ 
 const AsynSizesFilters = AsyncComponent(() => {
   return import('./SizesFilters');
 });
@@ -336,15 +336,7 @@ const Catalog = ({
                   <CatalogViews.Catalog>
                     <Title variant={'catalog-heading'} type={'h1'}>
                       {getTitleForDocument(filterParams)}
-
                     </Title>
-
-                    {/* <WarningBlock
-                      variant={'catalog-wrapper-mobile'}
-                      // textWarning={<div dangerouslySetInnerHTML={{ __html: newContent }}></div>}
-                      textWarning={newContent}
-
-                    /> */}
                   </CatalogViews.Catalog>
                 </CatalogViews.Row>
                 <CatalogViews.Row>

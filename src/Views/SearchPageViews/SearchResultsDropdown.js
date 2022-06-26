@@ -17,7 +17,6 @@ const SearchResultsDropdown = ({
   const role = userPage.profile;
   const site_configuration = userPage.site_configuration;
   const output = qs.stringify({ q: search_ });
-
   if (!!search_ || output) {
     return (
       <GxDropdown className={style['search-dropdown']} open={open}>
@@ -26,7 +25,7 @@ const SearchResultsDropdown = ({
 
             return (
               <GxMenuItem className={style['search-dropdown__menu-item']} key={index}>
-                <SearchResult item={item} />
+                <SearchResult item={item} role={role} />
               </GxMenuItem>
             );
           })}

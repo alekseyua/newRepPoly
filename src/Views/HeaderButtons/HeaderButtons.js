@@ -19,12 +19,12 @@ const HeaderButtons = ({
   cabinet_data,
   openDropDown,
   onChangeSearchInput,
-  onClickSearchBtn,
   onClickSearchRoot,
   searchResults,
   searchValue,
   setCurrenciesData,
   currenciesData,
+  offsetTop,
 }) => {
  
   const { stateCountRestart, dispatch } = useStoreon('stateCountRestart');
@@ -51,12 +51,14 @@ const HeaderButtons = ({
   const handleClickSearchBtn = () => {
     setSearchInputShow((prevState) => !prevState);
   };
-  const handleClickSearchRoot = (e) => {
-    if (searchBgRef.current === e.target) {
-      setSearchInputShow(false);
-      onClickSearchRoot();
-    }
-  };
+
+  // const handleClickSearchRoot = (e) => {
+
+  //   if (searchBgRef.current === e.target) {
+  //     setSearchInputShow(false);
+  //     onClickSearchRoot();
+  //   }
+  // };
 
   const handleKeyPress = (e) => {
     if (e.key === 'Escape') {
@@ -135,15 +137,18 @@ const HeaderButtons = ({
           {/* //!button */}
 
           <SearchPageViews.SearchWrapper
+            offsetTop={offsetTop}
             openSearchInput={searchInputShow}
-            onClickSearchRoot={handleClickSearchRoot}
+            // onClickSearchRoot={handleClickSearchRoot}
             bgRef={searchBgRef}
           >
             <SearchPageViews.SearchInput
               searchInputShow={searchInputShow}
               onChangeSearchInput={onChangeSearchInput}
               search={searchValue}
-              onClickSearchBtn={onClickSearchBtn}
+              // onClickSearchBtn={onClickSearchBtn}
+              setSearchInputShow={setSearchInputShow}
+              onClickSearchRoot={onClickSearchRoot}
             />
             <SearchPageViews.SearchResultsDropdown
               open={openDropDown && searchInputShow}
